@@ -21,6 +21,7 @@ const requiredMarkers = [
   'Decision Lab',
   'Curriculum',
   'Projects',
+  'WFM Project Studio',
   'Progress',
   'mobile-nav'
 ];
