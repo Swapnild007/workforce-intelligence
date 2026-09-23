@@ -208,8 +208,7 @@
       </section>
 
       <section id="projects" class="view">
-        <div class="section-head"><div><h2>Projects</h2><p>Turn knowledge into evidence of capability.</p></div></div>
-        <div class="grid curriculum"><article class="card module"><span class="eyebrow">Capstone · 12 milestones</span><h3 style="margin-top:10px">Workforce Intelligence Engine</h3><p>Build a complete local-first platform: data ingestion, WFM calculations, forecasting, analytics, optimization and automation.</p><div class="module-progress"><i style="width:28%"></i></div><p>28% · 4 / 14 milestones</p><button class="primary">Open project →</button></article><article class="card module"><span class="eyebrow">Applied · 8 milestones</span><h3 style="margin-top:10px">Forecasting Studio</h3><p>Compare naive, moving-average, exponential-smoothing and ML approaches against synthetic workload data.</p><div class="module-progress"><i style="width:54%"></i></div><p>54% · 4 / 8 milestones</p><button class="secondary">Continue →</button></article></div>
+        <div id="wfmProjectsRoot"></div>
       </section>
 
       <section id="progress" class="view">
@@ -232,7 +231,7 @@
 
   <script src="data/curriculum.js"></script>
   <script src="data/curriculum-content-02.js"></script>
-  <script src="data/wfm-lab.js"></script>
+  <script src="data/wfm-lab.js"></script>\n  <script src="data/wfm-projects.js"></script>
   <script>
     (() => {
       const landing = document.getElementById('landing');
@@ -366,7 +365,8 @@
       search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
       renderCurriculum();
       const wfmLabRoot=document.getElementById('wfmLabRoot');
-      if(wfmLabRoot && window.WFM_LAB) window.WFM_LAB.mount(wfmLabRoot);
+      if(wfmLabRoot && window.WFM_LAB) window.WFM_LAB.mount(wfmLabRoot);\n      const wfmProjectsRoot=document.getElementById('wfmProjectsRoot');
+      if(wfmProjectsRoot && window.WFM_PROJECTS) window.WFM_PROJECTS.mount(wfmProjectsRoot);
       window.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();} if(e.key==='Escape')modal.classList.remove('open')});
     })();
   </script>
