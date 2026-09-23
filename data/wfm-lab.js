@@ -15,15 +15,21 @@
   const fmt = (v,d=1) => Number(v).toLocaleString(undefined,{maximumFractionDigits:d});
   const esc = s => String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
+  const generic = window.WFM_GENERIC_DATA || {};
   const state = {
     tab:'dashboard',
     interval:30,
+    organization:generic.organization || {name:"Generic Contact Centre",timezone:"UTC",intervalMinutes:30},
+    lobs:generic.lobs || [],
+    skills:generic.skills || [],
+    agents:generic.agents || [],
     staffing:{volume:400,aht:257,period:30,sl:80,threshold:20,shrinkage:30,occupancy:85,patience:90,agents:97},
     forecast:{months:24,horizon:12,level:.35,trend:.15,seasonality:.25},
     capacity:{weeklyVolume:18000,aht:300,shrinkage:28,paidHours:40,efficiency:100},
     schedule:{agents:42,target:30,shiftLength:8,lunch:1,breaks:.5,start:8},
     adherence:{scheduled:450,actual:420,breaks:30,training:0,meeting:0},
     intraday:{forecast:100,actual:128,ahtPlan:300,ahtActual:345,scheduled:28,available:25},
+    dataset:{dailyDemand:generic.dailyDemand || {},historicalMonthly:generic.historicalMonthly || []},
     channels:{
       voice:{volume:400,aht:257,period:30,sl:80,threshold:20,shrinkage:30,occupancy:85},
       email:{volume:80,aht:600,period:60,sl:90,threshold:1440,shrinkage:30,occupancy:75},
@@ -198,8 +204,18 @@
   function panel(title,sub,body){return '<article class="wfm-panel"><div class="wfm-panel-head"><b>'+title+'</b><span>'+sub+'</span></div>'+body+'</article>';}
 
   function nav(){
-    const items=[['dashboard','Command Center'],['staffing','Erlang Staffing'],['forecast','Forecasting'],['capacity','Capacity'],['schedule','Scheduling'],['adherence','Adherence'],['intraday','Intraday'],['multichannel','Multichannel']];
+    const items=[['dashboard','Command Center'],['setup','Operations Setup'],['staffing','Erlang Staffing'],['forecast','Forecasting'],['capacity','Capacity'],['schedule','Scheduling'],['adherence','Adherence'],['intraday','Intraday'],['multichannel','Multichannel']];
     return '<div class="wfm-tabs wfm-tools-nav">'+items.map(x=>'<button class="'+(state.tab===x[0]?'active':'')+'" data-wfm-tab="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>';
+  }
+
+  function setup(){
+    const o=state.organization;
+    return intro('Operations Setup','Generic operating model used by the WFM Lab. Everything here is synthetic and can be replaced later with imported interval, roster and skill data.')+
+      '<div class="wfm-kpis">'+kpi('Business unit',esc(o.name),'generic dataset')+kpi('LOBs',state.lobs.length,'planning queues')+kpi('Skills',state.skills.length,'skill groups')+kpi('Agents',state.agents.length,'sample roster')+kpi('Interval',o.intervalMinutes+' min','planning grain')+'</div>'+ 
+      panel('LOB catalogue','service and workload assumptions','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>LOB</th><th>Channel</th><th>SL target</th><th>AHT</th><th>Shrinkage</th></tr></thead><tbody>'+state.lobs.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+esc(x.channel)+'</td><td>'+pct(x.targetSL)+'</td><td>'+fmt(x.aht,0)+' s</td><td>'+pct(x.shrinkage)+'</td></tr>').join('')+'</tbody></table></div>')+
+      panel('Skill model','generic skill-to-LOB mapping','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Skill</th><th>Supported LOBs</th></tr></thead><tbody>'+state.skills.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+x.lobs.map(id=>{const l=state.lobs.find(z=>z.id===id);return l?esc(l.name):id;}).join(', ')+'</td></tr>').join('')+'</tbody></table></div>')+
+      panel('Roster sample','synthetic agents and skills','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Agent</th><th>Skills</th></tr></thead><tbody>'+state.agents.map(x=>'<tr><td><b>'+esc(x.id)+'</b></td><td>'+x.skills.map(id=>{const s=state.skills.find(z=>z.id===id);return s?esc(s.name):id;}).join(', ')+'</td></tr>').join('')+'</tbody></table></div>')+
+      '<div class="wfm-note">This dataset is deliberately generic. It contains no client names, employee PII, credentials or proprietary operational data.</div>';
   }
 
   function chartBars(rows,maxKey='agents'){
@@ -212,7 +228,7 @@
   }
 
   function dashboard(){
-    const q=queueMetrics(),req=requiredAgents(),fte=fteRequired(),c=capacityMetrics(),s=schedulePlan(),a=adherenceMetrics(),i=intradayMetrics(),m=multichannel();
+    const q=queueMetrics(),req=requiredAgents(),fte=fteRequired(),c=capacityMetrics(),s=schedulePlan(),a=adherenceMetrics(),i=intradayMetrics(),m=multichannelMetrics();
     const day=dayPlan(state.staffing,state.interval);
     return intro('WFM Command Center','A single operating workspace linking demand → forecast → staffing → capacity → schedule → adherence → intraday → channel decisions. Built around the practical workflows found in Call Centre Helper’s tool collection.','https://www.callcentrehelper.com/articles/contact-centre-tools')+
       '<div class="wfm-kpis">'+kpi('Agents required',fmt(req,0),'Erlang C + max occupancy')+kpi('FTE incl. shrinkage',fmt(fte,1),'planning headcount')+kpi('Current service level',pct(q.sl),'current scenario')+kpi('Schedule inefficiency',pct(s.ineff),'coverage profile')+kpi('Adherence',pct(a.adherence),'sample team')+'</div>'+
@@ -303,7 +319,7 @@
 
   function render(){
     const root=$('#wfmLabRoot'); if(!root)return;
-    const views={dashboard,staffing,forecast,capacity,schedule,adherence,intraday,multichannel};
+    const views={dashboard,setup,staffing,forecast,capacity,schedule,adherence,intraday,multichannel};
     root.innerHTML=nav()+'<div class="wfm-content">'+views[state.tab]()+'</div>';
     $$('.wfm-tabs button[data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
     $$('.wfm-content [data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
