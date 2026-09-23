@@ -31,12 +31,12 @@ for (const marker of requiredMarkers) {
 
 // Static interaction audit for every button authored in index.html.
 // Generated WFM Lab controls are validated separately by the WFM mount/engine checks below.
-const buttonHtml = [...html.matchAll(/<button\\b[^>]*>[\\s\\S]*?<\\/button>/gi)].map(m => m[0]);
+const buttonHtml = [...html.matchAll(/<button\b[^>]*>[\s\S]*?<\/button>/gi)].map(m => m[0]);
 const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search)=|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
 const deadButtons = buttonHtml.filter(button => !handledButton.test(button));
 if (deadButtons.length) throw new Error('Unwired button(s) in index.html: ' + deadButtons.join(' | '));
 
-const viewIds = [...html.matchAll(/<section[^>]+id="([^"]+)"[^>]*class="[^"]*\\bview\\b/gi)].map(m => m[1]);
+const viewIds = [...html.matchAll(/<section[^>]+id="([^"]+)"[^>]*class="[^"]*\bview\b/gi)].map(m => m[1]);
 for (const m of html.matchAll(/data-view="([^"]+)"/g)) {
   if (!viewIds.includes(m[1])) throw new Error('Invalid data-view target: ' + m[1]);
 }
