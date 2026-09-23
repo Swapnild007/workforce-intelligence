@@ -47,7 +47,8 @@
   }
 
   function queueMetrics(q=state.staffing){
-    const a=num(q.volume)*num(q.aht)/(60*num(q.period));
+    const period=Math.max(1,num(q.period)||60);
+    const a=num(q.volume)*num(q.aht)/(60*period);
     const agents=Math.max(1,Math.floor(num(q.agents)));
     const rho=a/agents;
     if(rho>=1)return {a,agents,rho,pw:1,sl:0,asa:Infinity,occupancy:1,abandon:1};
@@ -60,7 +61,8 @@
   }
 
   function requiredAgents(q=state.staffing){
-    const raw=Math.max(1,Math.ceil(num(q.volume)*num(q.aht)/(60*num(q.period))));
+    const period=Math.max(1,num(q.period)||60);
+    const raw=Math.max(1,Math.ceil(num(q.volume)*num(q.aht)/(60*period)));
     for(let agents=raw;agents<=10000;agents++){
       const m=queueMetrics({...q,agents});
       const targetSL=num(q.sl)>1?num(q.sl)/100:num(q.sl); const occInput=q.occupancy!=null?q.occupancy:q.maxOcc; const maxOcc=num(occInput)>1?num(occInput)/100:num(occInput||1); if(m.sl >= targetSL && m.occupancy <= maxOcc)return agents;
@@ -97,7 +99,7 @@
   }
 
   function holdoutForecast(f=state.forecast){
-    const nMonths=Math.max(24,Math.floor(num(f.months))), horizon=Math.max(1,Math.floor(num(f.horizon)));
+    const nMonths=Math.max(24,Math.floor(num(f.months)||24)), horizon=Math.max(1,Math.floor(num(f.horizon)||12));
     const actual=[];
     for(let i=0;i<nMonths;i++){
       const season=[.88,.91,.97,1.02,1.06,1.10,1.08,1.03,.99,.96,.93,.90][i%12];
