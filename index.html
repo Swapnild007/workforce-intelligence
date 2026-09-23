@@ -144,7 +144,71 @@
     }
     @media(max-width:380px){.nf-copy h1{font-size:50px;letter-spacing:-3.5px}.nf-copy p{font-size:11px}.nf-play,.nf-more{font-size:9px;padding-left:12px;padding-right:12px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-</style>
+
+    /* --- Netflix Motion System v1 --- */
+    .landing{isolation:isolate}
+    .landing-bg{transform:scale(1.04);animation:landingBreathe 18s ease-in-out infinite alternate;will-change:transform}
+    .nf-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 45%,rgba(255,255,255,.025) 50%,transparent 55%);transform:translateX(-110%);animation:heroSheen 14s ease-in-out 2s infinite}
+    .nf-copy{animation:heroCopyIn .8s cubic-bezier(.16,1,.3,1) .15s both}
+    .nf-art-card{animation:heroFloat 7s ease-in-out infinite;will-change:transform}
+    .nf-art:before{animation:heroGlow 6s ease-in-out infinite alternate}
+    .nf-row{animation:rowReveal .7s cubic-bezier(.16,1,.3,1) both}
+    .nf-row:nth-of-type(2){animation-delay:.08s}.nf-row:nth-of-type(3){animation-delay:.14s}.nf-row:nth-of-type(4){animation-delay:.20s}.nf-row:nth-of-type(5){animation-delay:.26s}.nf-row:nth-of-type(6){animation-delay:.32s}
+    @keyframes landingBreathe{from{transform:scale(1.04) translate3d(0,0,0)}to{transform:scale(1.08) translate3d(-.7%,.5%,0)}}
+    @keyframes heroSheen{0%,62%,100%{transform:translateX(-110%)}75%{transform:translateX(110%)}}
+    @keyframes heroCopyIn{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:none}}
+    @keyframes heroFloat{0%,100%{transform:rotate(-5deg) translate3d(0,0,0)}50%{transform:rotate(-4deg) translate3d(0,-10px,0)}}
+    @keyframes heroGlow{from{opacity:.65;transform:scale(.96)}to{opacity:1;transform:scale(1.04)}}
+    @keyframes rowReveal{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
+    .nf-nav{transition:background .35s ease,backdrop-filter .35s ease}
+    .nf-links button{position:relative;transition:color .2s ease,transform .2s ease}
+    .nf-links button:after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.16,1,.3,1)}
+    .nf-links button:hover:after,.nf-links button:focus-visible:after{transform:scaleX(1)}
+    .nf-search,.nf-profile{transition:transform .2s ease,opacity .2s ease}
+    .nf-search:hover,.nf-profile:hover{transform:scale(1.06)}
+    .nf-scroll{padding:12px 4px 16px;scroll-behavior:smooth}
+    .nf-row{overflow:visible}
+    .nf-card,.nf-poster,.nf-lab{position:relative;z-index:1;transform-origin:center center;will-change:transform,box-shadow}
+    .nf-card{transition:transform .34s cubic-bezier(.16,1,.3,1),box-shadow .34s ease,border-color .25s ease}
+    .nf-poster-art{transition:transform .34s cubic-bezier(.16,1,.3,1),filter .34s ease,border-color .25s ease;will-change:transform}
+    .nf-lab{transition:transform .34s cubic-bezier(.16,1,.3,1),box-shadow .34s ease,border-color .25s ease}
+    @media (hover:hover) and (pointer:fine){
+      .nf-card:hover,.nf-card:focus-visible{z-index:8;transform:scale(1.045) translateY(-5px);border-color:#666;box-shadow:0 18px 45px rgba(0,0,0,.55)}
+      .nf-card:hover .nf-card-art,.nf-card:focus-visible .nf-card-art{transform:scale(1.045);filter:saturate(1.08)}
+      .nf-poster:hover,.nf-poster:focus-visible{z-index:8}
+      .nf-poster:hover .nf-poster-art,.nf-poster:focus-visible .nf-poster-art{transform:scale(1.045);filter:saturate(1.08);border-color:#666;box-shadow:0 18px 45px rgba(0,0,0,.55)}
+      .nf-lab:hover,.nf-lab:focus-visible{z-index:8;transform:scale(1.035) translateY(-5px);border-color:#666;box-shadow:0 18px 45px rgba(0,0,0,.55)}
+    }
+    .nf-card:focus-visible,.nf-poster:focus-visible,.nf-lab:focus-visible{outline:2px solid #fff;outline-offset:3px}
+    .nf-row-controls{position:absolute;right:0;top:39px;display:flex;gap:5px;z-index:12;opacity:0;transform:translateX(6px);pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+    .nf-row:hover .nf-row-controls,.nf-row:focus-within .nf-row-controls{opacity:1;transform:none;pointer-events:auto}
+    .nf-row-control{width:34px;height:34px;border:1px solid #444;border-radius:4px;background:#181818e8;color:#fff;font-size:18px;display:grid;place-items:center;backdrop-filter:blur(10px);transition:transform .2s ease,background .2s ease,border-color .2s ease}
+    .nf-row-control:hover{transform:scale(1.06);background:#2a2a2a;border-color:#666}
+    .nf-row-control:disabled{opacity:.25;cursor:default;transform:none}
+    .modal-backdrop{display:grid;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .28s ease,visibility 0s linear .28s;background:#000b}
+    .modal-backdrop.open{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .28s ease}
+    .modal{opacity:0;transform:translate3d(0,22px,0) scale(.965);transition:opacity .34s cubic-bezier(.16,1,.3,1),transform .34s cubic-bezier(.16,1,.3,1)}
+    .modal-backdrop.open .modal{opacity:1;transform:none}
+    .modal .close{transition:transform .2s ease,opacity .2s ease}
+    .modal .close:hover{transform:rotate(90deg) scale(1.08);opacity:.8}
+    .nf-mobile-nav{transition:transform .3s ease,background .3s ease}
+    .nf-mobile-nav button{transition:color .2s ease,transform .2s ease}
+    .nf-mobile-nav button:active{transform:scale(.9)}
+    @media(max-width:760px){
+      .nf-scroll{padding-top:8px;padding-bottom:14px}
+      .nf-row-controls{display:none}
+      .nf-card,.nf-poster,.nf-lab{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+      .nf-card:active,.nf-poster:active,.nf-lab:active{transform:scale(.985)}
+      .nf-copy{animation-duration:.65s}
+      .nf-row{animation-duration:.55s}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .landing-bg,.nf-hero:after,.nf-copy,.nf-art-card,.nf-art:before,.nf-row{animation:none!important}
+      .nf-scroll{scroll-behavior:auto}
+      .nf-card,.nf-poster,.nf-lab,.nf-poster-art,.modal,.nf-row-control{transition-duration:.01ms!important}
+    }
+
+  </style>
 </head>
 <body>
   <div id="introSplash" class="intro-splash" aria-hidden="true"><div class="intro-mark">W</div><div class="intro-word">WORKFORCE<br><span>INTELLIGENCE</span></div></div>
@@ -446,6 +510,76 @@
 
       const search=document.getElementById('globalSearch');
       search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
+
+
+      // --- Netflix Motion System ---
+      const streamingRows=[...document.querySelectorAll('.landing .nf-row')];
+      const streamingCards=[...document.querySelectorAll('.landing .nf-card,.landing .nf-poster,.landing .nf-lab')];
+
+      function openStreamingDetail(card){
+        if(!card || !modal)return;
+        const name=card.querySelector('h3')?.textContent?.trim() || card.querySelector('b')?.textContent?.trim() || 'Workforce Intelligence';
+        const desc=card.querySelector('p')?.textContent?.trim() || 'Explore this part of the Workforce Intelligence Academy.';
+        const kind=card.classList.contains('nf-lab')?'LAB':card.classList.contains('nf-poster')?'LEARNING PATH':'CONTINUE LEARNING';
+        title.textContent=name;
+        body.innerHTML='<div class="nf-detail">'+
+          '<div style="font-size:8px;letter-spacing:2px;color:#999;font-weight:800;margin-bottom:9px">'+kind+'</div>'+
+          '<p style="margin:0;color:#ccc!important;font-size:12px;line-height:1.7">'+desc+'</p>'+
+          '<div class="card" style="padding:14px;margin-top:14px;background:#202020">'+
+          '<b>Why it is here</b><p style="font-size:10px;color:#999!important;line-height:1.6;margin:6px 0 0">This title is part of the Academy discovery flow. Open it, work through the evidence, and connect the result to the wider WFM learning path.</p>'+
+          '</div></div>';
+        const action=document.getElementById('modalAction');
+        if(action){action.textContent='Open learning experience →';action.onclick=()=>{modal.classList.remove('open');showToast('Learning experience opened.');};}
+        modal.classList.add('open');
+      }
+
+      function installStreamingMotion(){
+        streamingRows.forEach((row)=>{
+          const scroller=row.querySelector('.nf-scroll');
+          if(!scroller)return;
+          if(!row.querySelector('.nf-row-controls')){
+            const controls=document.createElement('div');
+            controls.className='nf-row-controls';
+            controls.innerHTML='<button class="nf-row-control" type="button" aria-label="Scroll row left" data-row-dir="-1">‹</button>'+
+              '<button class="nf-row-control" type="button" aria-label="Scroll row right" data-row-dir="1">›</button>';
+            row.appendChild(controls);
+            controls.querySelectorAll('[data-row-dir]').forEach(button=>{
+              button.addEventListener('click',()=>{
+                const direction=Number(button.dataset.rowDir)||1;
+                const amount=Math.max(230,Math.round(scroller.clientWidth*.72));
+                scroller.scrollBy({left:direction*amount,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+              });
+            });
+          }
+          const updateControls=()=>{
+            const controls=row.querySelector('.nf-row-controls');
+            if(!controls)return;
+            const buttons=[...controls.querySelectorAll('button')];
+            const max=Math.max(0,scroller.scrollWidth-scroller.clientWidth-2);
+            buttons[0].disabled=scroller.scrollLeft<=2;
+            buttons[1].disabled=scroller.scrollLeft>=max;
+            controls.style.display=max<8?'none':'flex';
+          };
+          scroller.addEventListener('scroll',updateControls,{passive:true});
+          window.addEventListener('resize',updateControls,{passive:true});
+          updateControls();
+        });
+
+        streamingCards.forEach(card=>{
+          card.setAttribute('tabindex','0');
+          card.addEventListener('click',e=>{
+            if(e.target.closest('button,a,input,textarea,select'))return;
+            openStreamingDetail(card);
+          });
+          card.addEventListener('keydown',e=>{
+            if(e.key==='Enter'||e.key===' '){
+              e.preventDefault();
+              openStreamingDetail(card);
+            }
+          });
+        });
+      }
+      installStreamingMotion();
 
       // Keep every streaming row at its intended starting position on a fresh page load.
       document.querySelectorAll('.nf-scroll').forEach(row=>{ row.scrollLeft=0; });
