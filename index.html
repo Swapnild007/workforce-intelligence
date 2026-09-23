@@ -552,7 +552,7 @@
           journey.innerHTML=preferred.map((id,i)=>{const d=c.domains.find(x=>x.id===id);if(!d)return '';return '<button class="learn-step" data-journey-domain="'+id+'"><span class="learn-step-index">0'+(i+1)+'</span><div class="learn-step-icon">'+icons[i]+'</div><b>'+d.name+'</b><span>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</span></button>';}).join('');
           journey.querySelectorAll('[data-journey-domain]').forEach(b=>b.addEventListener('click',()=>openDomainLearning(b.dataset.journeyDomain)));
         }
-        const first=c.domains.find(d=>d.id==='02')||c.domains[0];
+        const first=c.domains[0];
         const savedPath=localStorage.getItem('wi:lastLesson');
         const savedParts=savedPath?savedPath.split('|'):null;
         const savedDomain=savedParts?.[0]&&c.domains.find(d=>d.id===savedParts[0]);
@@ -566,15 +566,17 @@
         const completed=getCompletedLessons();
         const moduleDone=resumeModule.lessons.filter((_,i)=>completed.has(resumeDomain.id+'|'+resumeModule.id+'|'+i)).length;
         const modulePct=Math.round(moduleDone/resumeModule.lessons.length*100);
+        const totalDone=allLessons.filter(x=>completed.has(x.d.id+'|'+x.m.id+'|'+x.index)).length;
+        const overallPct=Math.round(totalDone/allLessons.length*100);
         const cont=document.getElementById('learnContinue');
-        if(cont)cont.innerHTML='<article class="learn-continue-card featured"><span class="label">'+(savedLesson?'Continue learning':'Recommended next · WFM Foundation')+'</span><h3>'+resumeLesson+'</h3><p>'+resumeModule.name+' · '+resumeDomain.name+'. Continue from your saved learning position.</p><div class="learn-progress"><i style="width:'+modulePct+'%"></i></div><small>'+modulePct+'% complete · '+resumeModule.lessons.length+' lessons in this module</small><div style="margin-top:15px"><button class="primary" data-learn-open="'+resumePath+'">'+(savedLesson?'Resume lesson →':'Start lesson →')+'</button></div></article><article class="learn-continue-card"><span class="label">Practice</span><h3>WFM Lab</h3><p>Apply forecasting, staffing, scheduling and intraday concepts to a working operational model.</p><button class="secondary" data-view-go="labs">Open Lab →</button></article><article class="learn-continue-card"><span class="label">Decision</span><h3>Decision Lab</h3><p>Turn evidence into an operational recommendation and defend the assumptions behind it.</p><button class="secondary" data-view-go="decisions">Open Decisions →</button></article>';
+        if(cont)cont.innerHTML='<article class="learn-continue-card featured"><span class="label">'+(savedLesson?'Continue learning':'Start your Academy journey')+'</span><h3>'+resumeLesson+'</h3><p>'+resumeModule.name+' · '+resumeDomain.name+'. '+(savedLesson?'Continue from your saved learning position.':'Begin with the Academy foundations, then progress through WFM, analytics, data and advanced systems.')+'</p><div class="learn-progress"><i style="width:'+modulePct+'%"></i></div><small>'+modulePct+'% complete in this module · '+overallPct+'% across the Academy</small><div style="margin-top:15px"><button class="primary" data-learn-open="'+resumePath+'">'+(savedLesson?'Resume lesson →':'Start learning →')+'</button></div></article><article class="learn-continue-card"><span class="label">Practice</span><h3>WFM Lab</h3><p>Apply the Academy's WFM concepts to a working operational model.</p><button class="secondary" data-view-go="labs">Open Lab →</button></article><article class="learn-continue-card"><span class="label">Decision</span><h3>Decision Lab</h3><p>Turn evidence into an operational recommendation and defend the assumptions behind it.</p><button class="secondary" data-view-go="decisions">Open Decisions →</button></article>';
         cont?.querySelector('[data-learn-open]')?.addEventListener('click',e=>openLessonPath(e.currentTarget.dataset.learnOpen));
         cont?.querySelectorAll('[data-view-go]').forEach(b=>b.addEventListener('click',()=>openAcademy(b.dataset.viewGo)));
         const searchBox=document.getElementById('learnCurriculumSearch'), results=document.getElementById('learnSearchResults');
         if(searchBox && results){
           searchBox.oninput=()=>{const q=searchBox.value.trim().toLowerCase();if(q.length<2){results.classList.remove('open');results.innerHTML='';return;}const hits=allLessons.filter(x=>(x.l+' '+x.m.name+' '+x.d.name).toLowerCase().includes(q)).slice(0,12);results.classList.toggle('open',hits.length>0);results.innerHTML=hits.map(x=>'<button class="learn-result" data-search-path="'+x.d.id+'|'+x.m.id+'|'+x.index+'"><b>'+x.l+'</b><span>'+x.d.name+' · '+x.m.name+'</span></button>').join('');results.querySelectorAll('[data-search-path]').forEach(b=>b.onclick=()=>openLessonPath(b.dataset.searchPath));};
         }
-        document.getElementById('learnResume')?.addEventListener('click',()=>openLessonPath(first.id+'|'+mod.id+'|0'));
+        document.getElementById('learnResume')?.addEventListener('click',()=>openLessonPath(localStorage.getItem('wi:lastLesson')||first.id+'|'+first.modules[0].id+'|0'));
         document.getElementById('learnExplore')?.addEventListener('click',()=>document.getElementById('curriculumGrid')?.scrollIntoView({behavior:'smooth',block:'start'}));
       }
       function openDomainLearning(domainId){
