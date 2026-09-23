@@ -78,6 +78,9 @@
     .kpi{padding:16px;min-height:118px}.kpi-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px}.kpi-icon{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:rgba(52,107,255,.1);color:var(--blue)}
     .kpi strong{font-size:25px;display:block;margin:12px 0 4px;letter-spacing:-1px}.delta{font-size:9px;color:#12a67c;font-weight:750}
     .spark{height:28px;margin-top:8px}.spark svg{width:100%;height:100%}
+    .empty-spark{position:relative;border-bottom:1px solid rgba(70,92,150,.08)}.empty-spark:after{content:"";position:absolute;left:0;right:0;bottom:5px;border-top:1px dashed rgba(92,112,160,.18)}.empty-spark span{position:absolute;width:5px;height:5px;border-radius:50%;background:#dce4f5;left:50%;bottom:3px}
+    .empty-chart{height:205px;position:relative;border-radius:16px;background:linear-gradient(180deg,rgba(248,250,255,.55),rgba(243,247,255,.25));overflow:hidden}.empty-chart-grid{position:absolute;inset:18px 0 20px;display:grid;grid-template-rows:repeat(4,1fr)}.empty-chart-grid i{border-top:1px dashed rgba(70,92,150,.1)}.empty-chart-line{position:absolute;left:0;right:0;bottom:20px;border-top:2px dashed #dce4f5}.empty-chart-copy{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:5px;padding:20px}.empty-chart-copy b{font-size:12px}.empty-chart-copy span{max-width:230px;color:var(--muted);font-size:9px;line-height:1.5}
+    .skill-empty{display:grid;gap:13px;margin-top:8px}.skill-empty>div{display:grid;grid-template-columns:1fr auto;gap:5px 10px;align-items:center}.skill-empty b{font-size:10px}.skill-empty span{font-size:8px;color:var(--muted)}.skill-empty i{grid-column:1 / -1;height:7px;border-radius:99px;background:#e9edf7;overflow:hidden}.skill-empty em{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2868ff,#7658ff)}.empty-note{margin-top:15px;padding:10px 12px;border-radius:12px;background:#f3f7ff;color:var(--muted);font-size:8px;line-height:1.5}.ring-empty{background:conic-gradient(#dfe6f4 0 100%,#e8edf8 100%)}
     .dashboard-grid{grid-template-columns:1.5fr 1fr 1fr}.panel{padding:18px;min-height:270px}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title b{font-size:12px}.panel-title span{font-size:9px;color:var(--muted)}
     .chart{height:205px}.chart svg{width:100%;height:100%}.axis{font-size:8px;fill:#8490ad}.gridline{stroke:rgba(70,92,150,.1);stroke-width:1}.line{fill:none;stroke:#2c6cff;stroke-width:3;stroke-linecap:round}.forecast{fill:none;stroke:#8767ff;stroke-width:2;stroke-dasharray:5 5}
     .donut-wrap{display:flex;align-items:center;justify-content:center;gap:18px;height:205px}.donut{width:142px;height:142px;border-radius:50%;background:conic-gradient(#2868ff 0 68%,#745cff 68% 84%,#20c7a3 84% 93%,#edf0f8 93%);display:grid;place-items:center;position:relative}.donut:after{content:"";position:absolute;width:96px;height:96px;border-radius:50%;background:#f8faff}.donut b{position:relative;z-index:1;font-size:24px}.legend{display:grid;gap:10px}.legend span{font-size:9px;color:var(--muted)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#2868ff}.legend span:nth-child(2) i{background:#745cff}.legend span:nth-child(3) i{background:#20c7a3}
@@ -261,27 +264,65 @@
           <div class="hero-visual"><div class="learning-orbit"><div class="core">✦</div><div class="node n1">∑</div><div class="node n2">⌘</div><div class="node n3">AI</div><div class="node n4">↗</div></div><div class="hero-stat"><span><b>632</b> lessons</span><span><b>79</b> modules</span><span><b>13</b> domains</span></div></div>
         </div>
 
-        <div class="section-head"><div><h2>Learning intelligence</h2><p>Your current state across the curriculum.</p></div><button class="secondary" data-view-go="learn">Open Learn</button></div>
+        <div class="section-head"><div><h2>Your learning progress</h2><p>Useful signals that change as you learn, practice and build.</p></div><button class="secondary" data-view-go="learn">Open Learn</button></div>
         <div class="grid kpis">
-          <article class="card kpi"><div class="kpi-top"><span>Overall Progress</span><span class="kpi-icon">◌</span></div><strong>0%</strong><span class="delta">Start your first lesson</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 30 C20 28,25 20,42 23 S62 11,78 18 S100 13,116 14 S135 4,158 8"/></svg></div></article>
-          <article class="card kpi"><div class="kpi-top"><span>Lessons Complete</span><span class="kpi-icon">✓</span></div><strong>0</strong><span class="delta">of 632 lessons</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 31 C25 29,32 26,48 25 S75 22,88 17 S120 10,158 5"/></svg></div></article>
-          <article class="card kpi"><div class="kpi-top"><span>Practice Score</span><span class="kpi-icon">⌬</span></div><strong>—</strong><span class="delta">Build mastery through practice</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 28 C24 24,30 30,48 21 S70 20,88 18 S110 7,128 12 S145 5,158 8"/></svg></div></article>
-          <article class="card kpi"><div class="kpi-top"><span>Projects</span><span class="kpi-icon">◇</span></div><strong>00</strong><span class="delta">No projects started</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 29 C25 29,25 25,45 25 S70 25,86 16 S111 17,125 10 S145 11,158 4"/></svg></div></article>
-          <article class="card kpi"><div class="kpi-top"><span>Learning Streak</span><span class="kpi-icon">↗</span></div><strong>0 days</strong><span class="delta">Start your streak</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 30 L28 30 L28 23 L53 23 L53 18 L79 18 L79 13 L106 13 L106 8 L133 8 L133 4 L158 4"/></svg></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Overall Progress</span><span class="kpi-icon">◌</span></div><strong>0%</strong><span class="delta">Your journey starts here</span><div class="spark empty-spark"><span></span></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Lessons Complete</span><span class="kpi-icon">✓</span></div><strong>0</strong><span class="delta">of 632 lessons</span><div class="spark empty-spark"><span></span></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Practice Score</span><span class="kpi-icon">⌬</span></div><strong>—</strong><span class="delta">Appears after your first practice</span><div class="spark empty-spark"><span></span></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Projects</span><span class="kpi-icon">◇</span></div><strong>0</strong><span class="delta">No projects started yet</span><div class="spark empty-spark"><span></span></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Learning Streak</span><span class="kpi-icon">↗</span></div><strong>0 days</strong><span class="delta">Complete a lesson to begin</span><div class="spark empty-spark"><span></span></div></article>
         </div>
 
-        <div class="section-head"><div><h2>Explore your intelligence layer</h2><p>Interactive visualizations, not static course pages.</p></div></div>
+        <div class="section-head"><div><h2>See your learning grow</h2><p>These areas stay quiet until there is real learner activity.</p></div></div>
         <div class="grid dashboard-grid">
-          <article class="card panel"><div class="panel-title"><b>Learning velocity</b><span>Last 12 weeks · lessons / week</span></div><div class="chart"><svg viewBox="0 0 500 205" preserveAspectRatio="none"><g><line class="gridline" x1="0" y1="30" x2="500" y2="30"/><line class="gridline" x1="0" y1="85" x2="500" y2="85"/><line class="gridline" x1="0" y1="140" x2="500" y2="140"/><line class="gridline" x1="0" y1="190" x2="500" y2="190"/></g><path class="forecast" d="M0 160 C70 140,110 150,160 122 S250 125,300 98 S390 92,500 48"/><path class="line" d="M0 170 C45 155,70 160,105 140 S155 142,195 122 S240 135,278 105 S330 117,365 90 S420 102,450 62 S475 72,500 43"/></svg></div></article>
-          <article class="card panel"><div class="panel-title"><b>Skill distribution</b><span>Current confidence</span></div><div class="donut-wrap"><div class="donut"><b>0%</b></div><div class="legend"><span><i></i>Foundations · 0%</span><span><i></i>Analytics · 0%</span><span><i></i>AI / ML · 0%</span></div></div></article>
-          <article class="card panel"><div class="panel-title"><b>Decision signals</b><span>3 focus areas</span></div><div class="insights"><div class="insight"><div class="insight-num">1</div><div><b>Forecasting is your next leverage point</b><p>Complete the current statistics block before the forecasting lab.</p></div></div><div class="insight"><div class="insight-num">2</div><div><b>Coverage is a system problem</b><p>Separate volume, AHT, shrinkage, schedule coverage and skill availability before changing headcount.</p></div></div><div class="insight"><div class="insight-num">3</div><div><b>Build more, read less</b><p>Use the Decision Lab to turn concepts into operational recommendations.</p></div></div><button class="primary" data-view-go="decisions">Open Decision Lab →</button></div></article>
+          <article class="card panel">
+            <div class="panel-title"><b>Learning activity</b><span>Weekly minutes</span></div>
+            <div class="empty-chart">
+              <div class="empty-chart-grid"><i></i><i></i><i></i><i></i></div>
+              <div class="empty-chart-line"></div>
+              <div class="empty-chart-copy"><b>No activity yet</b><span>Complete your first lesson to start your learning history.</span></div>
+            </div>
+          </article>
+          <article class="card panel">
+            <div class="panel-title"><b>Skills you're building</b><span>Progress by area</span></div>
+            <div class="skill-empty">
+              <div><b>WFM Foundations</b><span>Not started</span><i><em style="width:0%"></em></i></div>
+              <div><b>Data & Analytics</b><span>Not started</span><i><em style="width:0%"></em></i></div>
+              <div><b>Statistics</b><span>Not started</span><i><em style="width:0%"></em></i></div>
+              <div><b>ML & AI</b><span>Not started</span><i><em style="width:0%"></em></i></div>
+            </div>
+            <div class="empty-note">Your skill profile will build from completed lessons and practice.</div>
+          </article>
+          <article class="card panel">
+            <div class="panel-title"><b>Your next step</b><span>Start here</span></div>
+            <div class="insights">
+              <div class="insight"><div class="insight-num">1</div><div><b>Start WFM Foundations</b><p>Build the vocabulary and mental model before moving into forecasting and staffing.</p></div></div>
+              <div class="insight"><div class="insight-num">2</div><div><b>Practice what you learn</b><p>Short exercises will turn each concept into something you can actually use.</p></div></div>
+              <div class="insight"><div class="insight-num">3</div><div><b>Build a real project</b><p>Use the WFM Lab when the learning path gives you enough context to work with it.</p></div></div>
+              <button class="primary" data-view-go="learn">Start learning →</button>
+            </div>
+          </article>
         </div>
 
-        <div class="section-head"><div><h2>Continue your journey</h2><p>The next step is selected from your learning state.</p></div></div>
+        <div class="section-head"><div><h2>Continue your journey</h2><p>Your next lesson and path become personalized as you make progress.</p></div></div>
         <div class="grid learning-grid">
-          <article class="card progress-card"><div class="progress-big"><div class="ring"><b>0%</b></div><div class="progress-copy"><b>Learning progress</b><p>0 of 632 lessons complete. Start with WFM fundamentals, then move through Statistics → Forecasting.</p></div></div><div class="tracks"><div class="track"><span>WFM</span><div class="bar"><i style="width:92%"></i></div><b>92%</b></div><div class="track"><span>Data</span><div class="bar"><i style="width:64%"></i></div><b>64%</b></div><div class="track"><span>ML</span><div class="bar"><i style="width:24%"></i></div><b>24%</b></div></div></article>
-          <article class="card lesson"><span class="tag">Current lesson · Module 04</span><h3>Forecasting Fundamentals</h3><p>Lesson 7 of 12 · 32 minutes estimated. Learn baseline forecasting, error metrics and validation.</p><div class="lesson-art">∿</div><button class="primary" data-lesson>Continue lesson →</button></article>
-          <article class="card path-card"><div class="panel-title"><b>Knowledge path</b><span>Next milestone · 75%</span></div><div class="path"><div class="path-node"><div class="path-dot">∑</div><span>Math</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">D</div><span>Data</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>AI / ML</span></div></div><button class="secondary" data-view-go="learn">Open Learn →</button></article>
+          <article class="card progress-card">
+            <div class="progress-big"><div class="ring ring-empty"><b>0%</b></div><div class="progress-copy"><b>Start your learning path</b><p>Begin with WFM Foundations. Your progress will be calculated from completed lessons, practice and projects.</p></div></div>
+            <div class="tracks">
+              <div class="track"><span>WFM</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
+              <div class="track"><span>Data</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
+              <div class="track"><span>ML / AI</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
+            </div>
+          </article>
+          <article class="card lesson">
+            <span class="tag">Next lesson</span><h3>WFM Foundations</h3><p>Start with the core concepts, terminology and workflow used throughout the academy.</p>
+            <div class="lesson-art">◈</div><button class="primary" data-lesson>Start lesson →</button>
+          </article>
+          <article class="card path-card">
+            <div class="panel-title"><b>Your learning path</b><span>Build in sequence</span></div>
+            <div class="path"><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">D</div><span>Data</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">S</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>ML / AI</span></div></div>
+            <button class="secondary" data-view-go="learn">Explore the path →</button>
+          </article>
         </div>
       </section>
 
