@@ -623,6 +623,12 @@
         color:#c4c2bd !important;
       }
     }
+
+    /* --- Lesson interaction reliability --- */
+    [data-domain-lesson],[data-content-lesson],[data-learn-open],[data-search-path]{
+      pointer-events:auto;
+      touch-action:manipulation;
+    }
 </style>
 </head>
 <body>
@@ -951,7 +957,7 @@
       function openDomainLearning(domainId){
         const d=window.WI_CURRICULUM?.domains.find(x=>x.id===domainId);if(!d)return;
         title.textContent=d.id+' · '+d.name;
-        body.innerHTML='<p style="margin-top:0">'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</p><div style="display:grid;gap:9px;margin-top:12px">'+d.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.name+'</b><div style="display:grid;gap:5px;margin-top:8px">'+m.lessons.map((l,i)=>'<button class="secondary" data-domain-lesson="'+d.id+'|'+m.id+'|'+i+'" style="text-align:left;padding:9px">'+l+'</button>').join('')+'</div></div>').join('')+'</div>';
+        body.innerHTML='<p style="margin-top:0">'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</p><div style="display:grid;gap:9px;margin-top:12px">'+d.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.name+'</b><div style="display:grid;gap:5px;margin-top:8px">'+m.lessons.map((l,i)=>'<button type="button" class="secondary" data-domain-lesson="'+d.id+'|'+m.id+'|'+i+'" style="text-align:left;padding:9px">'+l+'</button>').join('')+'</div></div>').join('')+'</div>';
         modal.classList.add('open');
       }
       function getCompletedLessons(){
@@ -968,13 +974,13 @@
         if(!d||!m||!lesson)return;
         const content=window.WI_CURRICULUM_CONTENT?.[did];
         const contentModule=content?.modules?.find(x=>x.id===mid);
-        const rich=contentModule?.lessons?.find(x=>x.id===lesson);
+        const rich=contentModule?.lessons?.find(x=>x.id===lesson) || {};
         const depth=rich?.depth||{};
         title.textContent=lesson;
         const esc=(v)=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         const bullets=(items)=>'<ul>'+((items||[]).map(x=>'<li>'+esc(x)+'</li>').join(''))+'</ul>';
         const levelRows=(depth.levelPlan||[]).map((x,i)=>'<article class="lesson-level"><div class="lesson-level-num">'+esc(x.level)+'</div><b>'+esc(x.goal)+'</b><p>'+esc(x.task)+'</p></article>').join('');
-        const qa=(rich.qa||[]).map(q=>'<div style="margin-bottom:16px"><b style="font-size:15px;color:#f1f1f1">Q. '+esc(q[0])+'</b><p style="margin-top:6px">A. '+esc(q[1])+'</p></div>').join('');
+        const qa=(rich?.qa||[]).map(q=>'<div style="margin-bottom:16px"><b style="font-size:15px;color:#f1f1f1">Q. '+esc(q[0])+'</b><p style="margin-top:6px">A. '+esc(q[1])+'</p></div>').join('');
         body.innerHTML=
           '<div class="lesson-hero">'+
             '<div class="lesson-eyebrow">ZERO → HERO · '+esc(rich?.id||'LESSON')+'</div>'+
@@ -986,13 +992,13 @@
           '<section class="lesson-section"><h3>01 · Start from zero</h3><p>'+esc(depth.zero)+'</p></section>'+
           '<section class="lesson-section"><h3>02 · Build the mental model</h3><p>'+esc(depth.mentalModel)+'</p></section>'+
           '<section class="lesson-section"><h3>03 · Build it yourself</h3>'+bullets(depth.buildSteps)+'</section>'+
-          '<section class="lesson-section"><h3>04 · Worked example</h3><p>'+esc(rich.workedExample||'')+'</p></section>'+
-          '<section class="lesson-section"><h3>05 · Guided practice</h3><p>'+esc(rich.practice||'')+'</p></section>'+
-          '<section class="lesson-section"><h3>06 · Diagnose the failure</h3>'+bullets(rich.commonMistakes||[])+'</section>'+
+          '<section class="lesson-section"><h3>04 · Worked example</h3><p>'+esc(rich?.workedExample||'')+'</p></section>'+
+          '<section class="lesson-section"><h3>05 · Guided practice</h3><p>'+esc(rich?.practice||'')+'</p></section>'+
+          '<section class="lesson-section"><h3>06 · Diagnose the failure</h3>'+bullets(rich?.commonMistakes||[])+'</section>'+
           '<section class="lesson-section"><h3>07 · Transfer to real work</h3><p>'+esc(depth.transfer||'')+'</p></section>'+
           '<section class="lesson-section"><h3>08 · Hero challenge</h3><p>'+esc(depth.mastery||'')+'</p><button class="primary" id="lessonChallenge">Start mastery challenge →</button></section>'+
           '<section class="lesson-section"><h3>09 · Questions & answers</h3>'+qa+'</section>'+
-          '<section class="lesson-section"><h3>10 · Assessment evidence</h3><p>'+esc(rich.assessment||'')+'</p></section>'+
+          '<section class="lesson-section"><h3>10 · Assessment evidence</h3><p>'+esc(rich?.assessment||'')+'</p></section>'+
           '<section class="lesson-section"><h3>11 · What comes next</h3><p>'+esc(depth.prerequisites||'')+'</p><p>'+esc(depth.sourceNote||'')+'</p></section>'+
           '<div class="lesson-actions"><button class="primary" id="lessonComplete">Mark lesson complete →</button></div>';
         modal.classList.add('open');
@@ -1024,7 +1030,7 @@
             body.innerHTML='<p style="margin-top:0">'+content.executiveFrame+'</p>'+
               '<div style="display:grid;gap:10px;margin-top:14px">'+
               content.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.title+'</b><p style="font-size:10px;color:#9a9a9a;line-height:1.5;margin:6px 0">'+m.executivePoint+'</p><div style="display:grid;gap:5px">'+
-              m.lessons.map(l=>'<button class="secondary" data-content-lesson="'+l.id+'" style="text-align:left;padding:9px 11px">'+l.id+' · '+l.title+'</button>').join('')+
+              m.lessons.map(l=>'<button type="button" class="secondary" data-content-lesson="'+l.id+'" style="text-align:left;padding:9px 11px">'+l.id+' · '+l.title+'</button>').join('')+
               '</div></div>').join('')+
               '</div>';
             modal.classList.add('open');
@@ -1038,18 +1044,20 @@
 
       document.getElementById('modal').addEventListener('click',e=>{
         const domainButton=e.target.closest('[data-domain-lesson]');
-        if(domainButton){openLessonPath(domainButton.dataset.domainLesson);return;}
+        if(domainButton){
+          e.preventDefault();
+          openLessonPath(domainButton.dataset.domainLesson);
+          return;
+        }
         const button=e.target.closest('[data-content-lesson]');
-        if(!button || !window.WI_CURRICULUM_CONTENT)return;
-        const domainId=button.dataset.contentLesson.slice(0,2); const domain=window.WI_CURRICULUM_CONTENT[domainId];
-        let lesson=null;
-        domain.modules.forEach(m=>m.lessons.forEach(l=>{if(l.id===button.dataset.contentLesson)lesson=l;}));
-        if(!lesson)return;
-        title.textContent=lesson.id+' · '+lesson.title;
-        body.innerHTML='<p style="margin-top:0"><b>Understanding language</b><br>'+lesson.understanding+'</p>'+
-          '<div class="card" style="padding:14px;margin-top:12px"><b>Key notes</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.notes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
-          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div><div class="card" style="padding:14px;margin-top:10px"><b>Worked example</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.workedExample+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Practice</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.practice+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Assessment evidence</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.assessment+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Research basis</b><div style="font-size:10px;color:#9a9a9a;line-height:1.6;margin-top:8px">'+lesson.sources.map(s=>'<div>'+s.label+'</div>').join('')+'</div></div>'+
-          '<div class="card" style="padding:14px;margin-top:10px"><b>Questions & answers</b><div style="display:grid;gap:9px;margin-top:8px">'+lesson.qa.map(q=>'<div><b style="font-size:10px">Q. '+q[0]+'</b><div style="font-size:10px;color:#9a9a9a;line-height:1.5;margin-top:3px">A. '+q[1]+'</div></div>').join('')+'</div></div>';
+        if(button){
+          e.preventDefault();
+          const parts=button.dataset.contentLesson.split('.');
+          if(parts.length>=3){
+            const path=parts[0]+'|'+parts[0]+'.'+parts[1]+'|'+(Number(parts[2])-1);
+            openLessonPath(path);
+          }
+        }
       });
 
       const search=document.getElementById('globalSearch');
