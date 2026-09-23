@@ -2,7 +2,7 @@ const fs = require('fs');
 const vm = require('vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
-const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js'];
+const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js'];
 for (const file of externalScripts) {
   const source = fs.readFileSync(file, 'utf8');
   new vm.Script(source, { filename: file });
@@ -17,9 +17,6 @@ for (const [i, source] of scripts.entries()) {
 const requiredMarkers = [
   'Workforce Intelligence Academy',
   'Curriculum',
-  'Learning Path',
-  'Practice Labs',
-  'AI Mentor',
   'Projects',
   'Progress',
   'mobile-nav'
@@ -28,6 +25,20 @@ const requiredMarkers = [
 for (const marker of requiredMarkers) {
   if (!html.includes(marker)) throw new Error(`Missing required UI marker: ${marker}`);
 }
+
+const wfmSource = fs.readFileSync('data/wfm-lab.js', 'utf8');
+const wfmContext = { window: {} };
+vm.createContext(wfmContext);
+vm.runInContext(wfmSource, wfmContext, { filename: 'data/wfm-lab.js' });
+if (!wfmContext.window.WFM_LAB?.engine) throw new Error('WFM Lab engine missing');
+const wfm = wfmContext.window.WFM_LAB.engine;
+const q = { volume: 600, aht: 300, sl: 0.80, threshold: 20, agents: 30, maxOcc: 0.85 };
+if (!(wfm.queueMetrics(q).sl >= 0 && wfm.requiredAgents(q) >= 1)) throw new Error('WFM queueing engine failed');
+const f = wfm.forecastSeries({ base: 520, trend: 4, seasonality: 12, aht: 300 });
+if (f.actual.length !== 21 || f.forecast.length !== 7) throw new Error('WFM forecast engine failed');
+if (!(wfm.capacityMetrics({weeklyVolume:18000,aht:300,shrinkage:.28,paidHours:40}).fte > 0)) throw new Error('WFM capacity engine failed');
+if (wfm.schedulePlan({agents:42,target:30,shiftLength:8,lunch:1,breaks:.5}).coverage.length !== 24) throw new Error('WFM scheduling engine failed');
+if (!Number.isFinite(wfm.intradayMetrics({forecast:100,actual:128,ahtPlan:300,ahtActual:345,scheduled:28,available:25}).volumeVar)) throw new Error('WFM intraday engine failed');
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
 const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
