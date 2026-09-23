@@ -227,6 +227,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="data/curriculum.js"></script>
+  <script src="data/curriculum-content-02.js"></script>
   <script>
     (() => {
       const landing = document.getElementById('landing');
@@ -244,65 +245,48 @@
         grid.innerHTML=window.WI_CURRICULUM.domains.map(d=>{
           const lessons=d.modules.reduce((n,m)=>n+m.lessons.length,0);
           const summary=d.modules.slice(0,4).map(m=>m.name).join(' · ');
+          const content=window.WI_CURRICULUM_CONTENT && window.WI_CURRICULUM_CONTENT[d.id];
           return '<article class="card module" data-domain="'+d.id+'" style="cursor:pointer">'+
             '<div class="module-head"><h3>'+d.id+' · '+d.name+'</h3><span class="mini">'+lessons+' lessons</span></div>'+
-            '<p>'+summary+' and '+(d.modules.length-4)+' more modules.</p>'+
+            '<p>'+(content ? content.executiveFrame : summary+' and '+(d.modules.length-4)+' more modules.')+'</p>'+
             '<div class="module-progress"><i style="width:0%"></i></div>'+
             '<p>0% complete · '+d.modules.length+' modules</p>'+
           '</article>';
         }).join('');
         grid.querySelectorAll('[data-domain]').forEach(card=>card.addEventListener('click',()=>{
           const d=window.WI_CURRICULUM.domains.find(x=>x.id===card.dataset.domain);
+          const content=window.WI_CURRICULUM_CONTENT && window.WI_CURRICULUM_CONTENT[d.id];
           title.textContent=d.id+' · '+d.name;
-          body.innerHTML='<strong>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</strong><br><br>'+
-            d.modules.map(m=>'<b>'+m.id+' · '+m.name+'</b><br><span style="color:#687394">'+m.lessons.join(' · ')+'</span>').join('<br><br>');
-          modal.classList.add('open');
+          if(content){
+            body.innerHTML='<p style="margin-top:0">'+content.executiveFrame+'</p>'+
+              '<div style="display:grid;gap:10px;margin-top:14px">'+
+              content.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.title+'</b><p style="font-size:10px;color:#687394;line-height:1.5;margin:6px 0">'+m.executivePoint+'</p><div style="display:grid;gap:5px">'+
+              m.lessons.map(l=>'<button class="secondary" data-content-lesson="'+l.id+'" style="text-align:left;padding:9px 11px">'+l.id+' · '+l.title+'</button>').join('')+
+              '</div></div>').join('')+
+              '</div>';
+            modal.classList.add('open');
+          }else{
+            body.innerHTML='<strong>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</strong><br><br>'+
+              d.modules.map(m=>'<b>'+m.id+' · '+m.name+'</b><br><span style="color:#687394">'+m.lessons.join(' · ')+'</span>').join('<br><br>');
+            modal.classList.add('open');
+          }
         }));
       }
 
-      function showToast(message){
-        toast.textContent = message; toast.classList.add('show');
-        clearTimeout(showToast.timer); showToast.timer = setTimeout(()=>toast.classList.remove('show'),2400);
-      }
-      function enterAcademy(){
-        landing.style.display='none'; app.classList.add('active'); window.scrollTo(0,0);
-      }
-      function setView(name){
-        views.forEach(v=>v.classList.toggle('active',v.id===name));
-        navButtons.forEach(b=>b.classList.toggle('active',b.dataset.view===name));
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
-      document.querySelectorAll('[data-enter]').forEach(b=>b.addEventListener('click',enterAcademy));
-      document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{enterAcademy();setView('curriculum')}));
-      navButtons.forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
-      document.querySelectorAll('[data-view-go]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewGo)));
-      document.getElementById('mentorBtn').addEventListener('click',()=>setView('mentor'));
-      document.getElementById('openMentor').addEventListener('click',()=>setView('mentor'));
-      document.getElementById('startMentor').addEventListener('click',()=>showToast('Mentor session ready.'));
-      document.getElementById('notifyBtn').addEventListener('click',()=>showToast('3 learning signals need your attention.'));
-      document.querySelectorAll('[data-lesson]').forEach(b=>b.addEventListener('click',()=>{
-        title.textContent='Forecasting Fundamentals';
-        body.textContent='Lesson 7 of 12. Build a baseline forecast, understand forecast error, identify bias and prepare for the Forecasting Lab.';
-        modal.classList.add('open');
-      }));
-      document.querySelectorAll('[data-lab]').forEach(b=>b.addEventListener('click',()=>{
-        title.textContent=b.dataset.lab;
-        body.textContent='Lab shell ready. The interactive engine will connect here as the curriculum modules are implemented.';
-        modal.classList.add('open');
-      }));
-      document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
-      modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
-      document.getElementById('modalAction').addEventListener('click',()=>{modal.classList.remove('open');showToast('Challenge started. Lab integration is next.');});
-      document.getElementById('mentorSend').addEventListener('click',sendMentor);
-      document.getElementById('mentorInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMentor()});
-      function sendMentor(){
-        const input=document.getElementById('mentorInput'); const value=input.value.trim();
-        if(!value)return;
-        const chat=document.querySelector('.mentor-chat');
-        const user=document.createElement('div'); user.className='bubble user'; user.textContent=value; chat.appendChild(user);
-        const ai=document.createElement('div'); ai.className='bubble ai'; ai.textContent='Good question. I would break that into first principles, a worked example, then a short practice problem. The live mentor connector will be attached after the UI foundation.';
-        chat.appendChild(ai); input.value=''; chat.scrollTop=chat.scrollHeight;
-      }
+      document.getElementById('modal').addEventListener('click',e=>{
+        const button=e.target.closest('[data-content-lesson]');
+        if(!button || !window.WI_CURRICULUM_CONTENT)return;
+        const domain=window.WI_CURRICULUM_CONTENT['02'];
+        let lesson=null;
+        domain.modules.forEach(m=>m.lessons.forEach(l=>{if(l.id===button.dataset.contentLesson)lesson=l;}));
+        if(!lesson)return;
+        title.textContent=lesson.id+' · '+lesson.title;
+        body.innerHTML='<p style="margin-top:0"><b>Understanding language</b><br>'+lesson.understanding+'</p>'+
+          '<div class="card" style="padding:14px;margin-top:12px"><b>Key notes</b><ul style="font-size:10px;color:#687394;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.notes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#687394;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+          '<div class="card" style="padding:14px;margin-top:10px"><b>Questions & answers</b><div style="display:grid;gap:9px;margin-top:8px">'+lesson.qa.map(q=>'<div><b style="font-size:10px">Q. '+q[0]+'</b><div style="font-size:10px;color:#687394;line-height:1.5;margin-top:3px">A. '+q[1]+'</div></div>').join('')+'</div></div>';
+      });
+
       const search=document.getElementById('globalSearch');
       search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
       renderCurriculum();
