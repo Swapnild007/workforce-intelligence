@@ -2,7 +2,7 @@ const fs = require('fs');
 const vm = require('vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
-const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-generic-data.js','data/wfm-lab.js'];
+const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js'];
 for (const file of externalScripts) {
   const source = fs.readFileSync(file, 'utf8');
   new vm.Script(source, { filename: file });
@@ -29,26 +29,19 @@ for (const marker of requiredMarkers) {
   if (!html.includes(marker)) throw new Error(`Missing required UI marker: ${marker}`);
 }
 
-const genericSource = fs.readFileSync('data/wfm-generic-data.js', 'utf8');
-const genericContext = { window: {} };
-vm.createContext(genericContext);
-vm.runInContext(genericSource, genericContext, { filename: 'data/wfm-generic-data.js' });
-const generic = genericContext.window.WFM_GENERIC_DATA;
-if (!generic || generic.lobs.length < 4 || generic.skills.length < 5 || generic.agents.length < 10) throw new Error('Generic WFM dataset is incomplete');
-
 const wfmSource = fs.readFileSync('data/wfm-lab.js', 'utf8');
 const wfmContext = { window: {} };
 vm.createContext(wfmContext);
 vm.runInContext(wfmSource, wfmContext, { filename: 'data/wfm-lab.js' });
 if (!wfmContext.window.WFM_LAB?.engine) throw new Error('WFM Lab engine missing');
 const wfm = wfmContext.window.WFM_LAB.engine;
-const q = { volume: 600, aht: 300, sl: 0.80, threshold: 20, agents: 30, maxOcc: 0.85 };
-if (!(wfm.queueMetrics(q).sl >= 0 && wfm.requiredAgents(q) >= 1)) throw new Error('WFM queueing engine failed');
-const f = wfm.forecastSeries({ base: 520, trend: 4, seasonality: 12, aht: 300 });
-if (f.actual.length !== 21 || f.forecast.length !== 12) throw new Error('WFM forecast engine failed');
-if (!(wfm.capacityMetrics({weeklyVolume:18000,aht:300,shrinkage:.28,paidHours:40}).fte > 0)) throw new Error('WFM capacity engine failed');
-if (wfm.schedulePlan({agents:42,target:30,shiftLength:8,lunch:1,breaks:.5}).coverage.length !== 48) throw new Error('WFM scheduling engine failed');
-if (!Number.isFinite(wfm.intradayMetrics({forecast:100,actual:128,ahtPlan:300,ahtActual:345,scheduled:28,available:25}).volumeVar)) throw new Error('WFM intraday engine failed');
+const s = wfm.staffing({volume:600,period:60,aht:300,sl:80,threshold:20,shrinkage:28,occupancy:85,currentAgents:30});
+if (!(s.required > 0 && Number.isFinite(s.erlangs) && Number.isFinite(s.fte))) throw new Error('WFM staffing engine failed');
+const c = wfm.capacity({weeklyVolume:18000,aht:300,shrinkage:28,paidHours:40});
+if (!(c.fte > 0 && Number.isFinite(c.fte))) throw new Error('WFM capacity engine failed');
+const f = wfm.forecast();
+if (f.future.length !== 12 || f.history.length !== 24) throw new Error('WFM forecast engine failed');
+if (wfm.intervals().length !== 48) throw new Error('WFM interval engine failed');
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
 const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
