@@ -310,7 +310,7 @@
 
       <section id="learn" class="view">
         <div class="section-head"><div><h2>Learn</h2><p>One learning system: journey, curriculum, modules and lessons in the same place.</p></div><button class="secondary" data-lesson>Resume current lesson</button></div>
-        <article class="card path-card" style="min-height:270px"><div class="panel-title"><b>Intelligence learning journey</b><span>13 domains · 79 modules · 632 lessons</span></div><div class="path" style="margin-top:58px"><div class="path-node"><div class="path-dot">∑</div><span>Mathematics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">◈</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">Py</div><span>Python</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">ML</div><span>Machine Learning</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>GenAI</span></div></div></article>
+        <article class="card path-card" style="min-height:270px"><div class="panel-title"><b>Intelligence learning journey</b><span><span id="curriculumStats">13 domains · 79 modules · 632 lessons</span></span></div><div class="path" style="margin-top:58px"><div class="path-node"><div class="path-dot">∑</div><span>Mathematics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">◈</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">Py</div><span>Python</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">ML</div><span>Machine Learning</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>GenAI</span></div></div></article>
         <div class="section-head"><div><h2>Curriculum</h2><p>Open a domain to move directly from the map into modules and lessons.</p></div></div>
         <div class="grid curriculum" id="curriculumGrid"></div>
       </section>
@@ -354,6 +354,9 @@
   <script src="data/curriculum.js"></script>
   <script src="data/curriculum-content-02.js"></script>
   <script src="data/wfm-lab.js"></script>
+  <script>
+    window.addEventListener('load',()=>{const c=window.WI_CURRICULUM;if(!c)return;const domains=c.domains.length;const modules=c.domains.reduce((n,d)=>n+d.modules.length,0);const lessons=c.domains.reduce((n,d)=>n+d.modules.reduce((m,x)=>m+x.lessons.length,0),0);const el=document.getElementById('curriculumStats');if(el)el.textContent=domains+' domains · '+modules+' modules · '+lessons+' lessons';});
+  </script>
   <script>
     (() => {
       const landing = document.getElementById('landing');
@@ -507,7 +510,7 @@
       document.getElementById('modal').addEventListener('click',e=>{
         const button=e.target.closest('[data-content-lesson]');
         if(!button || !window.WI_CURRICULUM_CONTENT)return;
-        const domain=window.WI_CURRICULUM_CONTENT['02'];
+        const domainId=button.dataset.contentLesson.slice(0,2); const domain=window.WI_CURRICULUM_CONTENT[domainId];
         let lesson=null;
         domain.modules.forEach(m=>m.lessons.forEach(l=>{if(l.id===button.dataset.contentLesson)lesson=l;}));
         if(!lesson)return;
