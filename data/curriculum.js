@@ -126,114 +126,254 @@ window.WI_CURRICULUM = {
       "modules": [
         {
           "id": "02.1",
-          "name": "Contact-Center Fundamentals",
+          "name": "Contact-Center & WFM Foundations",
           "lessons": [
-            "Contact-center operating model",
-            "Voice, digital and blended channels",
-            "Queue and routing concepts",
-            "Skills and routing groups",
-            "Service objectives",
-            "Operating calendars",
-            "Shrinkage concepts",
-            "WFM roles and responsibilities"
+            "What a Contact Center Is",
+            "Demand, Work and Capacity",
+            "Voice, Digital and Back-Office Channels",
+            "Queues, Skills and Routing",
+            "Service Objectives and Customer Promises",
+            "Operating Hours, Calendars and Events",
+            "WFM Roles and Decision Rights",
+            "The End-to-End WFM Cycle"
           ]
         },
         {
           "id": "02.2",
-          "name": "WFM Metrics & Operational Measurement",
+          "name": "WFM Mathematics & Core Formulas",
           "lessons": [
-            "Offered, handled and abandoned contacts",
-            "Service level",
-            "ASA",
-            "AHT",
-            "Occupancy",
-            "Utilization",
-            "Adherence and conformance",
-            "Forecast accuracy metrics"
+            "Time, Intervals and Units",
+            "Contact Volume and Workload",
+            "AHT and Handling Components",
+            "Service Level and Answer Thresholds",
+            "ASA and Abandonment",
+            "Occupancy and Utilization",
+            "Shrinkage and Productive Capacity",
+            "FTE, Staffing Gap and Variance"
           ]
         },
         {
           "id": "02.3",
-          "name": "Queueing Theory & Erlang",
+          "name": "WFM Metrics & KPI Architecture",
           "lessons": [
-            "Traffic intensity",
-            "Erlang units",
-            "Erlang B",
-            "Erlang C",
-            "Erlang A",
-            "Probability of delay",
-            "Utilization and stability",
-            "Service-level calculations"
+            "Offered, Handled and Abandoned",
+            "Service Level",
+            "ASA",
+            "AHT",
+            "Occupancy",
+            "Utilization and Productivity",
+            "Adherence, Conformance and Schedule Efficiency",
+            "Metric Definitions, Reconciliation and Governance"
           ]
         },
         {
           "id": "02.4",
-          "name": "Capacity Planning",
+          "name": "Queueing Theory & Erlang",
           "lessons": [
-            "Workload calculation",
-            "Required productive hours",
-            "Shrinkage",
-            "Net staffing",
-            "Concurrency",
-            "Channel capacity",
-            "Scenario planning",
-            "Long-range capacity plans"
+            "Queueing Theory Intuition",
+            "Arrival Rate, Service Rate and Traffic Intensity",
+            "Erlang Units",
+            "Erlang B",
+            "Erlang C",
+            "Erlang A",
+            "Probability of Delay and Service Level",
+            "Erlang Assumptions, Limits and Simulation"
           ]
         },
         {
           "id": "02.5",
-          "name": "Forecasting & Workload Planning",
+          "name": "Historical Data & WFM Data Preparation",
           "lessons": [
-            "Historical workload",
-            "Interval aggregation",
-            "Seasonality",
-            "Trend",
-            "Calendar effects",
-            "Forecast hierarchy",
-            "Forecast bias",
-            "Forecast governance"
+            "WFM Data Sources",
+            "Interval Granularity",
+            "Historical Demand Profiling",
+            "Data Types and Definitions",
+            "Missing Data and Duplicates",
+            "Outliers and Anomalies",
+            "Data Reconciliation and Validation",
+            "Building a Planning Dataset"
           ]
         },
         {
           "id": "02.6",
-          "name": "Scheduling & Staffing",
+          "name": "Forecasting Fundamentals",
           "lessons": [
-            "Staffing requirements",
-            "Shift design",
-            "Start-time profiles",
-            "Break placement",
-            "Schedule constraints",
-            "Coverage analysis",
-            "Bid and preference concepts",
-            "Schedule quality"
+            "Purpose of a WFM Forecast",
+            "Forecast Horizons and Granularity",
+            "Historical Baselines",
+            "Day-of-Week Patterns",
+            "Intraday Distribution",
+            "Trend",
+            "Seasonality",
+            "Calendar and Business Events"
           ]
         },
         {
           "id": "02.7",
-          "name": "Intraday & Real-Time Management",
+          "name": "Advanced Forecasting Methods",
           "lessons": [
-            "Intraday plan",
-            "Actual versus forecast",
-            "Interval variance",
-            "Queue monitoring",
-            "Exception management",
-            "Reforecasting",
-            "Actions and thresholds",
-            "Post-day analysis"
+            "Naive and Moving-Average Forecasts",
+            "Weighted Moving Average",
+            "Exponential Smoothing",
+            "Holt Forecasting",
+            "Holt-Winters",
+            "Regression for Demand Forecasting",
+            "ARIMA Concepts",
+            "Model Selection and Backtesting"
           ]
         },
         {
           "id": "02.8",
-          "name": "WFM Governance & Operations",
+          "name": "Forecast Accuracy, Bias & Governance",
           "lessons": [
-            "Planning cadence",
-            "Assumptions register",
-            "Change control",
-            "Metric definitions",
-            "Data ownership",
-            "Operational controls",
-            "Auditability",
-            "Stakeholder communication"
+            "Forecast Error",
+            "MAE, MAPE, WAPE and RMSE",
+            "Forecast Bias",
+            "Tracking Signal",
+            "Accuracy by Interval and Aggregation",
+            "Forecast Overrides",
+            "Assumptions and Version Control",
+            "Forecast Review and Governance"
+          ]
+        },
+        {
+          "id": "02.9",
+          "name": "Staffing & Capacity Planning",
+          "lessons": [
+            "From Workload to Required Staff",
+            "Gross and Net Staffing",
+            "Shrinkage Application",
+            "Occupancy and Efficiency Assumptions",
+            "Interval Staffing Requirements",
+            "Daily and Weekly Capacity",
+            "Hiring, Overtime and Contingent Capacity",
+            "Capacity Scenarios and Sensitivity"
+          ]
+        },
+        {
+          "id": "02.10",
+          "name": "Scheduling & Shift Planning",
+          "lessons": [
+            "From Requirement to Schedule",
+            "Shift Length and Start Times",
+            "Coverage Curves",
+            "Break and Lunch Placement",
+            "Days Off and Operating Constraints",
+            "Shift Patterns and Flexible Schedules",
+            "Multi-Skilled Agent Scheduling",
+            "Schedule Quality and Inefficiency"
+          ]
+        },
+        {
+          "id": "02.11",
+          "name": "Adherence, Attendance & Shrinkage",
+          "lessons": [
+            "Schedule Adherence",
+            "Conformance",
+            "Attendance and Absenteeism",
+            "Planned Shrinkage",
+            "Unplanned Shrinkage",
+            "Offline Activities",
+            "Adherence Exceptions and Root Cause",
+            "Improvement and Coaching Loops"
+          ]
+        },
+        {
+          "id": "02.12",
+          "name": "Intraday & Real-Time Management",
+          "lessons": [
+            "Purpose of Intraday Management",
+            "Start-of-Day Readiness",
+            "Actual vs Forecast",
+            "Actual vs Scheduled",
+            "Queue and Service Monitoring",
+            "Intraday Staffing Gaps",
+            "Interventions and Thresholds",
+            "Reforecast, Recovery and Escalation"
+          ]
+        },
+        {
+          "id": "02.13",
+          "name": "Multi-Channel & Blended WFM",
+          "lessons": [
+            "Voice Forecasting and Staffing",
+            "Email and Asynchronous Work",
+            "Chat and Concurrency",
+            "Social and Messaging Work",
+            "Back-Office Work",
+            "Blended Agents and Shared Capacity",
+            "Cross-Skill and Channel Prioritization",
+            "Multi-Channel Intraday Management"
+          ]
+        },
+        {
+          "id": "02.14",
+          "name": "WFM Reporting & Operational Analytics",
+          "lessons": [
+            "Operational Reporting Foundations",
+            "Forecast Reporting",
+            "Staffing and Coverage Reporting",
+            "Schedule Reporting",
+            "Adherence Reporting",
+            "Interval Heatmaps and Variance",
+            "Root-Cause Analysis",
+            "Executive WFM Reporting"
+          ]
+        },
+        {
+          "id": "02.15",
+          "name": "WFM Tools, Technology & Data Integration",
+          "lessons": [
+            "Spreadsheet-Based WFM",
+            "Erlang and Forecasting Calculators",
+            "WFM Application Architecture",
+            "Forecasting and Scheduling Systems",
+            "ACD, CRM and HR Data",
+            "APIs and Data Pipelines",
+            "Cloud WFM and Platform Governance",
+            "Automation and Operational Controls"
+          ]
+        },
+        {
+          "id": "02.16",
+          "name": "Workforce Optimization & Scenario Planning",
+          "lessons": [
+            "What Workforce Optimization Means",
+            "Objective Functions and Constraints",
+            "Cost vs Service Trade-offs",
+            "Schedule Optimization",
+            "Staffing Optimization",
+            "What-If Analysis",
+            "Sensitivity and Risk Analysis",
+            "Optimization Decision Case"
+          ]
+        },
+        {
+          "id": "02.17",
+          "name": "WFM Team, Governance & Strategic Planning",
+          "lessons": [
+            "Planning Team Structure",
+            "Forecasting, Scheduling and RTA Responsibilities",
+            "Stakeholder Management",
+            "Planning Cadence and Governance",
+            "Assumptions, Change Control and Auditability",
+            "Long-Term Workforce Planning",
+            "Attrition, Growth and Hiring Strategy",
+            "WFM Maturity and Transformation"
+          ]
+        },
+        {
+          "id": "02.18",
+          "name": "WFM Case Studies & Capstone",
+          "lessons": [
+            "Diagnosing an SLA Failure",
+            "Diagnosing a Forecast Failure",
+            "Diagnosing a Staffing Gap",
+            "Diagnosing a Schedule Problem",
+            "Intraday Recovery Case",
+            "Multi-Channel Capacity Case",
+            "Executive Decision Case",
+            "Build the Complete WFM System"
           ]
         }
       ]
