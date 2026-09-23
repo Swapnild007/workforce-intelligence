@@ -19,4 +19,4 @@ jobs:
         run: node scripts/check-inline-js.js
 
       - name: Validate HTML structure
-        run: python -c "from html.parser import HTMLParser; from pathlib import Path; HTMLParser().feed(Path('index.html').read_text(encoding='utf-8')); print('index.html: HTML parser OK')"
+        run: python -c "from html.parser import HTMLParser; from pathlib import Path; HTMLParser().feed(Path('index.html').read_text(encoding='utf-8')); print('index.html HTML parser OK')"
