@@ -16,6 +16,7 @@
     .nav{display:flex;align-items:center;gap:20px}.nav button{display:flex;align-items:center;gap:5px;padding:8px 0;background:transparent;color:#b3b3b3;font-size:11px;font-weight:500;transition:.2s}.nav button:hover{color:#fff;transform:none}.nav button.active{color:#fff;background:none;box-shadow:none}.ico{display:none}
     .side-bottom{margin-left:auto;padding:0}.profile{display:flex;align-items:center;gap:9px;padding:0;border:0;background:none}.avatar{width:31px;height:31px;border-radius:4px;background:linear-gradient(135deg,#e50914,#7b0b10);font-size:9px}.profile b{font-size:10px}.profile small,.profile>span{display:none}
     .main{width:100%;margin:0;padding:0 0 70px;max-width:none}.topbar{height:58px;position:absolute;top:68px;left:0;right:0;padding:0 4vw;display:flex;align-items:center;z-index:30;background:linear-gradient(180deg,rgba(20,20,20,.98),rgba(20,20,20,0));pointer-events:none}.search{pointer-events:auto;width:290px;max-width:38vw;height:34px;padding:0 11px;border-radius:3px;border:1px solid #444;background:#111;color:#aaa;display:flex;align-items:center;gap:7px}.search input{border:0;outline:0;background:transparent;width:100%;color:#fff;font-size:10px}.search kbd{display:none}.top-actions{pointer-events:auto;margin-left:auto;display:flex;align-items:center;gap:12px}.round{width:30px;height:30px;border-radius:50%;border:0;background:none;color:#fff}.date{display:none}
+    .home-start-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 4vw}.home-start-card{padding:20px;min-height:220px;display:flex;flex-direction:column}.home-start-card h3{font-size:20px;line-height:1.05;letter-spacing:-.5px;margin:10px 0 9px}.home-start-card p{font-size:10px;color:#999;line-height:1.65;margin:0 0 18px}.home-start-card button{margin-top:auto;align-self:flex-start}.home-start-primary{background:linear-gradient(145deg,#201010,#181818);border-color:#4a2024}.home-route{display:flex;align-items:center;gap:8px;padding:0 4vw;overflow-x:auto;scrollbar-width:none}.home-route::-webkit-scrollbar{display:none}.home-route-card{flex:1 0 150px;min-height:105px;padding:15px;background:#181818;border:1px solid #2b2b2b;border-radius:5px;display:flex;flex-direction:column;justify-content:space-between}.home-route-card b{font-size:8px;color:var(--red)}.home-route-card span{font-size:11px;font-weight:800}.home-route-card small{font-size:8px;color:#777}.home-route>i{color:#555;font-style:normal;font-size:13px;flex:0 0 auto}.home-status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0 4vw}.home-status{padding:16px;min-height:125px}.home-status strong{display:block;font-size:21px;margin:11px 0 5px}.home-status p{font-size:8px;color:#777;line-height:1.5;margin:0}@media(max-width:900px){.home-start-grid{grid-template-columns:1fr}.home-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-route-card{flex-basis:155px}}@media(max-width:600px){.home-status-grid{grid-template-columns:1fr 1fr}.home-status strong{font-size:17px}.home-start-card{min-height:190px}}
     .view{display:none}.view.active{display:block}.view.active{animation:viewIn .35s ease}@keyframes viewIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
     .hero{min-height:620px;border:0;border-radius:0;padding:150px 5vw 70px;position:relative;overflow:hidden;display:flex;align-items:flex-end;background:linear-gradient(90deg,#080808 0%,rgba(8,8,8,.78) 35%,rgba(8,8,8,.18) 70%,#141414 100%),radial-gradient(circle at 78% 35%,#243c6b 0%,#141414 42%);box-shadow:none}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#141414 0%,transparent 25%,transparent 70%,#141414 100%);pointer-events:none}.hero>div:first-child{position:relative;z-index:2;max-width:650px}.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#aaa;font-weight:800}.hero h1{font-size:clamp(44px,6vw,78px);line-height:.92;letter-spacing:-4px;margin:12px 0 18px;max-width:650px}.hero h1 em{font-style:normal;color:#fff}.hero p{max-width:560px;color:#d0d0d0;font-size:13px;line-height:1.6;margin:0}.hero-actions{display:flex;gap:8px;margin-top:22px}.primary,.secondary{padding:11px 17px;border-radius:4px;font-size:10px;font-weight:800;transition:.2s}.primary{color:#000;background:#fff;box-shadow:none}.secondary{color:#fff;background:#ffffff26;border:0}.primary:hover,.secondary:hover{transform:scale(1.04)}
     .hero-visual{position:absolute;right:6vw;top:105px;width:48%;height:430px;display:grid;place-items:center;opacity:.9}.learning-orbit{width:280px;height:280px;border-radius:50%;border:1px solid #ffffff1a;position:relative;display:grid;place-items:center;box-shadow:0 0 120px #2868ff24}.learning-orbit:before,.learning-orbit:after{content:"";position:absolute;border:1px solid #ffffff12;border-radius:50%}.learning-orbit:before{inset:-35px 20px;transform:rotate(55deg)}.learning-orbit:after{inset:20px -35px;transform:rotate(-55deg)}.core{width:110px;height:110px;border-radius:8px;background:linear-gradient(135deg,#e50914,#72060b);box-shadow:0 20px 55px #e5091455;display:grid;place-items:center;color:#fff;font-size:38px;z-index:2}.node{position:absolute;width:42px;height:42px;border-radius:4px;background:#202020;border:1px solid #444;display:grid;place-items:center;font-size:13px;color:#ddd}.node.n1{top:-12px;left:118px}.node.n2{right:-12px;top:118px}.node.n3{bottom:-12px;left:118px}.node.n4{left:-12px;top:118px}.hero-stat{position:absolute;right:0;bottom:5px;display:flex;gap:12px;padding:9px 12px;background:#181818dd;border:1px solid #333;border-radius:3px;font-size:9px;color:#999}.hero-stat b{color:#fff}
@@ -264,56 +265,46 @@
           <article class="card kpi"><div class="kpi-top"><span>Learning Streak</span><span class="kpi-icon">↗</span></div><strong>0 days</strong><span class="delta">Complete a lesson to begin</span><div class="spark empty-spark"><span></span></div></article>
         </div>
 
-        <div class="section-head"><div><h2>See your learning grow</h2><p>These areas stay quiet until there is real learner activity.</p></div></div>
-        <div class="grid dashboard-grid">
-          <article class="card panel">
-            <div class="panel-title"><b>Learning activity</b><span>Weekly minutes</span></div>
-            <div class="empty-chart">
-              <div class="empty-chart-grid"><i></i><i></i><i></i><i></i></div>
-              <div class="empty-chart-line"></div>
-              <div class="empty-chart-copy"><b>No activity yet</b><span>Complete your first lesson to start your learning history.</span></div>
-            </div>
+        <div class="section-head"><div><h2>Start here</h2><p>A clear route from your first lesson to portfolio-ready WFM capability.</p></div></div>
+        <div class="home-start-grid">
+          <article class="card home-start-card home-start-primary">
+            <span class="eyebrow">01 · Foundation</span><h3>Learn the WFM operating model</h3>
+            <p>Understand queues, service level, AHT, occupancy, shrinkage and the end-to-end WFM cycle before touching advanced analytics.</p>
+            <button class="primary" data-view-go="learn">Enter Learn →</button>
           </article>
-          <article class="card panel">
-            <div class="panel-title"><b>Skills you're building</b><span>Progress by area</span></div>
-            <div class="skill-empty">
-              <div><b>WFM Foundations</b><span>Not started</span><i><em style="width:0%"></em></i></div>
-              <div><b>Data & Analytics</b><span>Not started</span><i><em style="width:0%"></em></i></div>
-              <div><b>Statistics</b><span>Not started</span><i><em style="width:0%"></em></i></div>
-              <div><b>ML & AI</b><span>Not started</span><i><em style="width:0%"></em></i></div>
-            </div>
-            <div class="empty-note">Your skill profile will build from completed lessons and practice.</div>
+          <article class="card home-start-card">
+            <span class="eyebrow">02 · Practice</span><h3>Work with the WFM Lab</h3>
+            <p>Turn concepts into calculations through forecasting, staffing, capacity, scheduling, intraday and multichannel scenarios.</p>
+            <button class="secondary" data-view-go="labs">Open WFM Lab →</button>
           </article>
-          <article class="card panel">
-            <div class="panel-title"><b>Your next step</b><span>Start here</span></div>
-            <div class="insights">
-              <div class="insight"><div class="insight-num">1</div><div><b>Start WFM Foundations</b><p>Build the vocabulary and mental model before moving into forecasting and staffing.</p></div></div>
-              <div class="insight"><div class="insight-num">2</div><div><b>Practice what you learn</b><p>Short exercises will turn each concept into something you can actually use.</p></div></div>
-              <div class="insight"><div class="insight-num">3</div><div><b>Build a real project</b><p>Use the WFM Lab when the learning path gives you enough context to work with it.</p></div></div>
-              <button class="primary" data-view-go="learn">Start learning →</button>
-            </div>
+          <article class="card home-start-card">
+            <span class="eyebrow">03 · Decide</span><h3>Defend an operational decision</h3>
+            <p>Diagnose a real WFM situation, state assumptions, quantify the trade-off and explain what evidence would change your decision.</p>
+            <button class="secondary" data-view-go="decisions">Open Decision Lab →</button>
           </article>
         </div>
 
-        <div class="section-head"><div><h2>Continue your journey</h2><p>Your next lesson and path become personalized as you make progress.</p></div></div>
-        <div class="grid learning-grid">
-          <article class="card progress-card">
-            <div class="progress-big"><div class="ring ring-empty"><b>0%</b></div><div class="progress-copy"><b>Start your learning path</b><p>Begin with WFM Foundations. Your progress will be calculated from completed lessons, practice and projects.</p></div></div>
-            <div class="tracks">
-              <div class="track"><span>WFM</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
-              <div class="track"><span>Data</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
-              <div class="track"><span>ML / AI</span><div class="bar"><i style="width:0%"></i></div><b>0%</b></div>
-            </div>
-          </article>
-          <article class="card lesson">
-            <span class="tag">Next lesson</span><h3>WFM Foundations</h3><p>Start with the core concepts, terminology and workflow used throughout the academy.</p>
-            <div class="lesson-art">◈</div><button class="primary" data-lesson>Start lesson →</button>
-          </article>
-          <article class="card path-card">
-            <div class="panel-title"><b>Your learning path</b><span>Build in sequence</span></div>
-            <div class="path"><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">D</div><span>Data</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">S</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>ML / AI</span></div></div>
-            <button class="secondary" data-view-go="learn">Explore the path →</button>
-          </article>
+        <div class="section-head"><div><h2>Portfolio route</h2><p>Six connected builds turn the learning path into demonstrable work.</p></div><button class="secondary" data-view-go="projects">View projects</button></div>
+        <div class="home-route">
+          <article class="home-route-card"><b>01</b><span>Operating Model</span><small>Queues · skills · service</small></article>
+          <i>→</i>
+          <article class="home-route-card"><b>02</b><span>Forecast → Staffing</span><small>Demand · workload · Erlang</small></article>
+          <i>→</i>
+          <article class="home-route-card"><b>03</b><span>Scheduling</span><small>Coverage · breaks · constraints</small></article>
+          <i>→</i>
+          <article class="home-route-card"><b>04</b><span>Intraday</span><small>Actuals · adherence · action</small></article>
+          <i>→</i>
+          <article class="home-route-card"><b>05</b><span>Executive Analytics</span><small>KPI · capacity · insight</small></article>
+          <i>→</i>
+          <article class="home-route-card"><b>06</b><span>Capstone</span><small>Integrated WFM system</small></article>
+        </div>
+
+        <div class="section-head"><div><h2>Your starting point</h2><p>Progress stays at zero until the Academy has real learner evidence.</p></div></div>
+        <div class="home-status-grid">
+          <article class="card home-status"><span class="eyebrow">Academy</span><strong>13 domains</strong><p>79 modules · 632 lessons</p></article>
+          <article class="card home-status"><span class="eyebrow">Practice</span><strong>14 WFM views</strong><p>6 integrated WFM Toolbox projects</p></article>
+          <article class="card home-status"><span class="eyebrow">Decision</span><strong>6 case types</strong><p>Coverage · forecast · schedule · intraday · capacity · executive</p></article>
+          <article class="card home-status"><span class="eyebrow">Portfolio</span><strong>6 builds</strong><p>Learn → Lab → Decision → Project evidence</p></article>
         </div>
       </section>
 
