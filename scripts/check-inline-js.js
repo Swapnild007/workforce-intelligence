@@ -45,6 +45,17 @@ if (wfm.intervalPlan().length !== 48) throw new Error('WFM interval engine faile
 if (!(wfm.schedulePlan().assigned.length >= 1)) throw new Error('WFM schedule engine failed');
 if (!(wfm.adherenceSummary().length >= 1)) throw new Error('WFM adherence engine failed');
 
+const screenRoot = {
+  innerHTML: '',
+  querySelector: () => null,
+  querySelectorAll: () => []
+};
+wfmContext.window.WFM_LAB.mount(screenRoot);
+if (!screenRoot.innerHTML.includes('Command Center')) throw new Error('WFM Screen 01 title missing');
+if (!screenRoot.innerHTML.includes('Required agents')) throw new Error('WFM Screen 01 KPI missing');
+if (!screenRoot.innerHTML.includes('Intraday snapshot')) throw new Error('WFM Screen 01 intraday panel missing');
+if (screenRoot.innerHTML.includes('null first projected')) throw new Error('WFM Screen 01 contains invalid forecast output');
+
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
 const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
 const context = { window: {} };
