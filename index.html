@@ -308,6 +308,134 @@
       .lesson-level b{font-size:17px}
       .lesson-level p{font-size:15px!important}
     }
+
+    /* --- Final typography, colour & rendering audit --- */
+    :root{
+      --text-primary:#fff;
+      --text-secondary:#d2d2d2;
+      --text-muted:#a3a3a3;
+      --text-subtle:#8f8f8f;
+      --border-strong:#3b3b3b;
+    }
+    body{font-size:16px;line-height:1.55}
+    .nf-links button,.nav button{font-size:13px}
+    .nf-copy p,.hero p,.learn-hero p{font-size:16px;line-height:1.7;color:var(--text-secondary)}
+    .nf-row-head h2,.section-head h2{font-size:20px}
+    .nf-row-head button{font-size:13px;color:var(--text-muted)}
+    .nf-meta{font-size:11px;color:var(--text-muted)}
+    .nf-meta b{color:#ddd}
+    .nf-card-copy small,.nf-lab-copy small{font-size:11px;color:#bdbdbd}
+    .nf-card-copy h3,.nf-poster h3,.nf-lab-copy h3{font-size:16px;line-height:1.3}
+    .nf-card-copy p,.nf-poster p,.nf-lab-copy p{font-size:12px;line-height:1.55;color:var(--text-muted)}
+    .nf-footer{font-size:11px;color:var(--text-subtle)}
+    .home-start-card p,.home-status p,.panel-title,.kpi-top,.empty-chart-copy,.skill-empty b,.skill-empty span,.insight p,.empty-note{font-size:13px;line-height:1.6}
+    .home-start-card p,.home-status p,.empty-note,.skill-empty span,.insight p{color:var(--text-muted)}
+    .home-route-card b,.home-route-card small{font-size:11px}
+    .home-route-card span{font-size:14px}
+    .primary,.secondary{font-size:13px;min-height:40px}
+    .lesson h3{font-size:18px}
+    .lesson p{font-size:14px;line-height:1.6;color:var(--text-secondary)}
+    .module h3{font-size:16px}
+    .module p,.lab p,.resource p{font-size:13px;line-height:1.65;color:var(--text-muted)}
+    .lab h3{font-size:17px}
+    .resource b{font-size:16px}
+    .learn-step-index,.learn-continue-card .label{font-size:11px;color:var(--text-muted)}
+    .learn-step b{font-size:15px}
+    .learn-step span,.learn-continue-card p,.learn-continue-card small,.learn-result span{font-size:13px;line-height:1.55;color:var(--text-muted)}
+    .learn-search-wrap input{font-size:14px}
+    .learn-result{font-size:14px}
+    .learn-hero-meta span{font-size:11px;color:#a6a6a6}
+    .modal{
+      width:min(1100px,94vw);
+      max-height:92vh;
+      padding:34px 36px;
+      background:#161616;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+    }
+    .modal h2{font-size:clamp(26px,3vw,38px)!important;line-height:1.1!important}
+    .modal p,.modal li{color:#d0d0d0!important}
+    .modal .card{font-size:16px;color:#d0d0d0}
+    .modal .card p,.modal .card li,.modal .card div{
+      font-size:16px!important;
+      line-height:1.7!important;
+      color:#c7c7c7!important;
+    }
+    .modal .card b{font-size:16px}
+    .lesson-hero{padding-bottom:22px}
+    .lesson-eyebrow{font-size:12px;letter-spacing:2.5px;color:#bdbdbd}
+    .lesson-path{font-size:15px!important;line-height:1.6!important;color:#aeb0b3!important}
+    .lesson-outcome{font-size:clamp(20px,2.3vw,28px)!important;line-height:1.45!important;color:#f5f5f5!important}
+    .lesson-section{
+      margin-top:18px;
+      padding:24px 26px;
+      background:#1d1d1d;
+      border-color:#353535;
+      overflow-wrap:anywhere;
+    }
+    .lesson-section h3{font-size:22px!important;line-height:1.25;margin-bottom:14px;color:#f5f5f5}
+    .lesson-section p,.lesson-section li{
+      font-size:18px!important;
+      line-height:1.78!important;
+      color:#c7c7c7!important;
+      overflow-wrap:anywhere;
+    }
+    .lesson-section li{margin:8px 0}
+    .lesson-section b{font-size:17px;color:#f1f1f1}
+    .lesson-level{padding:20px;background:#191919;border-color:#3a3a3a;min-width:0}
+    .lesson-level-num{font-size:11px;letter-spacing:1.8px;color:#a6a6a6}
+    .lesson-level b{font-size:18px}
+    .lesson-level p{font-size:16px!important;line-height:1.65!important;color:#c2c2c2!important}
+    .lesson-actions .primary,.lesson-section .primary{font-size:15px;min-height:44px;padding:13px 20px}
+    .modal .close{min-width:44px;min-height:44px}
+    .modal-backdrop{padding:20px;overscroll-behavior:contain}
+    .nf-scroll,.learn-journey{scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+    .nf-scroll>*,.learn-journey>*{min-width:0}
+    .card,.panel,.lesson,.path-card,.module,.lab,.resource,.learn-step,.learn-continue-card{min-width:0}
+    @media(max-width:760px){
+      body{font-size:16px}
+      .nf-copy p,.hero p,.learn-hero p{font-size:15px;line-height:1.7}
+      .nf-meta{font-size:10px}
+      .nf-row-head h2,.section-head h2{font-size:19px}
+      .nf-row-head button{font-size:12px}
+      .nf-card-copy small,.nf-lab-copy small{font-size:10px}
+      .nf-card-copy h3{font-size:16px}
+      .nf-card-copy p,.nf-poster p,.nf-lab-copy p{font-size:12px}
+      .nf-mobile-nav button,.mobile-nav button{font-size:11px}
+      .nf-mobile-nav button b,.micon{font-size:17px}
+      .home-start-card p,.home-status p,.panel-title,.kpi-top,.empty-chart-copy,.skill-empty b,.skill-empty span,.insight p,.empty-note{font-size:13px}
+      .primary,.secondary{font-size:13px;min-height:44px}
+      .learn-step b{font-size:16px}
+      .learn-step span,.learn-continue-card p,.learn-continue-card small,.learn-result span{font-size:13px}
+      .learn-search-wrap input,.learn-result{font-size:15px}
+      .modal-backdrop{padding:8px}
+      .modal{width:100%;max-height:94vh;padding:24px 18px;border-radius:14px}
+      .modal h2{font-size:28px!important}
+      .modal .card p,.modal .card li,.modal .card div{font-size:16px!important;line-height:1.7!important}
+      .lesson-eyebrow{font-size:10px}
+      .lesson-path{font-size:14px!important}
+      .lesson-outcome{font-size:21px!important}
+      .lesson-section{padding:20px 17px;margin-top:15px}
+      .lesson-section h3{font-size:21px!important}
+      .lesson-section p,.lesson-section li{font-size:17px!important;line-height:1.75!important}
+      .lesson-section b{font-size:16px}
+      .lesson-level{padding:18px}
+      .lesson-level b{font-size:18px}
+      .lesson-level p{font-size:15px!important}
+    }
+    @media(max-width:380px){
+      .nf-copy p{font-size:14px}
+      .nf-copy h1{font-size:50px}
+      .nf-card-copy h3{font-size:15px}
+      .nf-card-copy p{font-size:11px}
+      .modal{padding:22px 15px}
+      .lesson-section{padding:18px 15px}
+      .lesson-section p,.lesson-section li{font-size:16px!important}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .modal,.lesson-section,.nf-card,.nf-poster,.nf-lab{scroll-behavior:auto!important}
+    }
+
 </style>
 </head>
 <body>
@@ -315,7 +443,7 @@
   
   <div class="orb a"></div><div class="orb b"></div>
 
-  <section id="landing" class="landing"><div class="landing-bg"></div><header class="nf-nav"><div class="nf-brand" data-home-brand role="button" tabindex="0" aria-label="Return to Academy home"><div class="nf-logo">W</div><div><b>Workforce Intelligence</b><small>ACADEMY</small></div></div><nav class="nf-links"><button data-enter>Home</button><button data-view-go="learn">Learn</button><button data-view-go="labs">Labs</button><button data-view-go="projects">Projects</button><button data-view-go="resources">Resources</button></nav><div class="nf-nav-right"><button class="nf-search" data-search aria-label="Search the academy">⌕</button><button class="nf-profile" data-enter aria-label="Open Academy home">SD</button></div></header><main class="nf-main"><section class="nf-hero"><div class="nf-copy"><div class="nf-kicker">WORKFORCE INTELLIGENCE ACADEMY</div><h1>Learn.<span>Practice.</span><span>Build.</span></h1><p>Build real workforce, analytics and data skills through a guided learning experience — from your first concept to complete projects.</p><div class="nf-actions"><button class="nf-play" data-enter>▶ Start Learning</button><button class="nf-more" data-view-go="learn">ⓘ Explore Academy</button></div><div class="nf-meta"><b>13 learning areas</b><span>•</span><span>79 modules</span><span>•</span><span>632 lessons</span></div></div><div class="nf-art"><div class="nf-art-card"><div class="nf-art-top"><span>WORKFORCE INTELLIGENCE</span><span>LEARNING PATH</span></div><div class="nf-art-body"><small>FEATURED PATH</small><h2>Forecasting<br><span>Fundamentals</span></h2><div class="nf-red"></div><div class="nf-art-stats"><span><b>12</b> modules</span><span><b>96</b> lessons</span><span><b>8</b> labs</span></div></div></div></div></section><section class="nf-row nf-continue"><div class="nf-row-head"><h2>Continue Learning</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>WFM FOUNDATIONS</small><h3>Forecasting Fundamentals</h3><p>Lesson 7 of 12 · 32 min</p><div class="nf-progress"><i style="width:58%"></i></div></div></article><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>DATA FOR WFM</small><h3>Working with workforce data</h3><p>Lesson 3 of 10 · 28 min</p><div class="nf-progress"><i style="width:26%"></i></div></div></article><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>PYTHON</small><h3>Python for Workforce Analytics</h3><p>Lesson 1 of 8 · 25 min</p><div class="nf-progress"><i style="width:0%"></i></div></div></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>Learning Paths</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>01</b></div><h3>WFM Foundations</h3><p>12 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>02</b></div><h3>Data Science for WFM</h3><p>14 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>03</b></div><h3>SQL & Data Analysis</h3><p>12 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>04</b></div><h3>Python for Analytics</h3><p>16 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>05</b></div><h3>Forecasting & Staffing</h3><p>14 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>06</b></div><h3>WFM Analytics & Reporting</h3><p>12 modules · Advanced</p></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>Popular Labs</h2><button data-view-go="labs">View all ›</button></div><div class="nf-scroll"><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>WFM Command Center</h3><p>Build a complete workforce operations simulation.</p><button data-view-go="labs">Open Lab →</button></div></article><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>Scheduling Lab</h3><p>Create schedules from demand, skills and coverage.</p><button data-view-go="labs">Open Lab →</button></div></article><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>Intraday Management</h3><p>Work through real-time changes and decisions.</p><button data-view-go="labs">Open Lab →</button></div></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>New & Recommended</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW</b></div><h3>Generative AI for WFM</h3><p>8 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW</b></div><h3>Workforce Planning</h3><p>10 modules · Intermediate</p></article><article class="nf-poster" data-view-go="projects" role="button" tabindex="0"><div class="nf-poster-art"><b>BUILD</b></div><h3>Real Projects</h3><p>6 projects · All levels</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>SKILL</b></div><h3>Business Communication</h3><p>8 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>ADVANCED</b></div><h3>Leadership in Operations</h3><p>10 modules · Advanced</p></article></div></section><footer class="nf-footer"><span>Workforce Intelligence Academy</span><span>Learn by doing.</span></footer></main><nav class="nf-mobile-nav"><button class="active" data-enter><b>⌂</b>Home</button><button data-view-go="learn"><b>▶</b>Learn</button><button data-view-go="labs"><b>▣</b>Labs</button><button data-view-go="projects"><b>◇</b>Projects</button></nav></section>
+  <section id="landing" class="landing"><div class="landing-bg"></div><header class="nf-nav"><div class="nf-brand" data-home-brand role="button" tabindex="0" aria-label="Return to Academy home"><div class="nf-logo">W</div><div><b>Workforce Intelligence</b><small>ACADEMY</small></div></div><nav class="nf-links"><button data-enter>Home</button><button data-view-go="learn">Learn</button><button data-view-go="labs">Labs</button><button data-view-go="projects">Projects</button><button data-view-go="resources">Resources</button></nav><div class="nf-nav-right"><button class="nf-search" data-search aria-label="Search the academy">⌕</button><button class="nf-profile" data-enter aria-label="Open Academy home">SD</button></div></header><main class="nf-main"><section class="nf-hero"><div class="nf-copy"><div class="nf-kicker">WORKFORCE INTELLIGENCE ACADEMY</div><h1>Learn.<span>Practice.</span><span>Build.</span></h1><p>Build real workforce, analytics and data skills through a guided learning experience — from your first concept to complete projects.</p><div class="nf-actions"><button class="nf-play" data-enter>▶ Start Learning</button><button class="nf-more" data-view-go="learn">ⓘ Explore Academy</button></div><div class="nf-meta"><b>4 learning tracks</b><span>•</span><span>78 modules</span><span>•</span><span>624 lessons</span></div></div><div class="nf-art"><div class="nf-art-card"><div class="nf-art-top"><span>WORKFORCE INTELLIGENCE</span><span>LEARNING PATH</span></div><div class="nf-art-body"><small>FEATURED PATH</small><h2>Forecasting<br><span>Fundamentals</span></h2><div class="nf-red"></div><div class="nf-art-stats"><span><b>12</b> modules</span><span><b>96</b> lessons</span><span><b>8</b> labs</span></div></div></div></div></section><section class="nf-row nf-continue"><div class="nf-row-head"><h2>Continue Learning</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>WFM FOUNDATIONS</small><h3>Forecasting Fundamentals</h3><p>Lesson 7 of 12 · 32 min</p><div class="nf-progress"><i style="width:58%"></i></div></div></article><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>DATA FOR WFM</small><h3>Working with workforce data</h3><p>Lesson 3 of 10 · 28 min</p><div class="nf-progress"><i style="width:26%"></i></div></div></article><article class="nf-card" data-view-go="learn" role="button" tabindex="0"><div class="nf-card-art"></div><div class="nf-card-copy"><small>PYTHON</small><h3>Python for Workforce Analytics</h3><p>Lesson 1 of 8 · 25 min</p><div class="nf-progress"><i style="width:0%"></i></div></div></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>Learning Paths</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>01</b></div><h3>WFM Foundations</h3><p>12 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>02</b></div><h3>Data Science for WFM</h3><p>14 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>03</b></div><h3>SQL & Data Analysis</h3><p>12 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>04</b></div><h3>Python for Analytics</h3><p>16 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>05</b></div><h3>Forecasting & Staffing</h3><p>14 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>06</b></div><h3>WFM Analytics & Reporting</h3><p>12 modules · Advanced</p></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>Popular Labs</h2><button data-view-go="labs">View all ›</button></div><div class="nf-scroll"><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>WFM Command Center</h3><p>Build a complete workforce operations simulation.</p><button data-view-go="labs">Open Lab →</button></div></article><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>Scheduling Lab</h3><p>Create schedules from demand, skills and coverage.</p><button data-view-go="labs">Open Lab →</button></div></article><article class="nf-lab"><div class="nf-lab-copy"><small>LAB</small><h3>Intraday Management</h3><p>Work through real-time changes and decisions.</p><button data-view-go="labs">Open Lab →</button></div></article></div></section><section class="nf-row"><div class="nf-row-head"><h2>New & Recommended</h2><button data-view-go="learn">View all ›</button></div><div class="nf-scroll"><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW</b></div><h3>Generative AI for WFM</h3><p>8 modules · Intermediate</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW</b></div><h3>Workforce Planning</h3><p>10 modules · Intermediate</p></article><article class="nf-poster" data-view-go="projects" role="button" tabindex="0"><div class="nf-poster-art"><b>BUILD</b></div><h3>Real Projects</h3><p>6 projects · All levels</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>SKILL</b></div><h3>Business Communication</h3><p>8 modules · Beginner</p></article><article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>ADVANCED</b></div><h3>Leadership in Operations</h3><p>10 modules · Advanced</p></article></div></section><footer class="nf-footer"><span>Workforce Intelligence Academy</span><span>Learn by doing.</span></footer></main><nav class="nf-mobile-nav"><button class="active" data-enter><b>⌂</b>Home</button><button data-view-go="learn"><b>▶</b>Learn</button><button data-view-go="labs"><b>▣</b>Labs</button><button data-view-go="projects"><b>◇</b>Projects</button></nav></section>
   <section id="app" class="app">
     <aside class="sidebar">
       <div class="brand" data-app-home role="button" tabindex="0" aria-label="Return to Academy home"><div class="logo">WI</div><div><strong>Workforce Intelligence</strong><span>Learning Intelligence OS</span></div></div>
@@ -344,13 +472,13 @@
             <p>One connected journey from WFM fundamentals to forecasting, data science, ML, optimization, GenAI and production automation.</p>
             <div class="hero-actions"><button class="primary" data-view-go="learn">Continue learning →</button><button class="secondary" data-view-go="labs">Open a lab</button></div>
           </div>
-          <div class="hero-visual"><div class="learning-orbit"><div class="core">✦</div><div class="node n1">∑</div><div class="node n2">⌘</div><div class="node n3">AI</div><div class="node n4">↗</div></div><div class="hero-stat"><span><b>632</b> lessons</span><span><b>79</b> modules</span><span><b>13</b> domains</span></div></div>
+          <div class="hero-visual"><div class="learning-orbit"><div class="core">✦</div><div class="node n1">∑</div><div class="node n2">⌘</div><div class="node n3">AI</div><div class="node n4">↗</div></div><div class="hero-stat"><span><b>624</b> lessons</span><span><b>78</b> modules</span><span><b>4</b> tracks</span></div></div>
         </div>
 
         <div class="section-head"><div><h2>Your learning progress</h2><p>Useful signals that change as you learn, practice and build.</p></div><button class="secondary" data-view-go="learn">Open Learn</button></div>
         <div class="grid kpis">
           <article class="card kpi"><div class="kpi-top"><span>Overall Progress</span><span class="kpi-icon">◌</span></div><strong>0%</strong><span class="delta">Your journey starts here</span><div class="spark empty-spark"><span></span></div></article>
-          <article class="card kpi"><div class="kpi-top"><span>Lessons Complete</span><span class="kpi-icon">✓</span></div><strong>0</strong><span class="delta">of 632 lessons</span><div class="spark empty-spark"><span></span></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Lessons Complete</span><span class="kpi-icon">✓</span></div><strong>0</strong><span class="delta">of 624 lessons</span><div class="spark empty-spark"><span></span></div></article>
           <article class="card kpi"><div class="kpi-top"><span>Practice Score</span><span class="kpi-icon">⌬</span></div><strong>—</strong><span class="delta">Appears after your first practice</span><div class="spark empty-spark"><span></span></div></article>
           <article class="card kpi"><div class="kpi-top"><span>Projects</span><span class="kpi-icon">◇</span></div><strong>0</strong><span class="delta">No projects started yet</span><div class="spark empty-spark"><span></span></div></article>
           <article class="card kpi"><div class="kpi-top"><span>Learning Streak</span><span class="kpi-icon">↗</span></div><strong>0 days</strong><span class="delta">Complete a lesson to begin</span><div class="spark empty-spark"><span></span></div></article>
@@ -392,7 +520,7 @@
 
         <div class="section-head"><div><h2>Your starting point</h2><p>Progress stays at zero until the Academy has real learner evidence.</p></div></div>
         <div class="home-status-grid">
-          <article class="card home-status"><span class="eyebrow">Academy</span><strong>13 domains</strong><p>79 modules · 632 lessons</p></article>
+          <article class="card home-status"><span class="eyebrow">Academy</span><strong>4 tracks</strong><p>78 modules · 624 lessons</p></article>
           <article class="card home-status"><span class="eyebrow">Practice</span><strong>14 WFM views</strong><p>6 integrated WFM Toolbox projects</p></article>
           <article class="card home-status"><span class="eyebrow">Decision</span><strong>6 case types</strong><p>Coverage · forecast · schedule · intraday · capacity · executive</p></article>
           <article class="card home-status"><span class="eyebrow">Portfolio</span><strong>6 builds</strong><p>Learn → Lab → Decision → Project evidence</p></article>
@@ -411,9 +539,9 @@
       </div>
     </div>
     <div class="learn-hero-meta">
-      <div><b id="learnDomainCount">13</b><span>domains</span></div>
-      <div><b id="learnModuleCount">79</b><span>modules</span></div>
-      <div><b id="learnLessonCount">632</b><span>lessons</span></div>
+      <div><b id="learnDomainCount">4</b><span>tracks</span></div>
+      <div><b id="learnModuleCount">78</b><span>modules</span></div>
+      <div><b id="learnLessonCount">624</b><span>lessons</span></div>
     </div>
   </div>
 
