@@ -29,6 +29,24 @@ for (const marker of requiredMarkers) {
   if (!html.includes(marker)) throw new Error(`Missing required UI marker: ${marker}`);
 }
 
+// Static interaction audit for every button authored in index.html.
+// Generated WFM Lab controls are validated separately by the WFM mount/engine checks below.
+const buttonHtml = [...html.matchAll(/<button\\b[^>]*>[\\s\\S]*?<\\/button>/gi)].map(m => m[0]);
+const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search)=|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
+const deadButtons = buttonHtml.filter(button => !handledButton.test(button));
+if (deadButtons.length) throw new Error('Unwired button(s) in index.html: ' + deadButtons.join(' | '));
+
+const viewIds = [...html.matchAll(/<section[^>]+id="([^"]+)"[^>]*class="[^"]*\\bview\\b/gi)].map(m => m[1]);
+for (const m of html.matchAll(/data-view="([^"]+)"/g)) {
+  if (!viewIds.includes(m[1])) throw new Error('Invalid data-view target: ' + m[1]);
+}
+for (const m of html.matchAll(/data-view-go="([^"]+)"/g)) {
+  if (!viewIds.includes(m[1])) throw new Error('Invalid data-view-go target: ' + m[1]);
+}
+if ((html.match(/data-demo/g) || []).length) throw new Error('Legacy data-demo control remains; use an explicit route/action.');
+if (!html.includes("document.querySelectorAll('[data-resource]'")) throw new Error('Resource controls are missing their handler.');
+if (!html.includes("getElementById('modalAction').addEventListener")) throw new Error('Modal challenge action is not wired.');
+
 const wfmSource = fs.readFileSync('data/wfm-lab.js', 'utf8');
 const wfmContext = { window: {} };
 vm.createContext(wfmContext);
