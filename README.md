@@ -15,6 +15,7 @@ This repository contains the **Workforce Intelligence learning system and its in
 - Unified Learn experience: journey + curriculum + lessons
 - Learning progress and mastery surfaces
 - Integrated WFM Lab: queueing, forecasting, capacity, scheduling, intraday and what-if analysis
+- WFM Project Studio: browser implementations of Erlang staffing, capacity planning, forecasting, schedule adherence, KPI dashboard and multichannel simulation workflows
 - Decision Lab
 - Projects
 - Resources
@@ -39,8 +40,21 @@ Then open `http://localhost:8000`.
 
 The UI is deliberately separated conceptually from the future learning engines. Engineering direction:
 
-`Learn → WFM Lab → Decision Lab → Projects → Analytics/ML → Optimization → GenAI/Automation`
+`Learn → WFM Lab → WFM Project Studio → Decision Lab → Analytics/ML → Optimization → GenAI/Automation`
 
 The WFM Lab is intentionally dependency-free and offline-first. It uses synthetic scenarios and transparent calculations so the learning environment remains portable and safe for corporate environments.
 
 No corporate data or credentials belong in this public repository.
+
+## WFM Project Studio
+
+The Project Studio converts the core practical WFM workflows found in widely used spreadsheet and calculator exercises into browser-native projects. The current suite includes:
+
+1. Erlang Staffing Calculator — interval volume, AHT, service level, threshold, occupancy, shrinkage and Erlang-A patience analysis.
+2. Capacity Planner — workload, productive hours, FTE and shrinkage sensitivity.
+3. Forecasting Studio — historical series input, level/trend/seasonality modelling and multi-period forecast diagnostics.
+4. Schedule Adherence — scheduled vs adherent minutes with team and individual calculations.
+5. KPI Dashboard — editable WFM scorecard with target status.
+6. Multichannel Simulator — blended voice/chat/email workload and staffing scenarios.
+
+These are original web implementations for learning. They do not copy third-party workbook code or assets. Source concepts are credited in the application and used as curriculum/reference material.
