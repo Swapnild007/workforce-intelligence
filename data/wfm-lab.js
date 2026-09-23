@@ -136,7 +136,7 @@
   function tabs() {
     const items=[
       ['overview','Control Room'],['queue','Queueing'],['forecast','Forecast'],['capacity','Capacity'],
-      ['schedule','Scheduling'],['intraday','Intraday'],['scenario','What-if']
+      ['schedule','Scheduling'],['intraday','Intraday'],['scenario','What-if'],['toolbox','Toolbox']
     ];
     return '<div class="wfm-tabs">'+items.map(([id,label])=>'<button class="'+(state.tab===id?'active':'')+'" data-wfm-tab="'+id+'">'+label+'</button>').join('')+'</div>';
   }
@@ -235,13 +235,20 @@
       '<article class="wfm-panel"><div class="wfm-panel-head"><b>Decision prompt</b><span>VP-level thinking</span></div><div class="wfm-prompt">If demand rises 20% but the available workforce does not change, what would you investigate before recommending hiring? Record your assumptions, evidence and operational actions in Decision Lab.</div></article>';
   }
 
+
+  function toolbox() {
+    return panelIntro('WFM Toolbox','Practical browser tools based on the spreadsheet/calculator workflows commonly used in contact-centre WFM. Use them after learning the concepts, not as black-box answers.','This toolbox is an original implementation of documented WFM tool workflows. It is connected to the same Workforce Intelligence learning and simulation environment.','https://www.callcentrehelper.com/articles/contact-centre-tools')+
+      '<div class="wfm-note"><b>Tool chain:</b> Erlang staffing → capacity → forecasting → adherence → KPI dashboard → multichannel workload. These tools are deliberately transparent so you can inspect the assumptions behind every result.</div>'+
+      '<div id="wfmProjectToolbox" class="wfm-toolbox-host"></div>';
+  }
+
   function panelIntro(title,desc,note,url) {
     return '<div class="wfm-head"><div><span class="eyebrow">WFM LAB MODULE</span><h2>'+title+'</h2><p>'+desc+'</p></div></div><div class="wfm-note"><b>Model boundary:</b> '+note+' <a href="'+url+'" target="_blank" rel="noreferrer">Reference ↗</a></div>';
   }
 
   function render(root) {
     if(!root) return;
-    const views={overview,queue,forecast,capacity,schedule,intraday,scenario};
+    const views={overview,queue,forecast,capacity,schedule,intraday,scenario,toolbox};
     root.innerHTML=tabs()+'<div class="wfm-content">'+views[state.tab]()+'</div>';
     $$('.wfm-tabs [data-wfm-tab], [data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render(root);}));
     $('[data-wfm-input]',root).forEach(el=>el.addEventListener('change',()=>{
@@ -253,7 +260,11 @@
       if(key[0]==='i') state.intraday[key[1]]=n(el.value);
       if(key[0]==='q' || key[0]==='f' || key[0]==='c' || key[0]==='s' || key[0]==='i') render(root);
     }));
-    $$('[data-wfm-action="rebuild-schedule"]',root).forEach(b=>b.addEventListener('click',()=>{render(root);}));
+    $('[data-wfm-action="rebuild-schedule"]',root).forEach(b=>b.addEventListener('click',()=>{render(root);}));
+    if(state.tab==='toolbox'){
+      const host=$('#wfmProjectToolbox',root);
+      if(host && window.WFM_PROJECTS) window.WFM_PROJECTS.mount(host);
+    }
   }
 
   window.WFM_LAB = {
