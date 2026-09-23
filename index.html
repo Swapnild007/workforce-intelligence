@@ -126,7 +126,7 @@
         <button data-view="curriculum"><span class="ico">◈</span>Curriculum</button>
         <button data-view="learning"><span class="ico">◎</span>Learning Path</button>
         <button data-view="labs"><span class="ico">⌬</span>Practice Labs</button>
-        <button data-view="mentor"><span class="ico">✦</span>AI Mentor</button>
+        <button data-view="decisions"><span class="ico">⌁</span>Decision Lab</button>
         <button data-view="projects"><span class="ico">◇</span>Projects</button>
         <button data-view="progress"><span class="ico">◌</span>Progress</button>
         <button data-view="resources"><span class="ico">▤</span>Resources</button>
@@ -137,7 +137,7 @@
     <main class="main">
       <header class="topbar">
         <label class="search">⌕ <input id="globalSearch" placeholder="Search lessons, tools, concepts or anything..."><kbd>⌘ K</kbd></label>
-        <div class="top-actions"><div class="date">23 Sep 2026<b>07:32 AM</b></div><button class="round" id="notifyBtn">♢</button><button class="round" id="mentorBtn">✦</button></div>
+        <div class="top-actions"><div class="date">23 Sep 2026<b>07:32 AM</b></div><button class="round" id="notifyBtn">♢</button><button class="round" id="decisionBtn">⌁</button></div>
       </header>
 
       <section id="home" class="view active">
@@ -164,7 +164,7 @@
         <div class="grid dashboard-grid">
           <article class="card panel"><div class="panel-title"><b>Learning velocity</b><span>Last 12 weeks · lessons / week</span></div><div class="chart"><svg viewBox="0 0 500 205" preserveAspectRatio="none"><g><line class="gridline" x1="0" y1="30" x2="500" y2="30"/><line class="gridline" x1="0" y1="85" x2="500" y2="85"/><line class="gridline" x1="0" y1="140" x2="500" y2="140"/><line class="gridline" x1="0" y1="190" x2="500" y2="190"/></g><path class="forecast" d="M0 160 C70 140,110 150,160 122 S250 125,300 98 S390 92,500 48"/><path class="line" d="M0 170 C45 155,70 160,105 140 S155 142,195 122 S240 135,278 105 S330 117,365 90 S420 102,450 62 S475 72,500 43"/></svg></div></article>
           <article class="card panel"><div class="panel-title"><b>Skill distribution</b><span>Current confidence</span></div><div class="donut-wrap"><div class="donut"><b>68%</b></div><div class="legend"><span><i></i>Foundations · 92%</span><span><i></i>Analytics · 64%</span><span><i></i>AI / ML · 24%</span></div></div></article>
-          <article class="card panel"><div class="panel-title"><b>AI learning signals</b><span>3 new</span></div><div class="insights"><div class="insight"><div class="insight-num">1</div><div><b>Forecasting is your next leverage point</b><p>Complete the current statistics block before the forecasting lab.</p></div></div><div class="insight"><div class="insight-num">2</div><div><b>Recall is behind understanding</b><p>Run a spaced-repetition review for probability.</p></div></div><div class="insight"><div class="insight-num">3</div><div><b>Build more, read less</b><p>Your project practice is below your concept completion rate.</p></div></div><button class="primary" id="openMentor">Ask AI Mentor →</button></div></article>
+          <article class="card panel"><div class="panel-title"><b>Decision signals</b><span>3 focus areas</span></div><div class="insights"><div class="insight"><div class="insight-num">1</div><div><b>Forecasting is your next leverage point</b><p>Complete the current statistics block before the forecasting lab.</p></div></div><div class="insight"><div class="insight-num">2</div><div><b>Coverage is a system problem</b><p>Separate volume, AHT, shrinkage, schedule coverage and skill availability before changing headcount.</p></div></div><div class="insight"><div class="insight-num">3</div><div><b>Build more, read less</b><p>Use the Decision Lab to turn concepts into operational recommendations.</p></div></div><button class="primary" data-view-go="decisions">Open Decision Lab →</button></div></article>
         </div>
 
         <div class="section-head"><div><h2>Continue your journey</h2><p>The next step is selected from your learning state.</p></div></div>
@@ -198,9 +198,9 @@
         </div>
       </section>
 
-      <section id="mentor" class="view">
-        <div class="section-head"><div><h2>AI Mentor</h2><p>A teaching layer that explains, questions, challenges and adapts.</p></div><button class="primary" id="startMentor">Start session</button></div>
-        <article class="card" style="padding:22px;min-height:440px"><div style="display:flex;align-items:center;gap:12px"><div class="logo">✦</div><div><b>Intelligence Mentor</b><p style="margin:3px 0;color:var(--muted);font-size:9px">Concept coach · Socratic questioning · Practice generation</p></div></div><div class="mentor-chat"><div class="bubble ai">Welcome. I can teach the concept, ask you questions, generate exercises, inspect your reasoning and connect today's lesson to the larger learning graph.</div><div class="bubble user">Teach me Erlang C from first principles.</div><div class="bubble ai">We'll build it from arrival rate → offered traffic → utilization → queueing probability → service level. Start with this: if 60 calls arrive per hour and AHT is 5 minutes, what is the offered traffic in Erlangs?</div></div><div class="mentor-input"><input id="mentorInput" placeholder="Ask a learning question..."><button class="primary" id="mentorSend">Send</button></div></article>
+      <section id="decisions" class="view">
+        <div class="section-head"><div><h2>Decision Lab</h2><p>Practice the decisions a workforce analyst, planner or WFM leader must make from evidence.</p></div><button class="primary" data-decision="coverage">Start case →</button></div>
+        <div class="grid lab-grid"><article class="card lab"><div class="lab-icon">⚖</div><h3>Coverage Gap</h3><p>Demand is above plan. Diagnose whether the gap comes from volume, AHT, shrinkage, schedule coverage or skills.</p><button class="secondary" data-decision="coverage">Open case →</button></article><article class="card lab"><div class="lab-icon">∿</div><h3>Forecast Challenge</h3><p>Compare forecast, actual demand and bias. Decide whether an override is justified and document the evidence.</p><button class="secondary" data-decision="forecast">Open case →</button></article><article class="card lab"><div class="lab-icon">⌗</div><h3>Schedule Trade-off</h3><p>Balance service level, cost, employee preferences and staffing constraints without pretending optimization creates capacity.</p><button class="secondary" data-decision="schedule">Open case →</button></article><article class="card lab"><div class="lab-icon">↗</div><h3>Intraday Response</h3><p>Use forecast-versus-actual and net staffing to choose an action, threshold and escalation path.</p><button class="secondary" data-decision="intraday">Open case →</button></article><article class="card lab"><div class="lab-icon">◎</div><h3>Capacity Scenario</h3><p>Test hiring, overtime, shrinkage and demand scenarios against service and cost objectives.</p><button class="secondary" data-decision="capacity">Open case →</button></article><article class="card lab"><div class="lab-icon">Σ</div><h3>Executive Brief</h3><p>Turn an operational problem into a concise recommendation with assumptions, risks, trade-offs and next actions.</p><button class="secondary" data-decision="executive">Open case →</button></article></div>
       </section>
 
       <section id="projects" class="view">
@@ -220,7 +220,7 @@
       </section>
     </main>
 
-    <nav class="mobile-nav" id="mobileNav"><button class="active" data-view="home"><span class="micon">⌂</span>Home</button><button data-view="learning"><span class="micon">◎</span>Learn</button><button data-view="labs"><span class="micon">⌬</span>Lab</button><button data-view="mentor"><span class="micon">✦</span>AI</button><button data-view="projects"><span class="micon">◇</span>More</button></nav>
+    <nav class="mobile-nav" id="mobileNav"><button class="active" data-view="home"><span class="micon">⌂</span>Home</button><button data-view="curriculum"><span class="micon">◈</span>Curriculum</button><button data-view="learning"><span class="micon">◎</span>Learn</button><button data-view="labs"><span class="micon">⌬</span>Lab</button><button id="moreBtn"><span class="micon">⋯</span>More</button></nav>
   </section>
 
   <div class="modal-backdrop" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Interactive learning</div><h2 id="modalTitle" style="margin:7px 0;font-size:26px">Lesson</h2></div><button class="close" id="modalClose">×</button></div><p id="modalBody" style="font-size:12px;color:var(--muted);line-height:1.7"></p><div class="card" style="padding:18px;margin-top:14px;background:#f4f7ff"><b>Challenge</b><p style="font-size:11px;color:var(--muted);line-height:1.6">A learning platform should make you do something with the concept. Change the inputs, predict the outcome, then compare it with the model.</p><button class="primary" id="modalAction">Start challenge →</button></div></div></div>
@@ -278,11 +278,40 @@
         body.innerHTML='<p style="margin-top:0">Lab shell ready. This workspace will let you change inputs, observe outputs and explain the operational trade-offs.</p>';
         modal.classList.add('open');
       }));
-      ['openMentor','startMentor','mentorBtn'].forEach(id=>{
+      ['decisionBtn'].forEach(id=>{
         const button=document.getElementById(id);
-        if(button)button.addEventListener('click',()=>openAcademy('mentor'));
+        if(button)button.addEventListener('click',()=>openAcademy('decisions'));
       });
       document.getElementById('notifyBtn').addEventListener('click',()=>showToast('No new learning alerts.'));
+      document.getElementById('decisionBtn').addEventListener('click',()=>openAcademy('decisions'));
+      document.getElementById('moreBtn').addEventListener('click',()=>{
+        title.textContent='More';
+        body.innerHTML='<div style="display:grid;gap:9px">'+
+          '<button class="secondary" data-more-view="projects" style="text-align:left">◇ Projects · Build portfolio evidence</button>'+ 
+          '<button class="secondary" data-more-view="progress" style="text-align:left">◌ Progress · Measure mastery</button>'+ 
+          '<button class="secondary" data-more-view="resources" style="text-align:left">▤ Resources · Formula and reference library</button>'+ 
+          '<button class="secondary" data-more-view="decisions" style="text-align:left">⌁ Decision Lab · Practice WFM decisions</button>'+ 
+          '</div>';
+        modal.classList.add('open');
+      });
+      modal.addEventListener('click',e=>{
+        const button=e.target.closest('[data-more-view]');
+        if(button){modal.classList.remove('open');openAcademy(button.dataset.moreView);}
+      });
+      document.querySelectorAll('[data-decision]').forEach(button=>button.addEventListener('click',()=>{
+        const cases={
+          coverage:['Coverage Gap','Demand is above plan. Diagnose the driver before recommending headcount. Check volume, AHT, shrinkage, schedule coverage and skill availability.'],
+          forecast:['Forecast Challenge','Compare forecast versus actual demand. State the error, bias, likely cause and whether an override is justified.'],
+          schedule:['Schedule Trade-off','Balance required staffing, employee constraints, cost and service objectives. State what the schedule can and cannot fix.'],
+          intraday:['Intraday Response','Assess forecast versus actual, net staffing and adherence. Choose the action, threshold and escalation path.'],
+          capacity:['Capacity Scenario','Test hiring, overtime, shrinkage and demand assumptions. State service, cost and operational risks.'],
+          executive:['Executive Brief','Convert the evidence into a short decision brief: situation, evidence, assumptions, options, risks and recommended next action.']
+        };
+        const item=cases[button.dataset.decision]||cases.coverage;
+        title.textContent=item[0];
+        body.innerHTML='<p style="margin-top:0"><b>Case</b><br>'+item[1]+'</p><div class="card" style="padding:14px;margin-top:12px"><b>Your response</b><p style="font-size:10px;color:#687394;line-height:1.6">Write the operational diagnosis, calculations or assumptions you would use, then state the decision and what evidence would change it.</p><textarea style="width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;resize:vertical;outline:0;font:inherit" placeholder="Explain your reasoning..."></textarea></div>';
+        modal.classList.add('open');
+      }));
 
 
       function renderCurriculum(){
