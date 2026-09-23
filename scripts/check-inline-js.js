@@ -2,7 +2,7 @@ const fs = require('fs');
 const vm = require('vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
-const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js'];
+const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js','data/wfm-projects.js'];
 for (const file of externalScripts) {
   const source = fs.readFileSync(file, 'utf8');
   new vm.Script(source, { filename: file });
@@ -66,4 +66,16 @@ for (const module of content02.modules) {
     }
   }
 }
+const projectsSource = fs.readFileSync('data/wfm-projects.js', 'utf8');
+const projectsContext = { window: {}, document: { getElementById: () => null, createElement: () => ({}) } };
+vm.createContext(projectsContext);
+vm.runInContext(projectsSource, projectsContext, { filename: 'data/wfm-projects.js' });
+if (!projectsContext.window.WFM_PROJECTS?.engine) throw new Error('WFM Projects engine missing');
+const projects = projectsContext.window.WFM_PROJECTS.engine;
+const ea = projects.erlangA({volume:400,period:30,aht:257,agents:97,patience:90,threshold:20});
+if (!(Number.isFinite(ea.sl) && ea.sl >= 0 && ea.sl <= 1 && Number.isFinite(ea.abandonPct))) throw new Error('Erlang-A project engine failed');
+if (!(projects.requiredC({volume:400,period:30,aht:257,sl:80,occ:85,patience:90,threshold:20}) >= 1)) throw new Error('Project staffing engine failed');
+const hw = projects.holtWinters(Array.from({length:24}, (_,i)=>1000+i*20+(i%12)*40),12,.35,.15,.25,12);
+if (hw.forecast.length !== 12 || !Number.isFinite(hw.mae)) throw new Error('Forecast project engine failed');
+
 console.log(`Validated index.html, external curriculum scripts, 13 domains, and 64 complete Domain 02 lessons.`);
