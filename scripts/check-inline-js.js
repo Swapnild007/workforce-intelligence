@@ -2,7 +2,7 @@ const fs = require('fs');
 const vm = require('vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
-const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js'];
+const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/curriculum-content.js','data/wfm-lab.js'];
 for (const file of externalScripts) {
   const source = fs.readFileSync(file, 'utf8');
   new vm.Script(source, { filename: file });
@@ -103,26 +103,37 @@ for (const view of allWfmViews) {
 
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
-const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
+const contentSource = fs.readFileSync('data/curriculum-content.js', 'utf8');
 const context = { window: {} };
 vm.createContext(context);
 vm.runInContext(curriculumSource, context, { filename: 'data/curriculum.js' });
-vm.runInContext(contentSource, context, { filename: 'data/curriculum-content-02.js' });
+vm.runInContext(contentSource, context, { filename: 'data/curriculum-content.js' });
 const domains = context.window.WI_CURRICULUM?.domains || [];
-if (domains.length !== 13) throw new Error(`Expected 13 curriculum domains, found ${domains.length}`);
+if (domains.length !== 4) throw new Error(`Expected 4 curriculum domains, found ${domains.length}`);
 const domain02 = domains.find(d => d.id === '02');
 const content02 = context.window.WI_CURRICULUM_CONTENT?.['02'];
 if (!domain02 || !content02) throw new Error('Domain 02 WFM content is missing');
 const lessonCount = domain02.modules.reduce((n, m) => n + m.lessons.length, 0);
 const contentLessonCount = content02.modules.reduce((n, m) => n + m.lessons.length, 0);
-if (lessonCount !== 144 || contentLessonCount !== 144) {
-  throw new Error(`Domain 02 lesson mismatch: curriculum=${lessonCount}, content=${contentLessonCount}`);
+const totalLessons = domains.reduce((n,d) => n + d.modules.reduce((a,m) => a + m.lessons.length, 0), 0);
+const contentDomains = context.window.WI_CURRICULUM_CONTENT || {};
+const totalContentLessons = Object.values(contentDomains).reduce((n,d) => n + d.modules.reduce((a,m) => a + m.lessons.length, 0), 0);
+if (totalLessons !== 624 || totalContentLessons !== 624) {
+  throw new Error(`Curriculum total mismatch: curriculum=${totalLessons}, content=${totalContentLessons}`);
 }
-for (const module of content02.modules) {
-  for (const lesson of module.lessons) {
-    if (!lesson.understanding || !lesson.notes?.length || !lesson.highlights?.length || !lesson.qa?.length) {
-      throw new Error(`Incomplete learning content: ${lesson.id}`);
+for (const domain of domains) {
+  const contentDomain = contentDomains[domain.id];
+  if (!contentDomain) throw new Error(`Missing content domain: ${domain.id}`);
+  for (const module of domain.modules) {
+    const contentModule = contentDomain.modules.find(m => m.id === module.id);
+    if (!contentModule || contentModule.lessons.length !== module.lessons.length) {
+      throw new Error(`Lesson mismatch: ${domain.id} ${module.id}`);
+    }
+    for (const lesson of contentModule.lessons) {
+      if (!lesson.understanding || !lesson.notes?.length || !lesson.highlights?.length || !lesson.qa?.length || !lesson.practice || !lesson.workedExample || !lesson.assessment || !lesson.sources?.length) {
+        throw new Error(`Incomplete learning content: ${lesson.id}`);
+      }
     }
   }
 }
-console.log(`Validated index.html, external curriculum scripts, 13 domains, and 144 complete Domain 02 lessons.`);
+console.log(`Validated index.html, external curriculum scripts, 4 domains, 624 curriculum lessons, and 624 complete research-backed lesson records.`);
