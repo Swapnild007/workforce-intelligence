@@ -601,12 +601,35 @@
         const content=window.WI_CURRICULUM_CONTENT?.[did];
         const contentModule=content?.modules?.find(x=>x.id===mid);
         const rich=contentModule?.lessons?.find(x=>x.id===lesson);
+        const depth=rich?.depth;
         title.textContent=lesson;
-        body.innerHTML='<div style="font-size:8px;letter-spacing:1.5px;color:#777">'+d.name+' · '+m.name+'</div><p style="margin-top:12px"><b>Understanding</b><br>'+ (rich?.understanding||'Build the concept from first principles, then connect it to a practical WFM decision.')+'</p><div class="card" style="padding:14px;margin-top:10px"><b>Key notes</b><ul style="font-size:10px;color:#999;line-height:1.6;padding-left:18px">'+(rich?.notes||['Define the concept.','Check assumptions.','Apply it to a WFM decision.']).map(x=>'<li>'+x+'</li>').join('')+'</ul></div><div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#999;line-height:1.6;padding-left:18px">'+(rich?.highlights||[]).map(x=>'<li>'+x+'</li>').join('')+'</ul></div><div style="margin-top:12px"><button class="primary" id="lessonComplete">Mark lesson complete →</button></div>';
+        const esc=(v)=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const card=(heading,html,cls='')=>'<section class="lesson-section '+cls+'"><h3>'+heading+'</h3>'+html+'</section>';
+        const bullets=(items)=>'<ul>'+((items||[]).map(x=>'<li>'+esc(x)+'</li>').join(''))+'</ul>';
+        const levels=(depth?.levelPlan||[]).map((x,i)=>'<div class="lesson-level '+(i===0?'active':'')+'"><div class="lesson-level-num">'+esc(x.level)+'</div><b>'+esc(x.goal)+'</b><p>'+esc(x.task)+'</p></div>').join('');
+        body.innerHTML=
+          '<div class="lesson-hero">'+
+            '<div class="lesson-eyebrow">ZERO → HERO · LESSON '+esc(rich?.id||'')+'</div>'+
+            '<p class="lesson-path">'+esc(d.name)+' · '+esc(m.name)+'</p>'+
+            '<p class="lesson-outcome">'+esc(depth?.zero||rich?.understanding||'Start from the fundamentals and build toward independent application.')+'</p>'+
+          '</div>'+
+          card('Your mission','<p>'+esc(depth?.mastery||'Master the concept and demonstrate it on a realistic workforce-intelligence problem.')+'</p>')+
+          '<div class="lesson-levels">'+levels+'</div>'+
+          card('01 · Start from zero','<p>'+esc(depth?.zero||'')+'</p>')+
+          card('02 · Build the mental model','<p>'+esc(depth?.mentalModel||'')+'</p>')+
+          card('03 · Build it yourself',bullets(depth?.buildSteps||rich?.notes||[]))+
+          card('04 · Worked example','<p>'+esc(rich?.workedExample||'Work through a controlled example and reconcile the result with an independent check.')+'</p>')+
+          card('05 · Guided practice','<p>'+esc(rich?.practice||'Apply the method to a small controlled dataset.')+'</p>')+
+          card('06 · Diagnose the failure','<p>'+esc((rich?.commonMistakes||[]).join(' ')||'Change one assumption deliberately and explain what breaks.')+'</p>')+
+          card('07 · Transfer to real work','<p>'+esc(depth?.transfer||'Apply the concept to a second case with changed inputs.')+'</p>')+
+          card('08 · Hero challenge','<p>'+esc(depth?.mastery||'')+'</p><button class="primary" id="lessonChallenge">Start mastery challenge →</button>')+
+          card('09 · Assessment evidence','<p>'+esc(rich?.assessment||'Explain the assumptions, show the result and provide one validation check.')+'</p>')+
+          card('10 · What comes next','<p>'+esc(depth?.prerequisites||'')+'</p><p>'+esc(depth?.sourceNote||'')+'</p>')+
+          '<div class="lesson-actions"><button class="primary" id="lessonComplete">Mark lesson complete →</button></div>';
         modal.classList.add('open');
-        document.getElementById('lessonComplete')?.addEventListener('click',()=>{saveCompletedLesson(path);showToast('Lesson completed. Your learning path is ready for the next step.');modal.classList.remove('open');renderLearnEngine();renderCurriculum();});
+        document.getElementById('lessonComplete')?.addEventListener('click',()=>{saveCompletedLesson(path);showToast('Lesson completed. Continue to the next level.');modal.classList.remove('open');renderLearnEngine();renderCurriculum();});
+        document.getElementById('lessonChallenge')?.addEventListener('click',()=>showToast('Challenge mode opened — complete the Hero Challenge and defend your answer.'));
       }
-
       function renderCurriculum(){
         const grid=document.getElementById('curriculumGrid');
         if(!grid || !window.WI_CURRICULUM)return;
