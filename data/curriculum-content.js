@@ -1050,6 +1050,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.06": {
+    "title": "Operating Hours, Calendars and Events",
+    "understanding": "WFM plans against a calendar, not an abstract 24-hour clock. Operating hours, holidays, closures, campaigns, launches and other business events can change demand or the hours in which work must be covered.",
+    "notes": [
+      "Separate normal operating hours from exceptions.",
+      "Calendar rules should be explicit, versioned and owned.",
+      "Events can change volume, handling time, staffing availability or all three.",
+      "Time zones can affect interval alignment in multi-site operations.",
+      "Forecasting and scheduling should use the same approved calendar unless an exception is documented."
+    ],
+    "highlights": [
+      "Calendar configuration is part of the WFM model.",
+      "An unusual day should not automatically be treated as normal history.",
+      "Events can affect demand and capacity.",
+      "Time-zone mistakes can shift staffing coverage."
+    ],
+    "qa": [
+      [
+        "Why do operating hours matter?",
+        "They define when demand can arrive and when capacity is expected."
+      ],
+      [
+        "What is a special event?",
+        "A condition that can materially change normal demand, handling or workforce availability."
+      ],
+      [
+        "Why are time zones important?",
+        "The same instant can belong to different local intervals across sites."
+      ],
+      [
+        "Should holidays always be removed from history?",
+        "Not automatically. Classify them according to the forecast purpose and comparable future calendar."
+      ]
+    ],
+    "practice": "Build a four-week calendar containing normal days, one holiday, one closure and one campaign event. Mark which intervals should be forecast normally, adjusted, excluded or separately analysed.",
+    "workedExample": "A center normally operates 08:00–20:00, but a campaign extends Friday hours to 22:00. WFM must create demand and staffing assumptions for the extra two hours instead of silently treating them as normal history.",
+    "assessment": "Submit a planning calendar with operating hours, exceptions, event tags and ownership. Explain how each exception affects forecasting or scheduling.",
+    "commonMistakes": [
+      "Treating every date as comparable.",
+      "Ignoring time zones.",
+      "Changing operating hours without updating staffing assumptions."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "WFM plans against a calendar, not an abstract 24-hour clock. Operating hours, holidays, closures, campaigns, launches and other business events can change demand or the hours in which work must be covered.",
+      "mentalModel": "Use the calendar later for forecasting baselines and event adjustments. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "Define standard hours.",
+        "Define time zone and interval convention.",
+        "Create holiday rules.",
+        "Create closure and event rules.",
+        "Tag historical events.",
+        "Map future events to assumptions.",
+        "Validate the planning calendar."
+      ],
+      "mastery": "Create a calendar that a forecasting analyst can use without manually interpreting dates.",
+      "prerequisites": "02.1.05",
+      "transfer": "Use the calendar later for forecasting baselines and event adjustments.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
