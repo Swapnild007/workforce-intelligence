@@ -73,3 +73,7 @@ The navigation intentionally separates functions that are easy to confuse:
 - **Resources** = reference material and formula/library support.
 
 This avoids maintaining separate pages for the same learning state or calculator functionality.
+
+
+## WFM Lab
+The WFM Lab is the single practical WFM workspace. It intentionally combines Call Centre Helper-style workflows—staffing/day planning, forecasting, capacity, schedule adherence, dashboard control, intraday and multichannel scenarios—rather than exposing duplicate calculator pages. The implementations are original, browser-native, offline-first and use synthetic data.
