@@ -11,14 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Validate package metadata
         run: node -e "JSON.parse(require('fs').readFileSync('package.json','utf8')); console.log('package.json: OK')"
+
       - name: Validate inline JavaScript and UI markers
         run: node scripts/check-inline-js.js
+
       - name: Validate HTML structure
-        run: python - <<'PY'
-from html.parser import HTMLParser
-from pathlib import Path
-HTMLParser().feed(Path("index.html").read_text(encoding="utf-8"))
-print("index.html: HTML parser OK")
-PY
+        run: python -c "from html.parser import HTMLParser; from pathlib import Path; HTMLParser().feed(Path('index.html').read_text(encoding='utf-8')); print('index.html: HTML parser OK')"
