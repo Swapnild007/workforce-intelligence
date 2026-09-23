@@ -370,8 +370,6 @@
       renderCurriculum();
       const wfmLabRoot=document.getElementById('wfmLabRoot');
       if(wfmLabRoot && window.WFM_LAB) window.WFM_LAB.mount(wfmLabRoot);
-      const wfmProjectsRoot=document.getElementById('wfmProjectsRoot');
-      if(wfmProjectsRoot && window.WFM_PROJECTS) window.WFM_PROJECTS.mount(wfmProjectsRoot);
       window.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();} if(e.key==='Escape')modal.classList.remove('open')});
     })();
   </script>
