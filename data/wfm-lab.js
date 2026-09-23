@@ -118,12 +118,12 @@
   function intradayMetrics(i=state.intraday) {
     const volumeVar=n(i.actual)/Math.max(1,n(i.forecast))-1;
     const ahtVar=n(i.ahtActual)/Math.max(1,n(i.ahtPlan))-1;
-    const demand=n(i.actual)*n(i.ahtActual)/3600/1;
+    const demandHours=n(i.actual)*n(i.ahtActual)/3600;
     const scheduled=n(i.scheduled);
     const available=n(i.available);
-    const workloadFte=demand/1;
-    const net=available-Math.ceil(workloadFte/300);
-    return {volumeVar,ahtVar,demand,scheduled,available,net};
+    const required=Math.max(1,Math.ceil(demandHours));
+    const net=available-required;
+    return {volumeVar,ahtVar,demandHours,scheduled,available,required,net};
   }
 
   function input(label,key,value,step='1',min='0',max='100000') {
