@@ -530,9 +530,11 @@
     };
   }
 
+  const authoredWfmModule01 = {};
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
+    const authoredLesson=(domain==="02" && module==="02.1") ? authoredWfmModule01[domain+"."+module+"."+String(index+1).padStart(2,"0")] : null;
     const mistakes=commonMistakes[domain];
     const understanding=domainFrames[domain]+" "+focus+" This lesson is intentionally tied to the module sequence: "+module+".";
     const notes=s.notes.length?s.notes:[
@@ -554,16 +556,16 @@
     return {
       id: domain+"."+module.split(".")[1]+"."+String(index+1).padStart(2,"0"),
       title:title,
-      understanding:understanding,
-      notes:notes,
-      highlights:highlights,
-      qa:qa,
-      practice:s.practice,
-      workedExample:s.workedExample,
-      commonMistakes:mistakes,
-      assessment:s.assessment || "Submit the worked example, explain the assumptions, and show one validation check.",
-      sources:sourceMap[domain],
-      depth:deepLesson(domain,module,title,index)
+      understanding:authoredLesson?.understanding || understanding,
+      notes:authoredLesson?.notes || notes,
+      highlights:authoredLesson?.highlights || highlights,
+      qa:authoredLesson?.qa || qa,
+      practice:authoredLesson?.practice || s.practice,
+      workedExample:authoredLesson?.workedExample || s.workedExample,
+      commonMistakes:authoredLesson?.commonMistakes || mistakes,
+      assessment:authoredLesson?.assessment || s.assessment || "Submit the worked example, explain the assumptions, and show one validation check.",
+      sources:authoredLesson?.sources || sourceMap[domain],
+      depth:authoredLesson?.depth || deepLesson(domain,module,title,index)
     };
   }
 
