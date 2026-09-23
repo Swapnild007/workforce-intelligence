@@ -1,4 +1,4 @@
-/* Workforce Intelligence · Domain 02 learning content.\n   Original Academy teaching content mapped to the Call Centre Helper WFM reference framework.\n*/\nwindow.WI_CURRICULUM_CONTENT = {
+/* Workforce Intelligence · Domain 02 learning content.   Original Academy teaching content mapped to the Call Centre Helper WFM reference framework.*/window.WI_CURRICULUM_CONTENT = {
   "02": {
     "id": "02",
     "title": "WFM & Contact-Center Systems",
