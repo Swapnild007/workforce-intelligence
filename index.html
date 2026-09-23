@@ -88,6 +88,40 @@
     .mobile-nav{display:none}
     @media(max-width:900px){.sidebar{height:60px;padding:0 16px}.nav{gap:14px}.nav button{font-size:9px}.profile{display:none}.main{padding-top:0}.topbar{top:60px;padding:0 16px}.hero{min-height:590px;padding:145px 18px 45px}.hero-visual{right:-170px;top:125px;width:500px;opacity:.42}.hero h1{font-size:52px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 16px}.dashboard-grid,.learning-grid,.curriculum,.lab-grid,.resources{grid-template-columns:1fr;padding:0 16px}.section-head{margin-left:16px;margin-right:16px}.nf-row{padding-left:16px!important;padding-right:16px!important}}
     @media(max-width:600px){.intro-word{margin-top:205px;font-size:8px;letter-spacing:4px}.nf-links{display:none}.sidebar{height:56px}.brand strong{font-size:12px}.brand span{display:none}.logo{font-size:22px}.main{padding-bottom:75px}.topbar{top:56px;height:48px}.search{max-width:none;width:100%;height:32px}.top-actions{display:none}.hero{min-height:610px;padding:150px 17px 38px;background:linear-gradient(90deg,#080808dd,#08080877),radial-gradient(circle at 80% 30%,#253d68,#141414 55%)}.hero h1{font-size:48px;letter-spacing:-3px}.hero p{font-size:11px}.hero-actions{margin-top:18px}.primary,.secondary{font-size:9px;padding:10px 13px}.hero-visual{display:none}.kpis{grid-template-columns:1fr 1fr}.kpi{min-height:105px}.kpi strong{font-size:21px}.section-head{margin-top:22px}.section-head h2{font-size:17px}.curriculum,.lab-grid,.resources,.dashboard-grid,.learning-grid{grid-template-columns:1fr}.mobile-nav{display:flex;position:fixed;left:9px;right:9px;bottom:9px;height:57px;z-index:150;background:#181818ee;border:1px solid #333;border-radius:7px;align-items:center;justify-content:space-around;backdrop-filter:blur(18px)}.mobile-nav button{background:none;color:#777;font-size:7px;display:grid;place-items:center;gap:2px}.mobile-nav button.active{color:#fff}.micon{font-size:15px}.modal{max-height:84vh}.wfm-shell{margin-bottom:10px!important}}
+
+    /* --- Mobile precision pass --- */
+    .nf-scroll{scroll-snap-type:x mandatory;scroll-padding-left:0;overscroll-behavior-x:contain}
+    .nf-scroll>.nf-card,.nf-scroll>.nf-poster,.nf-scroll>.nf-lab{scroll-snap-align:start}
+    .nf-card-art,.nf-poster-art,.nf-lab{background-position:center center!important}
+    .nf-card-art:before,.nf-poster-art:after{pointer-events:none}
+    .nf-card-copy h3,.nf-poster h3,.nf-lab-copy h3{color:#fff}
+    .nf-card-copy p,.nf-poster p,.nf-lab-copy p{color:#a0a0a0}
+    .nf-mobile-nav{pointer-events:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;display:none}
+    @media(max-width:760px){
+      .nf-nav{height:58px;padding:0 15px}
+      .nf-links{display:none}
+      .nf-nav-right{gap:9px}
+      .nf-hero{min-height:650px;padding:118px 17px 44px;align-items:flex-end}
+      .nf-copy{width:100%;max-width:360px}
+      .nf-copy h1{font-size:58px;letter-spacing:-4px}
+      .nf-copy p{font-size:11px;max-width:330px}
+      .nf-art{display:none}
+      .nf-row{margin-left:17px!important;margin-right:0!important;padding-left:0!important;padding-right:0!important}
+      .nf-row-head{padding-right:17px}
+      .nf-scroll{gap:9px;padding-left:0!important;padding-right:17px!important}
+      .nf-card{flex-basis:255px}
+      .nf-poster{flex-basis:155px}
+      .nf-poster-art{height:205px}
+      .nf-lab{flex-basis:285px;min-height:175px}
+      .nf-mobile-nav{display:flex!important}
+      .nf-footer{margin-bottom:100px}
+    }
+    @media(max-width:380px){
+      .nf-copy h1{font-size:52px}
+      .nf-card{flex-basis:238px}
+      .nf-poster{flex-basis:145px}
+      .nf-lab{flex-basis:270px}
+    }
 </style>
 </head>
 <body>
@@ -366,6 +400,9 @@
 
       const search=document.getElementById('globalSearch');
       search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
+
+      // Keep every streaming row at its intended starting position on a fresh page load.
+      document.querySelectorAll('.nf-scroll').forEach(row=>{ row.scrollLeft=0; });
       renderCurriculum();
       const wfmLabRoot=document.getElementById('wfmLabRoot');
       if(wfmLabRoot && window.WFM_LAB) window.WFM_LAB.mount(wfmLabRoot);
