@@ -188,7 +188,7 @@
     <nav class="mobile-nav" id="mobileNav"><button class="active" data-view="home"><span class="micon">⌂</span>Home</button><button data-view="learn"><span class="micon">◈</span>Learn</button><button data-view="labs"><span class="micon">⌬</span>WFM Lab</button><button data-view="decisions"><span class="micon">⌁</span>Decide</button><button id="moreBtn"><span class="micon">⋯</span>More</button></nav>
   </section>
 
-  <div class="modal-backdrop" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Interactive learning</div><h2 id="modalTitle" style="margin:7px 0;font-size:26px">Lesson</h2></div><button class="close" id="modalClose">×</button></div><p id="modalBody" style="font-size:12px;color:var(--muted);line-height:1.7"></p><div class="card" style="padding:18px;margin-top:14px;background:#f4f7ff"><b>Challenge</b><p style="font-size:11px;color:var(--muted);line-height:1.6">A learning platform should make you do something with the concept. Change the inputs, predict the outcome, then compare it with the model.</p><button class="primary" id="modalAction">Start challenge →</button></div></div></div>
+  <div class="modal-backdrop" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Interactive learning</div><h2 id="modalTitle" style="margin:7px 0;font-size:26px">Lesson</h2></div><button class="close" id="modalClose">×</button></div><p id="modalBody" style="font-size:12px;color:var(--muted);line-height:1.7"></p><div class="card" style="padding:18px;margin-top:14px;background:#202020"><b>Challenge</b><p style="font-size:11px;color:var(--muted);line-height:1.6">A learning platform should make you do something with the concept. Change the inputs, predict the outcome, then compare it with the model.</p><button class="primary" id="modalAction">Start challenge →</button></div></div></div>
   <div class="toast" id="toast"></div>
 
   <script src="data/curriculum.js"></script>
@@ -270,7 +270,7 @@
         };
         const item=cases[button.dataset.decision]||cases.coverage;
         title.textContent=item[0];
-        body.innerHTML='<p style="margin-top:0"><b>Case</b><br>'+item[1]+'</p><div class="card" style="padding:14px;margin-top:12px"><b>Your response</b><p style="font-size:10px;color:#687394;line-height:1.6">Write the operational diagnosis, calculations or assumptions you would use, then state the decision and what evidence would change it.</p><textarea style="width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;resize:vertical;outline:0;font:inherit" placeholder="Explain your reasoning..."></textarea></div>';
+        body.innerHTML='<p style="margin-top:0"><b>Case</b><br>'+item[1]+'</p><div class="card" style="padding:14px;margin-top:12px"><b>Your response</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6">Write the operational diagnosis, calculations or assumptions you would use, then state the decision and what evidence would change it.</p><textarea style="width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;resize:vertical;outline:0;font:inherit" placeholder="Explain your reasoning..."></textarea></div>';
         modal.classList.add('open');
       }));
 
@@ -296,14 +296,14 @@
           if(content){
             body.innerHTML='<p style="margin-top:0">'+content.executiveFrame+'</p>'+
               '<div style="display:grid;gap:10px;margin-top:14px">'+
-              content.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.title+'</b><p style="font-size:10px;color:#687394;line-height:1.5;margin:6px 0">'+m.executivePoint+'</p><div style="display:grid;gap:5px">'+
+              content.modules.map(m=>'<div class="card" style="padding:14px"><b>'+m.id+' · '+m.title+'</b><p style="font-size:10px;color:#9a9a9a;line-height:1.5;margin:6px 0">'+m.executivePoint+'</p><div style="display:grid;gap:5px">'+
               m.lessons.map(l=>'<button class="secondary" data-content-lesson="'+l.id+'" style="text-align:left;padding:9px 11px">'+l.id+' · '+l.title+'</button>').join('')+
               '</div></div>').join('')+
               '</div>';
             modal.classList.add('open');
           }else{
             body.innerHTML='<strong>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</strong><br><br>'+
-              d.modules.map(m=>'<b>'+m.id+' · '+m.name+'</b><br><span style="color:#687394">'+m.lessons.join(' · ')+'</span>').join('<br><br>');
+              d.modules.map(m=>'<b>'+m.id+' · '+m.name+'</b><br><span style="color:#9a9a9a">'+m.lessons.join(' · ')+'</span>').join('<br><br>');
             modal.classList.add('open');
           }
         }));
@@ -318,9 +318,9 @@
         if(!lesson)return;
         title.textContent=lesson.id+' · '+lesson.title;
         body.innerHTML='<p style="margin-top:0"><b>Understanding language</b><br>'+lesson.understanding+'</p>'+
-          '<div class="card" style="padding:14px;margin-top:12px"><b>Key notes</b><ul style="font-size:10px;color:#687394;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.notes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
-          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#687394;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
-          '<div class="card" style="padding:14px;margin-top:10px"><b>Questions & answers</b><div style="display:grid;gap:9px;margin-top:8px">'+lesson.qa.map(q=>'<div><b style="font-size:10px">Q. '+q[0]+'</b><div style="font-size:10px;color:#687394;line-height:1.5;margin-top:3px">A. '+q[1]+'</div></div>').join('')+'</div></div>';
+          '<div class="card" style="padding:14px;margin-top:12px"><b>Key notes</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.notes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+          '<div class="card" style="padding:14px;margin-top:10px"><b>Questions & answers</b><div style="display:grid;gap:9px;margin-top:8px">'+lesson.qa.map(q=>'<div><b style="font-size:10px">Q. '+q[0]+'</b><div style="font-size:10px;color:#9a9a9a;line-height:1.5;margin-top:3px">A. '+q[1]+'</div></div>').join('')+'</div></div>';
       });
 
       const search=document.getElementById('globalSearch');
