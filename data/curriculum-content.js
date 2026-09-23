@@ -443,14 +443,79 @@
       }
     };
 
+    const topic=title.toLowerCase();
+    const topicOverrides={
+      "cell references":{
+        zero:"A cell reference is the address Excel uses to locate a value or formula input. You will learn how A1-style references behave when a formula is copied, and why relative, absolute and mixed references produce different results.",
+        mental:"Think of a formula as a small program with addresses. Relative references move with the formula; absolute references stay fixed; mixed references lock either the row or the column.",
+        build:["Enter a small input table and identify the address of each value.","Write a formula using a relative reference.","Copy the formula down and observe the reference movement.","Change the reference to absolute with $ and copy again.","Test a mixed reference such as A$1 or $A1.","Use the reference pattern in a small WFM calculation."],
+        hero:"Build a staffing table where the same fixed assumption is applied across changing intervals, then explain why each $ symbol is necessary."
+      },
+      "number formats":{
+        zero:"Number format changes how Excel displays a value; it does not normally change the underlying numeric value. This distinction matters when a WFM workbook shows minutes, percentages, dates or currency.",
+        mental:"Value and display are separate layers. A value such as 0.25 can display as 25%, 0.3 can display as 18:00 when interpreted as time, and an integer can display with separators without changing the stored number.",
+        build:["Enter known numeric values.","Apply General, Number and Percentage formats.","Inspect the formula bar to distinguish value from display.","Format time and duration separately.","Test a formula after formatting.","Create a consistent format standard for a WFM sheet."],
+        hero:"Take a KPI sheet containing counts, percentages, seconds and durations and create a display standard that does not alter the underlying calculations."
+      },
+      "formula evaluation":{
+        zero:"Excel evaluates a formula by resolving references, functions and operators into a result. Understanding that sequence makes debugging much easier than guessing why a cell shows an unexpected number.",
+        mental:"Input values → references → operators/functions → intermediate results → final value. Excel's precedence rules determine the order of operations.",
+        build:["Start with a formula containing one operation.","Add a second operation and predict the result.","Use parentheses to make the intended order explicit.","Replace a literal with a cell reference.","Add a function.","Trace the result using Excel's auditing tools."],
+        hero:"Take a deliberately ambiguous formula, predict two possible results, then rewrite it so the intended evaluation order is unambiguous."
+      },
+      "xlookup":{
+        zero:"XLOOKUP finds a value in one range and returns the corresponding value from another range. It is especially useful when operational data has a stable key such as EmployeeID, SkillID or LOB code.",
+        mental:"Search key → lookup array → matching position → return array. The lookup key must be prepared and the missing-match behaviour must be intentional.",
+        build:["Create a unique key column.","Write a basic XLOOKUP.","Add a missing-match result.","Test a duplicate key.","Test a key with different data type or whitespace.","Use the lookup result in a downstream WFM calculation."],
+        hero:"Build an EmployeeID-to-LOB lookup, test missing and duplicate IDs, and produce an exception list rather than hiding bad mappings."
+      },
+      "power query architecture":{
+        zero:"Power Query is a transformation engine built around a sequence of recorded steps. You can refresh the same logic when the next source file arrives instead of repeating manual cleaning.",
+        mental:"Source → query steps → transformed table → load destination. Each step consumes the previous step's result.",
+        build:["Connect to a small source.","Inspect the generated steps.","Rename steps so their purpose is clear.","Change a data type and observe the step.","Add a transformation.","Refresh after replacing the source with a new period.","Inspect the final output and validation checks."],
+        hero:"Create a refreshable query with named steps, then replace the input with a second month's file and prove the same transformation still works."
+      },
+      "filter context":{
+        zero:"Filter context is the set of filters currently affecting a DAX calculation. Slicers, rows, columns and DAX expressions can change that context.",
+        mental:"A measure is evaluated over the rows visible under the current filter context. CALCULATE can modify that context before evaluating an expression.",
+        build:["Create a base measure.","Place it in a visual by LOB.","Add a date filter and observe the result.","Add a second filter.","Use CALCULATE to change one filter.","Explain the result using the exact active filters."],
+        hero:"Build a measure that changes under Date and LOB filters, then explain the final number without referring to the visual as a black box."
+      },
+      "row context":{
+        zero:"Row context means DAX is evaluating an expression with a current row in view, most commonly in calculated columns and iterator functions. It is different from filter context.",
+        mental:"Row context answers 'which row am I evaluating?' Filter context answers 'which rows are currently included?' Confusing them is a common source of incorrect DAX.",
+        build:["Create a calculated column with a row-level expression.","Inspect the result row by row.","Create an iterator such as SUMX.","Compare the iterator with a simple SUM.","Explain where the current row comes from.","Validate the result against a hand calculation."],
+        hero:"Build a row-level calculation and an iterator-based measure over the same data, then explain why their evaluation contexts differ."
+      },
+      "python foundations":{
+        zero:"Python foundations begin with values, names, expressions and statements. The objective is to make the language predictable before introducing data libraries.",
+        mental:"A variable gives a value a name; an expression produces a value; a statement performs an action or controls execution.",
+        build:["Open a Python interpreter or script.","Create variables with different types.","Inspect them with type().","Perform arithmetic and comparisons.","Use a conditional statement.","Print the result and verify it by hand."],
+        hero:"Write a small WFM calculation using only Python fundamentals, then explain every variable, operator and control-flow decision."
+      },
+      "pandas foundations":{
+        zero:"A pandas DataFrame is a tabular data structure with labelled rows and columns. It is useful for workforce datasets because you can inspect, filter, transform and aggregate structured records.",
+        mental:"Think of a DataFrame as a table plus programmable operations. The most important early skill is understanding its shape, columns, index and data types.",
+        build:["Create or load a small DataFrame.","Inspect shape and columns.","Inspect data types and missing values.","Select rows and columns.","Create a derived column.","Group the data and validate one result manually."],
+        hero:"Load a small interval dataset, profile it, create one derived KPI field and reconcile one grouped result by hand."
+      }
+    };
+    let tp=null;
+    Object.keys(topicOverrides).forEach(k=>{if(topic===k)tp=topicOverrides[k];});
+    const titleAware = tp || {
+      zero:"This lesson teaches “"+title+"”. Start by identifying exactly what the term means, what problem it solves, what inputs it needs and what a correct result looks like.",
+      mental:"For “"+title+"”, think in four parts: definition → inputs → method → decision. Do not move to advanced use until you can explain each part without the interface.",
+      build:["Define “"+title+"” in plain language.","Identify the required inputs and their units or data types.","Work through a tiny controlled example.","Change one input and predict the effect.","Validate the result independently.","Apply the concept to a workforce-intelligence case."],
+      hero:"Teach “"+title+"” to another learner using one simple example, one realistic example and one edge case; then defend the result."
+    };
     const p=packs[family]||packs.foundation;
     const previous=index>0 ? "The previous lesson in this module is your immediate prerequisite. Revisit it if any term here feels unfamiliar." : "No prior lesson is required. Start with the Zero level and do not skip the vocabulary.";
     const next="After mastery, continue to the next lesson in this module and carry forward the same dataset/project so the skills compound.";
     return {
-      zero:p.zero,
-      mentalModel:p.mental,
-      buildSteps:p.build,
-      mastery:p.hero,
+      zero:titleAware.zero,
+      mentalModel:titleAware.mental,
+      buildSteps:titleAware.build,
+      mastery:titleAware.hero,
       prerequisites:previous,
       transfer:"Use the concept twice: first on the controlled example, then on a slightly different workforce-intelligence case. If the answer changes, explain why.",
       levelPlan:[
