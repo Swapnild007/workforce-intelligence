@@ -2,7 +2,7 @@ const fs = require('fs');
 const vm = require('vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
-const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-lab.js'];
+const externalScripts = ['data/curriculum.js','data/curriculum-content-02.js','data/wfm-generic-data.js','data/wfm-lab.js'];
 for (const file of externalScripts) {
   const source = fs.readFileSync(file, 'utf8');
   new vm.Script(source, { filename: file });
@@ -28,6 +28,13 @@ const requiredMarkers = [
 for (const marker of requiredMarkers) {
   if (!html.includes(marker)) throw new Error(`Missing required UI marker: ${marker}`);
 }
+
+const genericSource = fs.readFileSync('data/wfm-generic-data.js', 'utf8');
+const genericContext = { window: {} };
+vm.createContext(genericContext);
+vm.runInContext(genericSource, genericContext, { filename: 'data/wfm-generic-data.js' });
+const generic = genericContext.window.WFM_GENERIC_DATA;
+if (!generic || generic.lobs.length < 4 || generic.skills.length < 5 || generic.agents.length < 10) throw new Error('Generic WFM dataset is incomplete');
 
 const wfmSource = fs.readFileSync('data/wfm-lab.js', 'utf8');
 const wfmContext = { window: {} };
