@@ -55,7 +55,7 @@ vm.runInContext(wfmSource, wfmContext, { filename: 'data/wfm-lab.js' });
 if (!wfmContext.window.WFM_LAB?.engine) throw new Error('WFM Lab engine missing');
 const wfm = wfmContext.window.WFM_LAB.engine;
 const s = wfm.staffing({volume:600,period:60,aht:300,sl:80,threshold:20,shrinkage:28,occupancy:85,currentAgents:30});
-if (!(s.required > 0 && Number.isFinite(s.erlangs) && Number.isFinite(s.fte))) throw new Error('WFM staffing engine failed');
+if (!(s.required > 0 && Number.isFinite(s.erlangs) && Number.isFinite(s.fte) && Number.isFinite(s.serviceLevel) && Number.isFinite(s.occupancy))) throw new Error('WFM staffing engine failed');
 const c = wfm.capacity({weeklyVolume:18000,aht:300,shrinkage:28,paidHours:40});
 if (!(c.fte > 0 && Number.isFinite(c.fte))) throw new Error('WFM capacity engine failed');
 const f = wfm.forecastModel();
@@ -85,6 +85,15 @@ for (const marker of ['data-wfm-lob-select','data-wfm-input="planningGrain"','da
 }
 if (wfmContext.window.WFM_LAB.state.operation?.planningGrain !== undefined && wfmContext.window.WFM_LAB.state.interval !== 30) {
   throw new Error('WFM Screen 02 default planning grain changed unexpectedly');
+}
+
+const allWfmViews = ['command','setup','data','forecast','staffing','capacity','schedule','adherence','intraday','multichannel','scenario','reporting','validation','decision'];
+for (const view of allWfmViews) {
+  wfmContext.window.WFM_LAB.state.view = view;
+  wfmContext.window.WFM_LAB.mount(screenRoot);
+  if (!screenRoot.innerHTML.trim() || /\\bundefined\\b|\\bnull first projected\\b/.test(screenRoot.innerHTML)) {
+    throw new Error('WFM view failed to render cleanly: ' + view);
+  }
 }
 
 
