@@ -49,7 +49,7 @@
     const sl=1-pw*Math.exp(-(agents-a)*(num(q.threshold)/num(q.aht)));
     const asa=pw*num(q.aht)/(agents-a);
     const patience=Math.max(1,num(q.patience));
-    const abandon=Math.min(1,(pw*(1-Math.exp(-patience*(agents-a)/(agents*num(q.aht))))));
+    const abandon=Math.min(1,(pw*(1-Math.exp(-patience*(agents-a)/(agents*Math.max(1,num(q.aht)))))));
     return {a,agents,rho,pw,sl:clamp(sl,0,1),asa,occupancy:Math.min(1,rho),abandon};
   }
 
@@ -57,7 +57,7 @@
     const raw=Math.max(1,Math.ceil(num(q.volume)*num(q.aht)/(60*num(q.period))));
     for(let agents=raw;agents<=10000;agents++){
       const m=queueMetrics({...q,agents});
-      if(m.sl >= num(q.sl)/100 && m.occupancy <= num(q.occupancy)/100)return agents;
+      const targetSL=num(q.sl)>1?num(q.sl)/100:num(q.sl); const maxOcc=num(q.occupancy)>1?num(q.occupancy)/100:num(q.occupancy); if(m.sl >= targetSL && m.occupancy <= maxOcc)return agents;
     }
     return 10000;
   }
@@ -186,7 +186,7 @@
     return requiredAgents({...c,aht,sl:num(c.sl),occupancy:num(c.occupancy)});
   }
 
-  function multichannel(){
+  function multichannelMetrics(){
     const voice=channelNeed(state.channels.voice),email=channelNeed(state.channels.email),chat=channelNeed(state.channels.chat);
     return {voice,email,chat,total:voice+email+chat};
   }
@@ -290,7 +290,7 @@
   }
 
   function multichannel(){
-    const c=state.channels,m=multichannel();
+    const c=state.channels,m=multichannelMetrics();
     return intro('Multichannel Staffing Simulator','Model voice, email and web chat in one workspace. Chat uses an explicit concurrency factor so the effective AHT assumption is visible.','https://www.callcentrehelper.com/multi-channel-contact-centre-calculator-96321.htm')+
       '<div class="wfm-channel-grid">'+
       panel('Voice','queueing input','<div class="wfm-form-grid">'+field('Contacts / period','v.volume',c.voice.volume,'1','0','100000')+field('AHT sec','v.aht',c.voice.aht,'1','1','7200')+field('Period min','v.period',c.voice.period,'1','1','1440')+field('Service level %','v.sl',c.voice.sl,'1','1','99.9')+field('Answer sec','v.threshold',c.voice.threshold,'1','1','3600')+field('Shrinkage %','v.shrinkage',c.voice.shrinkage,'1','0','90')+field('Max occupancy %','v.occupancy',c.voice.occupancy,'1','1','99')+'</div>')+
@@ -324,6 +324,6 @@
 
   window.WFM_LAB={
     mount(root){ if(root){render();} },
-    engine:{erlangC,queueMetrics,requiredAgents,fteRequired,dayPlan,forecastSeries,holdoutForecast,capacityMetrics,schedulePlan,adherenceMetrics,intradayMetrics,multichannel}
+    engine:{erlangC,queueMetrics,requiredAgents,fteRequired,dayPlan,forecastSeries,holdoutForecast,capacityMetrics,schedulePlan,adherenceMetrics,intradayMetrics,multichannel:multichannelMetrics}
   };
 })();
