@@ -1,348 +1,318 @@
-/* Workforce Intelligence — WFM Lab
- * Rebuilt as one integrated, Call Centre Helper-inspired WFM workspace.
- * Uses original browser-native implementations and synthetic data.
- * Reference model: staffing calculator, day planner, forecasting, capacity,
- * schedule adherence, dashboard and multichannel workflows.
+/* Workforce Intelligence — WFM Lab v2
+ * Fresh architecture. One integrated WFM application, not a toolbox of calculators.
+ * Offline-first, synthetic data only. No client/company/PII data.
  */
 (() => {
   'use strict';
 
-  const $ = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const num = v => Number(v) || 0;
-  const clamp = (v,a,b) => Math.max(a,Math.min(b,Number(v)));
-  const pct = v => (Number(v)*100).toFixed(1)+'%';
-  const fmt = (v,d=1) => Number(v).toLocaleString(undefined,{maximumFractionDigits:d});
-  const esc = s => String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-
-  const generic = window.WFM_GENERIC_DATA || {};
-  const state = {
-    tab:'dashboard',
-    interval:30,
-    organization:generic.organization || {name:"Generic Contact Centre",timezone:"UTC",intervalMinutes:30},
-    lobs:generic.lobs || [],
-    skills:generic.skills || [],
-    agents:generic.agents || [],
-    staffing:{volume:400,aht:257,period:30,sl:80,threshold:20,shrinkage:30,occupancy:85,patience:90,agents:97},
-    forecast:{months:24,horizon:12,level:.35,trend:.15,seasonality:.25},
-    capacity:{weeklyVolume:18000,aht:300,shrinkage:28,paidHours:40,efficiency:100},
-    schedule:{agents:42,target:30,shiftLength:8,lunch:1,breaks:.5,start:8},
-    adherence:{scheduled:450,actual:420,breaks:30,training:0,meeting:0},
-    intraday:{forecast:100,actual:128,ahtPlan:300,ahtActual:345,scheduled:28,available:25},
-    dataset:{dailyDemand:generic.dailyDemand || {},historicalMonthly:generic.historicalMonthly || []},
-    channels:{
-      voice:{volume:400,aht:257,period:30,sl:80,threshold:20,shrinkage:30,occupancy:85},
-      email:{volume:80,aht:600,period:60,sl:90,threshold:1440,shrinkage:30,occupancy:75},
-      chat:{volume:55,aht:600,period:60,sl:90,threshold:60,shrinkage:30,occupancy:80,concurrency:2.5}
+  const rootState = {
+    view: 'command',
+    interval: 30,
+    selectedLob: 'voice',
+    data: {
+      lobs: [
+        {id:'voice', name:'Customer Support', channel:'Voice', aht:300, sl:.80, threshold:20, shrinkage:.28},
+        {id:'billing', name:'Billing Support', channel:'Voice', aht:360, sl:.85, threshold:20, shrinkage:.30},
+        {id:'chat', name:'Digital Chat', channel:'Chat', aht:420, sl:.90, threshold:60, shrinkage:.25},
+        {id:'email', name:'Service Requests', channel:'Email', aht:600, sl:.90, threshold:1440, shrinkage:.27}
+      ],
+      roster: Array.from({length:20},(_,i)=>({id:'AG'+String(i+1).padStart(3,'0'), skills:['voice']})),
+      history: Array.from({length:24},(_,i)=>Math.round(7800 + i*170 + 520*Math.sin(i*Math.PI/3))),
+      intervals: Array.from({length:48},(_,i)=>({
+        index:i,
+        time:String(Math.floor(i/2)).padStart(2,'0')+(i%2?':30':':00'),
+        forecast:Math.round(18 + 25*Math.exp(-Math.pow((i-26)/13,2))),
+        actual:null,
+        aht:300,
+        scheduled:35,
+        available:32
+      }))
+    },
+    inputs: {
+      volume: 600, period: 60, aht: 300, sl: 80, threshold: 20,
+      shrinkage: 28, occupancy: 85, currentAgents: 30,
+      weeklyVolume: 18000, paidHours: 40,
+      forecastHorizon: 12
     }
   };
 
-  function erlangC(a,agents){
-    a=Math.max(0,num(a)); agents=Math.max(1,Math.floor(num(agents)));
-    if(a>=agents)return 1;
+  const $ = (s,r=document) => r.querySelector(s);
+  const esc = v => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const n = v => Number(v)||0;
+  const pct = v => (n(v)*100).toFixed(1)+'%';
+  const fmt = (v,d=0) => n(v).toLocaleString(undefined,{maximumFractionDigits:d});
+  const fraction = v => n(v)>1?n(v)/100:n(v);
+
+  function erlangC(a,c){
+    a=Math.max(0,n(a)); c=Math.max(1,Math.floor(n(c)));
+    if(a>=c) return 1;
     let term=1,sum=1;
-    for(let k=1;k<agents;k++){term*=a/k;sum+=term;}
-    const last=term*a/agents;
-    return last/(sum+last*(agents/(agents-a)));
+    for(let k=1;k<c;k++){term*=a/k;sum+=term;}
+    const last=term*a/c;
+    return last/(sum+last*(c/(c-a)));
   }
 
-  function queueMetrics(q=state.staffing){
-    const period=Math.max(1,num(q.period)||60);
-    const a=num(q.volume)*num(q.aht)/(60*period);
-    const agents=Math.max(1,Math.floor(num(q.agents)));
-    const rho=a/agents;
-    if(rho>=1)return {a,agents,rho,pw:1,sl:0,asa:Infinity,occupancy:1,abandon:1};
-    const pw=erlangC(a,agents);
-    const sl=1-pw*Math.exp(-(agents-a)*(num(q.threshold)/num(q.aht)));
-    const asa=pw*num(q.aht)/(agents-a);
-    const patience=Math.max(1,num(q.patience));
-    const abandon=Math.min(1,(pw*(1-Math.exp(-patience*(agents-a)/(agents*Math.max(1,num(q.aht)))))));
-    return {a,agents,rho,pw,sl:clamp(sl,0,1),asa,occupancy:Math.min(1,rho),abandon};
-  }
-
-  function requiredAgents(q=state.staffing){
-    const period=Math.max(1,num(q.period)||60);
-    const raw=Math.max(1,Math.ceil(num(q.volume)*num(q.aht)/(60*period)));
-    for(let agents=raw;agents<=10000;agents++){
-      const m=queueMetrics({...q,agents});
-      const targetSL=num(q.sl)>1?num(q.sl)/100:num(q.sl); const occInput=q.occupancy!=null?q.occupancy:q.maxOcc; const maxOcc=num(occInput)>1?num(occInput)/100:num(occInput||1); if(m.sl >= targetSL && m.occupancy <= maxOcc)return agents;
+  function staffing(q=rootState.inputs){
+    const period=Math.max(1,n(q.period)||60);
+    const offered=n(q.volume);
+    const aht=n(q.aht);
+    const erlangs=offered*aht/(period*60);
+    const target=fraction(q.sl);
+    const maxOcc=fraction(q.occupancy);
+    let required=1;
+    for(;required<10000;required++){
+      const occ=erlangs/required;
+      if(occ>=1) continue;
+      const pw=erlangC(erlangs,required);
+      const service=1-pw*Math.exp(-(required-erlangs)*(n(q.threshold)/Math.max(1,aht)));
+      if(service>=target && occ<=maxOcc) break;
     }
-    return 10000;
+    const current=Math.max(1,Math.floor(n(q.currentAgents)));
+    const currentOcc=erlangs/current;
+    const currentPw=currentOcc>=1?1:erlangC(erlangs,current);
+    const currentSl=currentOcc>=1?0:1-currentPw*Math.exp(-(current-required+required-erlangs)*(n(q.threshold)/Math.max(1,aht)));
+    const shrink=fraction(q.shrinkage);
+    return {
+      erlangs, required, current, gap:required-current,
+      fte:required/Math.max(.01,1-shrink),
+      occupancy:Math.min(1,erlangs/required),
+      currentOccupancy:Math.min(1,currentOcc),
+      serviceLevel:Math.max(0,Math.min(1,currentSl)),
+      target,
+      asa: currentOcc>=1 ? Infinity : currentPw*aht/Math.max(.001,current-erlangs)
+    };
   }
 
-  function fteRequired(q=state.staffing){
-    const raw=requiredAgents(q);
-    const shrinkRaw=num(q.shrinkage); const shrink=Math.max(0,Math.min(.95,shrinkRaw>1?shrinkRaw/100:shrinkRaw));
-    return raw/(1-shrink);
-  }
-
-  function staffingTable(q=state.staffing){
-    const req=requiredAgents(q), start=Math.max(1,req-4), rows=[];
-    for(let agents=start;agents<=req+6;agents++){
-      const m=queueMetrics({...q,agents});
-      rows.push({agents,sl:m.sl,occ:m.occupancy,asa:m.asa,pw:m.pw,abandon:m.abandon});
-    }
-    return rows;
-  }
-
-  function dayPlan(q=state.staffing,interval=30){
-    const slots=Math.round(24*60/interval), rows=[];
-    for(let i=0;i<slots;i++){
-      const h=i*interval/60;
-      const peak=Math.exp(-Math.pow((h-13)/4.2,2));
-      const volume=Math.max(1,Math.round(num(q.volume)*(0.52+0.56*peak)*(1+0.06*Math.sin(i*.55))));
-      const req=requiredAgents({...q,volume});
-      const m=queueMetrics({...q,volume,agents:req});
-      rows.push({time:String(Math.floor(h)).padStart(2,'0')+':'+(i%2?'30':'00'),volume,agents:req,sl:m.sl,occ:m.occupancy});
-    }
-    return rows;
-  }
-
-  function holdoutForecast(f=state.forecast){
-    const nMonths=Math.max(24,Math.floor(num(f.months)||24)), horizon=Math.max(1,Math.floor(num(f.horizon)||12));
-    const actual=[];
-    for(let i=0;i<nMonths;i++){
-      const season=[.88,.91,.97,1.02,1.06,1.10,1.08,1.03,.99,.96,.93,.90][i%12];
-      const trend=1+i*.012;
-      actual.push(Math.round(8500*season*trend*(1+.045*Math.sin(i*1.7))));
-    }
-    const alpha=num(f.level)||.35,beta=num(f.trend)||.15,gamma=num(f.seasonality)||.25;
-    const seasonLen=12;
-    let level=actual[0],trend=actual[1]-actual[0], seasons=[];
-    for(let i=0;i<seasonLen;i++)seasons[i]=actual[i]/Math.max(1,level);
-    for(let i=1;i<actual.length;i++){
-      const prev=level;
-      const s=seasons[i%seasonLen]||1;
-      level=alpha*(actual[i]/s)+(1-alpha)*(level+trend);
-      trend=beta*(level-prev)+(1-beta)*trend;
-      seasons[i%seasonLen]=gamma*(actual[i]/Math.max(1,level))+(1-gamma)*s;
-    }
-    const forecast=[];
-    for(let h=1;h<=horizon;h++)forecast.push(Math.max(0,Math.round((level+h*trend)*(seasons[(actual.length+h-1)%seasonLen]||1))));
-    const holdStart=Math.max(12,actual.length-6), base=actual.slice(0,holdStart), hold=actual.slice(holdStart);
-    let l=base[0],t=base[1]-base[0],ss=[];
-    for(let i=0;i<12;i++)ss[i]=base[i]/Math.max(1,l);
-    for(let i=1;i<base.length;i++){const p=l,s=ss[i%12]||1;l=alpha*(base[i]/s)+(1-alpha)*(l+t);t=beta*(l-p)+(1-beta)*t;ss[i%12]=gamma*(base[i]/Math.max(1,l))+(1-gamma)*s;}
-    const pred=hold.map((_,j)=>Math.max(0,Math.round((l+(j+1)*t)*(ss[(base.length+j)%12]||1))));
-    const err=hold.map((v,i)=>v-pred[i]);
-    const mae=err.reduce((a,e)=>a+Math.abs(e),0)/Math.max(1,err.length);
-    const mape=err.reduce((a,e,i)=>a+Math.abs(e)/Math.max(1,hold[i]),0)/Math.max(1,err.length);
-    const bias=err.reduce((a,e)=>a+e,0)/Math.max(1,err.length);
-    return {actual,forecast,hold,pred,mae,mape,bias};
-  }
-
-  function forecastSeries(f=state.forecast){
-    const r=holdoutForecast(f);
-    return {actual:r.actual.slice(0,21),future:r.actual.slice(21,33),forecast:r.forecast.slice(0,12),mae:r.mae,mape:r.mape,bias:r.bias};
-  }
-
-  function capacityMetrics(c=state.capacity){
-    const workload=num(c.weeklyVolume)*num(c.aht)/3600;
-    const shrinkRaw=num(c.shrinkage); const shrink=shrinkRaw>1?shrinkRaw/100:shrinkRaw; const efficiencyRaw=num(c.efficiency)||100; const efficiency=efficiencyRaw>1?efficiencyRaw/100:efficiencyRaw; const productive=num(c.paidHours)*(1-shrink)*efficiency;
-    return {workload,productive,fte:productive?workload/productive:Infinity};
-  }
-
-  function schedulePlan(s=state.schedule){
-    const interval=30,slots=48,required=[],coverage=Array(slots).fill(0);
-    for(let i=0;i<slots;i++){const h=i*.5+num(s.start);const peak=Math.exp(-Math.pow((h-13)/4,2));required.push(Math.max(0,Math.round(num(s.target)*(.58+.42*peak))));}
-    const shifts=[
-      {name:'Early',start:num(s.start),end:num(s.start)+8},
-      {name:'Core',start:num(s.start)+1,end:num(s.start)+9},
-      {name:'Mid',start:num(s.start)+2,end:num(s.start)+10},
-      {name:'Peak',start:num(s.start)+3,end:num(s.start)+11},
-      {name:'Late',start:num(s.start)+4,end:num(s.start)+12},
-      {name:'Swing',start:num(s.start)+5,end:num(s.start)+13}
-    ];
-    const counts=Object.fromEntries(shifts.map(x=>[x.name,0]));
-    for(let a=0;a<num(s.agents);a++){
-      let best=shifts[0],bestScore=Infinity;
-      for(const sh of shifts){
-        let score=0;
-        for(let i=0;i<slots;i++){const h=i*.5+num(s.start);if(h>=sh.start&&h<sh.end)score+=Math.max(0,required[i]-coverage[i]);}
-        score+=Math.abs(a%6-shifts.indexOf(sh))*.01;
-        if(score<bestScore){best=sh;bestScore=score;}
-      }
-      counts[best.name]++;
-      for(let i=0;i<slots;i++){const h=i*.5+num(s.start);if(h>=best.start&&h<best.end)coverage[i]++;}
-    }
-    const gaps=coverage.map((v,i)=>v-required[i]);
-    const over=gaps.reduce((a,v)=>a+Math.max(0,v),0),under=gaps.reduce((a,v)=>a+Math.max(0,-v),0);
-    const ineff=(over+under)/Math.max(1,required.reduce((a,v)=>a+v,0));
-    return {required,coverage,gaps,counts,shifts,ineff};
-  }
-
-  function adherenceMetrics(a=state.adherence){
-    const scheduled=Math.max(0,num(a.scheduled));
-    const offSchedule=Math.max(0,num(a.actual)-num(a.breaks)-num(a.training)-num(a.meeting));
-    const adherence=scheduled?clamp(offSchedule/scheduled,0,1):0;
-    const conformance=scheduled?num(a.actual)/scheduled:0;
-    return {scheduled,adherent:offSchedule,adherence,conformance,variance:num(a.actual)-scheduled};
-  }
-
-  function intradayMetrics(i=state.intraday){
-    const volumeVar=num(i.actual)/Math.max(1,num(i.forecast))-1;
-    const ahtVar=num(i.ahtActual)/Math.max(1,num(i.ahtPlan))-1;
-    const workloadHours=num(i.actual)*num(i.ahtActual)/3600;
-    const required=Math.max(1,Math.ceil(workloadHours));
-    const net=num(i.available)-required;
-    return {volumeVar,ahtVar,workloadHours,required,net,scheduled:num(i.scheduled),available:num(i.available)};
-  }
-
-  function channelNeed(c){
-    let aht=num(c.aht);
-    if(c===state.channels.chat)aht=aht/Math.max(.5,num(c.concurrency));
-    return requiredAgents({...c,aht,sl:num(c.sl),occupancy:num(c.occupancy)});
-  }
-
-  function multichannelMetrics(){
-    const voice=channelNeed(state.channels.voice),email=channelNeed(state.channels.email),chat=channelNeed(state.channels.chat);
-    return {voice,email,chat,total:voice+email+chat};
-  }
-
-  function kpi(label,value,sub=''){return '<article class="wfm-kpi"><span>'+label+'</span><strong>'+value+'</strong><small>'+sub+'</small></article>';}
-  function field(label,key,value,step='1',min='0',max='1000000'){return '<label class="wfm-field"><span>'+label+'</span><input data-wfm-input="'+key+'" type="number" value="'+value+'" step="'+step+'" min="'+min+'" max="'+max+'"></label>';}
-  function selectField(label,key,value,opts){return '<label class="wfm-field"><span>'+label+'</span><select data-wfm-input="'+key+'">'+opts.map(o=>'<option value="'+o[0]+'" '+(String(o[0])===String(value)?'selected':'')+'>'+o[1]+'</option>').join('')+'</select></label>';}
-  function intro(title,copy,source){return '<div class="wfm-head"><div><span class="eyebrow">WFM TOOL</span><h2>'+title+'</h2><p>'+copy+'</p></div><div class="wfm-source">Synthetic · Offline'+(source?' · <a href="'+source+'" target="_blank" rel="noreferrer">method reference</a>':'')+'</div></div>';}
-  function panel(title,sub,body){return '<article class="wfm-panel"><div class="wfm-panel-head"><b>'+title+'</b><span>'+sub+'</span></div>'+body+'</article>';}
-
-  function nav(){
-    const items=[['dashboard','Command Center'],['setup','Operations Setup'],['staffing','Erlang Staffing'],['forecast','Forecasting'],['capacity','Capacity'],['schedule','Scheduling'],['adherence','Adherence'],['intraday','Intraday'],['multichannel','Multichannel']];
-    return '<div class="wfm-tabs wfm-tools-nav">'+items.map(x=>'<button class="'+(state.tab===x[0]?'active':'')+'" data-wfm-tab="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>';
-  }
-
-  function setup(){
-    const o=state.organization;
-    return intro('Operations Setup','Generic operating model used by the WFM Lab. Everything here is synthetic and can be replaced later with imported interval, roster and skill data.')+
-      '<div class="wfm-kpis">'+kpi('Business unit',esc(o.name),'generic dataset')+kpi('LOBs',state.lobs.length,'planning queues')+kpi('Skills',state.skills.length,'skill groups')+kpi('Agents',state.agents.length,'sample roster')+kpi('Interval',o.intervalMinutes+' min','planning grain')+'</div>'+ 
-      panel('LOB catalogue','service and workload assumptions','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>LOB</th><th>Channel</th><th>SL target</th><th>AHT</th><th>Shrinkage</th></tr></thead><tbody>'+state.lobs.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+esc(x.channel)+'</td><td>'+pct(x.targetSL)+'</td><td>'+fmt(x.aht,0)+' s</td><td>'+pct(x.shrinkage)+'</td></tr>').join('')+'</tbody></table></div>')+
-      panel('Skill model','generic skill-to-LOB mapping','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Skill</th><th>Supported LOBs</th></tr></thead><tbody>'+state.skills.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+x.lobs.map(id=>{const l=state.lobs.find(z=>z.id===id);return l?esc(l.name):id;}).join(', ')+'</td></tr>').join('')+'</tbody></table></div>')+
-      panel('Roster sample','synthetic agents and skills','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Agent</th><th>Skills</th></tr></thead><tbody>'+state.agents.map(x=>'<tr><td><b>'+esc(x.id)+'</b></td><td>'+x.skills.map(id=>{const s=state.skills.find(z=>z.id===id);return s?esc(s.name):id;}).join(', ')+'</td></tr>').join('')+'</tbody></table></div>')+
-      '<div class="wfm-note">This dataset is deliberately generic. It contains no client names, employee PII, credentials or proprietary operational data.</div>';
-  }
-
-  function chartBars(rows,maxKey='agents'){
-    const max=Math.max(1,...rows.map(r=>r[maxKey]));
-    return '<div class="wfm-bars">'+rows.map(r=>'<div class="wfm-bar-row"><span>'+r.time+'</span><div><i style="width:'+r[maxKey]/max*100+'%"></i></div><em>'+fmt(r[maxKey],0)+'</em></div>').join('')+'</div>';
-  }
-
-  function dayTable(rows){
-    return '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Interval</th><th>Contacts</th><th>Required</th><th>SL</th><th>Occupancy</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+r.time+'</td><td>'+fmt(r.volume,0)+'</td><td><b>'+fmt(r.agents,0)+'</b></td><td>'+pct(r.sl)+'</td><td>'+pct(r.occ)+'</td></tr>').join('')+'</tbody></table></div>';
-  }
-
-  function dashboard(){
-    const q=queueMetrics(),req=requiredAgents(),fte=fteRequired(),c=capacityMetrics(),s=schedulePlan(),a=adherenceMetrics(),i=intradayMetrics(),m=multichannelMetrics();
-    const day=dayPlan(state.staffing,state.interval);
-    return intro('WFM Command Center','A single operating workspace linking demand → forecast → staffing → capacity → schedule → adherence → intraday → channel decisions. Built around the practical workflows found in Call Centre Helper’s tool collection.','https://www.callcentrehelper.com/articles/contact-centre-tools')+
-      '<div class="wfm-kpis">'+kpi('Agents required',fmt(req,0),'Erlang C + max occupancy')+kpi('FTE incl. shrinkage',fmt(fte,1),'planning headcount')+kpi('Current service level',pct(q.sl),'current scenario')+kpi('Schedule inefficiency',pct(s.ineff),'coverage profile')+kpi('Adherence',pct(a.adherence),'sample team')+'</div>'+
-      panel('LOB portfolio','generic planning queues','<div class="wfm-kpis wfm-mini-kpis">'+state.lobs.map(x=>{const demand=(state.dataset.dailyDemand[x.id]||[]).reduce((a,v)=>a+v,0);return kpi(x.name,fmt(demand,0),'synthetic daily contacts · '+pct(x.targetSL)+' SL');}).join('')+'</div>')+
-      '<div class="wfm-command-grid">'+
-      panel('1 · Staffing snapshot','Erlang C / A assumptions','<div class="wfm-mini-grid">'+kpi('Erlangs',fmt(q.a,2),'offered workload')+kpi('Wait probability',pct(q.pw),'probability a call waits')+kpi('ASA',isFinite(q.asa)?fmt(q.asa,1)+' s':'∞','predicted')+kpi('Abandon signal',pct(q.abandon),'patience model')+'</div>')+
-      panel('2 · Day Planner','interval staffing profile',chartBars(day))+
-      '</div>'+
-      '<div class="wfm-command-grid">'+
-      panel('3 · Forecast → Capacity','planning chain','<div class="wfm-flow"><div>Historical demand<small>24 months</small></div><i>→</i><div>Forecast<small>12 months</small></div><i>→</i><div>Workload<small>AHT × volume</small></div><i>→</i><div>FTE<small>shrinkage</small></div></div>')+
-      panel('4 · Intraday signal','live scenario','<div class="wfm-diagnosis"><div class="'+(i.volumeVar>.05?'risk':'good')+'"><b>Volume</b><span>'+pct(i.volumeVar)+'</span><small>actual vs forecast</small></div><div class="'+(i.ahtVar>.05?'risk':'good')+'"><b>AHT</b><span>'+pct(i.ahtVar)+'</span><small>actual vs plan</small></div><div class="'+(i.net<0?'risk':'good')+'"><b>Net</b><span>'+fmt(i.net,0)+'</span><small>available − need</small></div></div>')+
-      '</div>'+
-      '<div class="wfm-command-grid">'+
-      panel('5 · Multichannel','voice + email + chat','<div class="wfm-kpis wfm-mini-kpis">'+kpi('Voice',m.voice,'agents')+kpi('Email',m.email,'agents')+kpi('Chat',m.chat,'agents')+kpi('Blended',m.total,'simple sum')+'</div>')+
-      panel('6 · Schedule adherence','team control','<div class="wfm-action"><b>Scheduled:</b> '+fmt(a.scheduled,0)+' min · <b>Adherent:</b> '+fmt(a.adherent,0)+' min · <b>Variance:</b> '+fmt(a.variance,0)+' min<br><small>Use adherence to diagnose the execution gap before changing the forecast.</small></div>')+
-      '</div>'+
-      panel('Operational chain','The lab is connected, not a collection of unrelated calculators.','<div class="wfm-actions"><button data-wfm-tab="staffing">① Calculate staffing</button><button data-wfm-tab="forecast">② Forecast demand</button><button data-wfm-tab="capacity">③ Convert to capacity</button><button data-wfm-tab="schedule">④ Test shifts</button><button data-wfm-tab="adherence">⑤ Measure adherence</button><button data-wfm-tab="intraday">⑥ Manage the day</button><button data-wfm-tab="multichannel">⑦ Blend channels</button></div>');
-  }
-
-  function staffing(){
-    const q=state.staffing,m=queueMetrics(q),req=requiredAgents(q),fte=fteRequired(q),rows=staffingTable(q),day=dayPlan(q,state.interval);
-    return intro('Erlang Staffing Calculator','Calculate raw agents, FTE with shrinkage, service level, ASA, occupancy, wait probability and an interval day planner. This follows the practical input/output pattern of the Call Centre Helper staffing calculator.','https://www.callcentrehelper.com/online-call-centre-staffing-calculator-77780-htm')+
-      '<div class="wfm-tool-layout"><div>'+panel('Inputs','enter the interval assumptions','<div class="wfm-form-grid">'+field('Call volume','s.volume',q.volume,'1','1','100000')+field('Time period minutes','s.period',q.period,'1','5','1440')+field('Average handling time (sec)','s.aht',q.aht,'1','1','7200')+field('Required service level %','s.sl',q.sl,'1','1','99.9')+field('Target answer time (sec)','s.threshold',q.threshold,'1','1','3600')+field('Shrinkage %','s.shrinkage',q.shrinkage,'1','0','90')+field('Maximum occupancy %','s.occupancy',q.occupancy,'1','1','99')+field('Average patience / ATA sec','s.patience',q.patience,'1','1','3600')+field('Current agents','s.agents',q.agents,'1','1','10000')+'</div>')+
-      panel('Result','what the assumptions imply','<div class="wfm-kpis">'+kpi('Erlangs',fmt(m.a,2),'volume × AHT / period')+kpi('Agents required',fmt(req,0),'raw service requirement')+kpi('FTE required',fmt(fte,1),'after shrinkage')+kpi('Service level',pct(m.sl),'with current agents')+kpi('ASA',isFinite(m.asa)?fmt(m.asa,1)+' s':'∞','average speed of answer')+'</div>')+'</div>'+
-      '<div>'+panel('Staffing sensitivity','change agents and watch the curve','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Agents</th><th>Service level</th><th>Occupancy</th><th>ASA</th><th>Wait</th><th>Abandon signal</th></tr></thead><tbody>'+rows.map(r=>'<tr class="'+(r.agents===req?'wfm-highlight':'')+'"><td><b>'+r.agents+'</b></td><td>'+pct(r.sl)+'</td><td>'+pct(r.occ)+'</td><td>'+fmt(r.asa,1)+' s</td><td>'+pct(r.pw)+'</td><td>'+pct(r.abandon)+'</td></tr>').join('')+'</tbody></table></div>')+
-      panel('Day Planner','interval-by-interval requirement',dayTable(day))+'</div></div>'+
-      '<div class="wfm-note warn">Model note: Erlang C assumes queued contacts wait for service. The abandonment figure here is a transparent Erlang-A-style learning signal, not a claim of parity with a commercial WFM engine.</div>';
+  function capacity(q=rootState.inputs){
+    const workload=n(q.weeklyVolume)*n(q.aht)/3600;
+    const productive=n(q.paidHours)*Math.max(.01,1-fraction(q.shrinkage));
+    return {workload,productive,fte:workload/productive};
   }
 
   function forecast(){
-    const f=state.forecast,r=holdoutForecast(f);
-    const max=Math.max(...r.actual,...r.forecast,1), pts=r.actual.map((v,i)=>i/(r.actual.length-1)*100+','+(100-v/max*85)).join(' ');
-    return intro('Forecasting Workbench','Start with a minimum 24-month history, expose level/trend/seasonality, generate a 12-month planning horizon and inspect error before feeding demand into staffing.','https://www.callcentrehelper.com/forecasting-excel-template-73193.htm')+
-      panel('Forecast controls','Holt-Winters style learning model','<div class="wfm-form-grid">'+field('History months','f.months',f.months,'1','24','120')+field('Forecast horizon','f.horizon',f.horizon,'1','1','24')+field('Level alpha','f.level',f.level,'0.05','0.05','1')+field('Trend beta','f.trend',f.trend,'0.05','0.01','1')+field('Seasonality gamma','f.seasonality',f.seasonality,'0.05','0.01','1')+'</div>')+
-      '<div class="wfm-kpis">'+kpi('MAE',fmt(r.mae,0),'holdout error')+kpi('MAPE',pct(r.mape),'holdout error')+kpi('Bias',fmt(r.bias,0),'actual − forecast')+kpi('Forecast horizon',r.forecast.length+' months','planning output')+kpi('History',r.actual.length+' months','synthetic')+'</div>'+
-      panel('Demand history','observed synthetic demand','<div class="wfm-chart wfm-chart-tall"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="'+pts+'" class="wfm-line"></polyline></svg></div>')+
-      panel('Forecast output','next planning periods','<div class="wfm-forecast-grid">'+r.forecast.map((v,i)=>'<div><span>M+'+(i+1)+'</span><b>'+fmt(v,0)+'</b><small>contacts</small></div>').join('')+'</div>')+
-      '<div class="wfm-note">Call Centre Helper’s spreadsheet workflow uses historical monthly demand and Holt-Winters-style components, then notes that workforce scheduling requires breaking the forecast down to daily and interval demand before staffing. This lab preserves that relationship.</div>';
+    const h=rootState.data.history;
+    const last=Math.max(1,n(h[h.length-1]));
+    const prev=Math.max(1,n(h[h.length-2]));
+    const trend=last-prev;
+    const future=[];
+    for(let i=1;i<=Math.max(1,Math.floor(n(rootState.inputs.forecastHorizon)||12));i++){
+      const seasonal=[.96,.98,1,1.03,1.05,1.08,1.06,1.03,1,.98,.97,.95][(h.length+i-1)%12];
+      future.push(Math.max(0,Math.round((last+trend*i)*seasonal)));
+    }
+    return {history:h,future};
   }
 
-  function capacity(){
-    const c=capacityMetrics(state.capacity), rows=[15,20,25,28,30,35,40].map(x=>{const p=num(state.capacity.paidHours)*(1-x/100)*(num(state.capacity.efficiency)/100);return {x,fte:c.workload/Math.max(1,p)};});
-    return intro('Capacity Planner','Convert demand and AHT into workload hours, productive hours and FTE. Keep shrinkage and efficiency explicit so they can be challenged separately.','https://www.callcentrehelper.com/shrinkage-90353.htm')+
-      panel('Inputs','weekly capacity assumptions','<div class="wfm-form-grid">'+field('Weekly contacts','c.weeklyVolume',state.capacity.weeklyVolume,'1','1','1000000')+field('AHT seconds','c.aht',state.capacity.aht,'1','1','7200')+field('Shrinkage %','c.shrinkage',state.capacity.shrinkage,'1','0','90')+field('Paid hours / week','c.paidHours',state.capacity.paidHours,'.5','1','80')+field('Efficiency %','c.efficiency',state.capacity.efficiency,'1','1','100')+'</div>')+
-      '<div class="wfm-kpis">'+kpi('Workload',fmt(c.workload,1)+' h','weekly handling workload')+kpi('Productive hours',fmt(c.productive,1),'per FTE')+kpi('Capacity FTE',fmt(c.fte,1),'workload ÷ productive hours')+kpi('Shrinkage',state.capacity.shrinkage+'%','planning assumption')+'</div>'+
-      panel('Shrinkage sensitivity','same workload, different headcount','<div class="wfm-sensitivity-grid">'+rows.map(r=>'<div><span>'+r.x+'%</span><div><i style="width:'+Math.min(100,r.fte/Math.max(c.fte,1)*70)+'%"></i></div><b>'+fmt(r.fte,1)+' FTE</b></div>').join('')+'</div>')+
-      '<div class="wfm-note warn">Capacity planning is not interval staffing. Use this view for long-range workload/FTE thinking, then use the Staffing and Schedule tools for interval-level requirements.</div>';
+  function intervals(){
+    const q=rootState.data.intervals;
+    return q.map(x=>{
+      const actual=x.actual==null?x.forecast:x.actual;
+      const workload=actual*x.aht/3600;
+      const required=Math.max(1,Math.ceil(workload));
+      return {...x,actual,required,gap:x.available-required,volumeVariance:actual/Math.max(1,x.forecast)-1};
+    });
   }
 
-  function schedule(){
-    const s=state.schedule,p=schedulePlan(s);
-    return intro('Schedule & Shift Planner','Test shift patterns against a demand profile and make schedule inefficiency visible. The goal is not to hide gaps—it is to show where the pattern creates under/over coverage.','https://www.callcentrehelper.com/shift-planning-faqs-167924.htm')+
-      panel('Schedule assumptions','simple shift-pattern model','<div class="wfm-form-grid">'+field('Agents','sch.agents',s.agents,'1','1','1000')+field('Peak requirement','sch.target',s.target,'1','1','500')+field('Shift length hours','sch.shiftLength',s.shiftLength,'.5','4','12')+field('Lunch hours','sch.lunch',s.lunch,'.25','0','2')+field('Break hours','sch.breaks',s.breaks,'.25','0','2')+field('Operating start hour','sch.start',s.start,'.5','0','23.5')+'</div>')+
-      '<div class="wfm-kpis">'+kpi('Inefficiency',pct(p.ineff),'over + under coverage')+kpi('Agents',fmt(s.agents,0),'schedule pool')+kpi('Peak required',fmt(Math.max(...p.required),0),'demand curve')+kpi('Peak coverage',fmt(Math.max(...p.coverage),0),'shift pattern')+'</div>'+
-      panel('Shift mix','generated pattern','<div class="wfm-shifts">'+Object.entries(p.counts).map(([k,v])=>'<div><b>'+k+'</b><span>'+v+' agents</span></div>').join('')+'</div>')+
-      panel('Coverage by 30-minute interval','required vs scheduled','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Interval</th><th>Required</th><th>Scheduled</th><th>Gap</th></tr></thead><tbody>'+p.required.map((v,i)=>'<tr><td>'+String(Math.floor(i/2)+s.start).padStart(2,'0')+':'+(i%2?'30':'00')+'</td><td>'+v+'</td><td>'+p.coverage[i]+'</td><td class="'+(p.gaps[i]<0?'wfm-negative':'')+'">'+(p.gaps[i]>0?'+':'')+p.gaps[i]+'</td></tr>').join('')+'</tbody></table></div>');
+  function shellNav(){
+    const items=[
+      ['command','Command Center'],['setup','Operations Setup'],['data','Data Hub'],
+      ['forecast','Forecasting'],['staffing','Staffing'],['capacity','Capacity'],
+      ['schedule','Scheduling'],['adherence','Adherence'],['intraday','Intraday'],
+      ['multichannel','Multichannel'],['scenario','Scenarios'],['reporting','Reporting'],
+      ['validation','Validation'],['decision','Decision Engine']
+    ];
+    return '<div class="wfm-tabs wfm-tools-nav">'+items.map(([id,label])=>
+      '<button class="'+(rootState.view===id?'active':'')+'" data-wfm-view="'+id+'">'+label+'</button>'
+    ).join('')+'</div>';
   }
 
-  function adherence(){
-    const a=state.adherence,m=adherenceMetrics(a);
-    return intro('Schedule Adherence','Compare scheduled time with actual activity and make the individual/team adherence calculation explicit. The workbook-style workflow is preserved, but the calculation runs in the browser.','https://www.callcentrehelper.com/excel-schedule-adherence-tool-164323.htm')+
-      panel('Inputs','sample agent/team record','<div class="wfm-form-grid">'+field('Scheduled minutes','a.scheduled',a.scheduled,'1','0','1440')+field('Actual minutes','a.actual',a.actual,'1','0','1440')+field('Break minutes','a.breaks',a.breaks,'1','0','240')+field('Training minutes','a.training',a.training,'1','0','480')+field('Meeting minutes','a.meeting',a.meeting,'1','0','480')+'</div>')+
-      '<div class="wfm-kpis">'+kpi('Schedule adherence',pct(m.adherence),'aligned activity ÷ scheduled')+kpi('Conformance',pct(m.conformance),'actual ÷ scheduled')+kpi('Scheduled',fmt(m.scheduled,0)+' min','baseline')+kpi('Adherent',fmt(m.adherent,0)+' min','aligned activity')+kpi('Variance',fmt(m.variance,0)+' min','actual − scheduled')+'</div>'+
-      panel('Interpretation','do not confuse adherence with conformance','<div class="wfm-action"><b>Adherence:</b> '+pct(m.adherence)+'<br><small>Use the activity breakdown to understand whether time away from the planned state was a scheduled activity or an execution gap. The Call Centre Helper template also distinguishes scheduled and actual time and can be extended for multiple breaks.</small></div>')+
-      '<div class="wfm-note">Formula used: schedule adherence = minutes in adherence ÷ total scheduled minutes × 100. The exact definition of “in adherence” should be agreed with the operation and data source.</div>';
+  function intro(title,copy){
+    return '<div class="wfm-head"><div><span class="eyebrow">INTEGRATED WFM LAB · V2</span><h2>'+title+'</h2><p>'+copy+'</p></div><div class="wfm-source">Synthetic · Offline-first</div></div>';
   }
 
-  function intraday(){
-    const i=state.intraday,m=intradayMetrics(i);
-    const action=m.net<0?'Coverage gap: validate adherence, skills and AHT; move flexible activities/breaks before escalating.':'Coverage positive: keep monitoring drift and reforecast if the variance persists.';
-    return intro('Intraday Control','Compare forecast vs actual, planned vs actual AHT and scheduled vs available staffing. Then use the signal to drive a controlled intervention.','https://www.nice.com/products/workforce-management/nice-iex-wfm/managing')+
-      panel('Live inputs','one interval scenario','<div class="wfm-form-grid">'+field('Forecast contacts','i.forecast',i.forecast,'1','0','100000')+field('Actual contacts','i.actual',i.actual,'1','0','100000')+field('Plan AHT sec','i.ahtPlan',i.ahtPlan,'1','1','7200')+field('Actual AHT sec','i.ahtActual',i.ahtActual,'1','1','7200')+field('Scheduled agents','i.scheduled',i.scheduled,'1','0','1000')+field('Available agents','i.available',i.available,'1','0','1000')+'</div>')+
-      '<div class="wfm-kpis">'+kpi('Volume variance',pct(m.volumeVar),'actual vs forecast')+kpi('AHT variance',pct(m.ahtVar),'actual vs plan')+kpi('Workload',fmt(m.workloadHours,2)+' h','interval workload')+kpi('Required now',fmt(m.required,0),'simplified workload signal')+kpi('Net staffing',fmt(m.net,0),m.net<0?'gap':'surplus')+'</div>'+
-      panel('Intraday diagnosis','evidence before intervention','<div class="wfm-diagnosis"><div class="'+(m.volumeVar>.05?'risk':'good')+'"><b>Demand</b><span>'+pct(m.volumeVar)+'</span><small>volume variance</small></div><div class="'+(m.ahtVar>.05?'risk':'good')+'"><b>AHT</b><span>'+pct(m.ahtVar)+'</span><small>AHT variance</small></div><div class="'+(m.net<0?'risk':'good')+'"><b>Coverage</b><span>'+m.net+'</span><small>net agents</small></div></div><p class="wfm-action">'+action+'</p>')+
-      '<div class="wfm-note warn">A simplified workload signal is intentionally used here. A production intraday engine would also incorporate interval queueing, shrinkage, skill routing, adherence, offline work, reforecasting and real-time platform data.</div>';
+  function panel(title,sub,body){
+    return '<article class="wfm-panel"><div class="wfm-panel-head"><b>'+title+'</b><span>'+sub+'</span></div>'+body+'</article>';
   }
 
-  function multichannel(){
-    const c=state.channels,m=multichannelMetrics();
-    return intro('Multichannel Staffing Simulator','Model voice, email and web chat in one workspace. Chat uses an explicit concurrency factor so the effective AHT assumption is visible.','https://www.callcentrehelper.com/multi-channel-contact-centre-calculator-96321.htm')+
-      '<div class="wfm-channel-grid">'+
-      panel('Voice','queueing input','<div class="wfm-form-grid">'+field('Contacts / period','v.volume',c.voice.volume,'1','0','100000')+field('AHT sec','v.aht',c.voice.aht,'1','1','7200')+field('Period min','v.period',c.voice.period,'1','1','1440')+field('Service level %','v.sl',c.voice.sl,'1','1','99.9')+field('Answer sec','v.threshold',c.voice.threshold,'1','1','3600')+field('Shrinkage %','v.shrinkage',c.voice.shrinkage,'1','0','90')+field('Max occupancy %','v.occupancy',c.voice.occupancy,'1','1','99')+'</div>')+
-      panel('Email','asynchronous workload','<div class="wfm-form-grid">'+field('Contacts / period','e.volume',c.email.volume,'1','0','100000')+field('AHT sec','e.aht',c.email.aht,'1','1','7200')+field('Period min','e.period',c.email.period,'1','1','1440')+field('Service level %','e.sl',c.email.sl,'1','1','99.9')+field('Answer sec','e.threshold',c.email.threshold,'1','1','86400')+field('Shrinkage %','e.shrinkage',c.email.shrinkage,'1','0','90')+field('Max occupancy %','e.occupancy',c.email.occupancy,'1','1','99')+'</div>')+
-      panel('Web chat','concurrency-aware approximation','<div class="wfm-form-grid">'+field('Chats / period','h.volume',c.chat.volume,'1','0','100000')+field('AHT sec','h.aht',c.chat.aht,'1','1','7200')+field('Period min','h.period',c.chat.period,'1','1','1440')+field('Service level %','h.sl',c.chat.sl,'1','1','99.9')+field('Answer sec','h.threshold',c.chat.threshold,'1','1','3600')+field('Shrinkage %','h.shrinkage',c.chat.shrinkage,'1','0','90')+field('Max occupancy %','h.occupancy',c.chat.occupancy,'1','1','99')+field('Concurrency','h.concurrency',c.chat.concurrency,'.1','.5','10')+'</div>')+
+  function kpi(label,value,sub=''){
+    return '<article class="wfm-kpi"><span>'+label+'</span><strong>'+value+'</strong><small>'+sub+'</small></article>';
+  }
+
+  function field(label,key,value,step='1'){
+    return '<label class="wfm-field"><span>'+label+'</span><input type="number" data-wfm-input="'+key+'" value="'+value+'" step="'+step+'"></label>';
+  }
+
+  function command(){
+    const s=staffing(),c=capacity(),f=forecast(),rows=intervals();
+    const gap=rows.reduce((a,x)=>a+Math.min(0,x.gap),0);
+    return intro('Command Center','A single operational view connecting demand, forecast, staffing, capacity, schedule and intraday control.')+
+      '<div class="wfm-kpis">'+
+        kpi('Required agents',fmt(s.required),'queueing model')+
+        kpi('Current agents',fmt(s.current),s.gap>0?fmt(s.gap)+' gap':'within requirement')+
+        kpi('Service level',pct(s.serviceLevel),'current staffing')+
+        kpi('Capacity FTE',fmt(c.fte,1),'weekly workload')+
+        kpi('Intraday gap',fmt(gap),'negative slots')+
       '</div>'+
-      '<div class="wfm-kpis">'+kpi('Voice',m.voice,'agents')+kpi('Email',m.email,'agents')+kpi('Chat',m.chat,'agents')+kpi('Blended total',m.total,'simple additive planning view')+'</div>'+
-      panel('Channel planning note','what this simulator does not hide','<div class="wfm-note">The multichannel tool is intentionally transparent. Email and chat have different operational characteristics; chat concurrency changes effective workload, and a simple Erlang approximation is not a full omnichannel optimizer. Use the result as a scenario signal, not a production commitment.</div>');
+      panel('Operating chain','Demand → Forecast → Staffing → Capacity → Schedule → Intraday',
+        '<div class="wfm-command-grid">'+
+          ['Demand','Forecast','Staffing','Capacity','Schedule','Intraday'].map((x,i)=>
+            '<div class="wfm-highlight"><b>'+x+'</b><span>'+['historical + interval inputs','12-month planning horizon',fmt(s.required)+' required',''+fmt(c.fte,1)+' FTE','coverage plan',''+fmt(rows.filter(r=>r.gap<0).length)+' risk intervals'][i]+'</span></div>'
+          ).join('')+
+        '</div>')+
+      panel('Today at a glance','30-minute operating grain',
+        '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Time</th><th>Forecast</th><th>Actual</th><th>Required</th><th>Available</th><th>Gap</th></tr></thead><tbody>'+
+        rows.slice(0,16).map(r=>'<tr><td>'+r.time+'</td><td>'+r.forecast+'</td><td>'+r.actual+'</td><td>'+r.required+'</td><td>'+r.available+'</td><td class="'+(r.gap<0?'wfm-negative':'')+'">'+r.gap+'</td></tr>').join('')+
+        '</tbody></table></div>');
   }
 
-  function render(){
-    const root=$('#wfmLabRoot'); if(!root)return;
-    const views={dashboard,setup,staffing,forecast,capacity,schedule,adherence,intraday,multichannel};
-    root.innerHTML=nav()+'<div class="wfm-content">'+views[state.tab]()+'</div>';
-    $$('.wfm-tabs button[data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
-    $$('.wfm-content [data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
-    $$('.wfm-field input[data-wfm-input],.wfm-field select[data-wfm-input]',root).forEach(el=>el.addEventListener('change',()=>{
-      const k=el.dataset.wfmInput.split('.');
-      if(k[0]==='s')state.staffing[k[1]]=num(el.value);
-      else if(k[0]==='f')state.forecast[k[1]]=num(el.value);
-      else if(k[0]==='c')state.capacity[k[1]]=num(el.value);
-      else if(k[0]==='sch')state.schedule[k[1]]=num(el.value);
-      else if(k[0]==='a')state.adherence[k[1]]=num(el.value);
-      else if(k[0]==='i')state.intraday[k[1]]=num(el.value);
-      else if(k[0]==='v')state.channels.voice[k[1]]=num(el.value);
-      else if(k[0]==='e')state.channels.email[k[1]]=num(el.value);
-      else if(k[0]==='h')state.channels.chat[k[1]]=num(el.value);
-      render();
-    }));
+  function setup(){
+    return intro('Operations Setup','Define the operating model before calculating anything: LOBs, service targets, skills, interval grain and roster.')+
+      '<div class="wfm-kpis">'+kpi('LOBs',rootState.data.lobs.length,'planning queues')+kpi('Agents',rootState.data.roster.length,'synthetic roster')+kpi('Interval',rootState.interval+' min','planning grain')+kpi('History',rootState.data.history.length+' mo','forecast input')+'</div>'+
+      panel('LOB catalogue','editable model will be added in the next build layer',
+        '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>LOB</th><th>Channel</th><th>AHT</th><th>SL</th><th>Shrinkage</th></tr></thead><tbody>'+
+        rootState.data.lobs.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+x.channel+'</td><td>'+x.aht+' s</td><td>'+pct(x.sl)+'</td><td>'+pct(x.shrinkage)+'</td></tr>').join('')+
+        '</tbody></table></div>');
   }
 
-  window.WFM_LAB={
-    mount(root){ if(root){render();} },
-    engine:{erlangC,queueMetrics,requiredAgents,fteRequired,dayPlan,forecastSeries,holdoutForecast,capacityMetrics,schedulePlan,adherenceMetrics,intradayMetrics,multichannel:multichannelMetrics}
+  function dataHub(){
+    return intro('Data Hub','One place for historical, interval, roster and configuration data. Import/export is intentionally isolated from calculation logic.')+
+      panel('Data contract','required WFM entities',
+        '<div class="wfm-command-grid">'+
+        ['LOB master','Skill matrix','Agent roster','Interval demand','Historical demand','Activity / adherence'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>schema defined · validation gate</span></div>').join('')+
+        '</div>')+
+      panel('Current synthetic interval feed','48 × 30-minute records',
+        '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Interval</th><th>Forecast</th><th>Actual</th><th>Scheduled</th><th>Available</th></tr></thead><tbody>'+
+        rootState.data.intervals.slice(0,20).map(r=>'<tr><td>'+r.time+'</td><td>'+r.forecast+'</td><td>'+(r.actual==null?'—':r.actual)+'</td><td>'+r.scheduled+'</td><td>'+r.available+'</td></tr>').join('')+
+        '</tbody></table></div>');
+  }
+
+  function staffingView(){
+    const q=rootState.inputs,s=staffing();
+    return intro('Erlang Staffing','Queueing is the staffing engine. Inputs are explicit, units are visible, and results feed the rest of the lab.')+
+      '<div class="wfm-tool-layout"><div class="wfm-panel"><div class="wfm-panel-head"><b>Inputs</b><span>edit then recalculate</span></div><div class="wfm-mini-grid">'+
+      field('Volume / period','volume',q.volume)+field('Period (min)','period',q.period)+field('AHT (sec)','aht',q.aht)+field('Service level %','sl',q.sl)+field('Answer target (sec)','threshold',q.threshold)+field('Shrinkage %','shrinkage',q.shrinkage)+field('Max occupancy %','occupancy',q.occupancy)+field('Current agents','currentAgents',q.currentAgents)+
+      '</div><button class="primary" data-wfm-action="recalc">Recalculate →</button></div>'+
+      panel('Staffing result','Erlang C',
+        '<div class="wfm-kpis">'+kpi('Erlangs',fmt(s.erlangs,2),'offered workload')+kpi('Required',fmt(s.required),'service + occupancy')+kpi('FTE',fmt(s.fte,1),'after shrinkage')+kpi('Occupancy',pct(s.occupancy),'at requirement')+kpi('ASA',isFinite(s.asa)?fmt(s.asa,1)+' s':'—','current staffing')+'</div>');
+  }
+
+  function capacityView(){
+    const c=capacity();
+    return intro('Capacity Planning','Translate workload hours into productive capacity and FTE requirements.')+
+      '<div class="wfm-tool-layout">'+panel('Capacity inputs','weekly planning', '<div class="wfm-mini-grid">'+field('Weekly volume','weeklyVolume',rootState.inputs.weeklyVolume)+field('AHT (sec)','aht',rootState.inputs.aht)+field('Shrinkage %','shrinkage',rootState.inputs.shrinkage)+field('Paid hours / FTE','paidHours',rootState.inputs.paidHours)+'</div>')+
+      panel('Capacity result','weekly workload', '<div class="wfm-kpis">'+kpi('Workload',fmt(c.workload,1)+' h','gross')+kpi('Productive',fmt(c.productive,1)+' h','per FTE')+kpi('Required FTE',fmt(c.fte,1),'planning requirement')+'</div>')+'</div>';
+  }
+
+  function forecastView(){
+    const f=forecast();
+    return intro('Forecasting Workbench','Start with historical demand, expose trend and seasonality, then hand the forecast into capacity and staffing.')+
+      panel('Forecast configuration','12-month horizon', '<div class="wfm-mini-grid">'+field('History points','historyPoints',rootState.data.history.length)+field('Forecast horizon','forecastHorizon',rootState.inputs.forecastHorizon)+'</div>')+
+      panel('Historical → future','synthetic monthly demand', '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Period</th><th>Demand</th><th>Type</th></tr></thead><tbody>'+
+      f.history.slice(-12).map((v,i)=>'<tr><td>M-'+(12-i)+'</td><td>'+fmt(v)+'</td><td>Actual</td></tr>').join('')+
+      f.future.map((v,i)=>'<tr><td>F+'+(i+1)+'</td><td>'+fmt(v)+'</td><td>Forecast</td></tr>').join('')+
+      '</tbody></table></div>');
+  }
+
+  function scheduleView(){
+    const required=staffing().required;
+    return intro('Schedule Planning','Build coverage against interval requirements. Shift construction, breaks and agent-level assignment will consume this requirement model.')+
+      panel('Coverage target','current staffing requirement', '<div class="wfm-kpis">'+kpi('Peak requirement',fmt(Math.round(required*1.35)),'illustrative interval peak')+kpi('Base requirement',fmt(required),'current Erlang result')+kpi('Planning grain',rootState.interval+' min','48 daily intervals')+'</div>')+
+      panel('Schedule architecture','shift patterns are data, not hard-coded UI', '<div class="wfm-command-grid">'+
+        ['Shift templates','Break placement','Skill assignment','Coverage optimizer','Agent constraints','Published schedule'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>module boundary</span></div>').join('')+'</div>');
+  }
+
+  function adherenceView(){
+    return intro('Schedule Adherence','Compare scheduled activity with actual activity at agent and interval level; adherence is evidence for intraday action, not a decorative KPI.')+
+      panel('Adherence model','planned vs actual activities','<div class="wfm-command-grid">'+
+      ['Scheduled state','Actual state','Break / meeting','Training','Exceptions','Interval adherence'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>data contract</span></div>').join('')+'</div>');
+  }
+
+  function intradayView(){
+    const rows=intervals(),risk=rows.filter(r=>r.gap<0).length;
+    return intro('Intraday Control','Monitor forecast vs actual demand, AHT, available staffing and interval gaps. Every alert should trace back to a measurable driver.')+
+      '<div class="wfm-kpis">'+kpi('Risk intervals',risk,'below required staffing')+kpi('Volume variance',pct(rows.reduce((a,r)=>a+r.volumeVariance,0)/rows.length),'average')+kpi('Available now',fmt(rows[0].available),'synthetic snapshot')+kpi('Required now',fmt(rows[0].required),'workload proxy')+'</div>'+
+      panel('Intraday timeline','48 × 30-minute intervals','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Time</th><th>Forecast</th><th>Actual</th><th>Required</th><th>Available</th><th>Gap</th></tr></thead><tbody>'+
+      rows.map(r=>'<tr><td>'+r.time+'</td><td>'+r.forecast+'</td><td>'+r.actual+'</td><td>'+r.required+'</td><td>'+r.available+'</td><td class="'+(r.gap<0?'wfm-negative':'')+'">'+r.gap+'</td></tr>').join('')+'</tbody></table></div>');
+  }
+
+  function multichannelView(){
+    return intro('Multichannel WFM','Voice, chat and asynchronous work need different workload assumptions. The lab keeps channel logic separate before combining capacity.')+
+      panel('Channel model','voice / chat / email','<div class="wfm-channel-grid">'+
+      [['Voice','Queueing + SL + AHT'],['Chat','AHT + concurrency'],['Email','Backlog + response target']].map(x=>'<div class="wfm-highlight"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>')+
+      panel('Decision boundary','avoid false precision','<div class="wfm-note">Channel calculations remain explicit about their assumptions. A chat concurrency approximation must not be presented as equivalent to voice Erlang C.</div>');
+  }
+
+  function scenarioView(){
+    return intro('Scenario Lab','Change assumptions and compare the operational consequences before making a planning decision.')+
+      panel('Scenario dimensions','all major levers', '<div class="wfm-command-grid">'+
+      ['Demand growth','AHT change','Shrinkage','Occupancy','Service target','Overtime','Hiring','Skill availability'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>scenario variable</span></div>').join('')+'</div>');
+  }
+
+  function reportingView(){
+    return intro('Reporting','Convert operational calculations into reusable management outputs without mixing presentation logic with the engine.')+
+      panel('Report layers','audience-specific outputs','<div class="wfm-command-grid">'+
+      ['Operations dashboard','WFM analyst pack','Intraday summary','Executive brief','Forecast pack','Audit trail'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>report contract</span></div>').join('')+'</div>');
+  }
+
+  function validationView(){
+    const s=staffing(),c=capacity();
+    const checks=[
+      ['Queueing engine',Number.isFinite(s.erlangs)&&s.required>0],
+      ['Capacity engine',Number.isFinite(c.fte)&&c.fte>0],
+      ['Interval model',rootState.data.intervals.length===48],
+      ['LOB model',rootState.data.lobs.length>=4],
+      ['Roster model',rootState.data.roster.length>=10]
+    ];
+    return intro('Validation & Data Quality','The lab should fail loudly when inputs are invalid. These checks are the first gate before scenario or executive outputs.')+
+      panel('Current checks','runtime health', '<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody>'+
+      checks.map(([name,ok])=>'<tr><td>'+name+'</td><td>'+(ok?'PASS':'FAIL')+'</td></tr>').join('')+'</tbody></table></div>');
+  }
+
+  function decisionView(){
+    const s=staffing();
+    return intro('WFM Decision Engine','Turn model outputs into explainable operational decisions. The engine shows evidence, assumptions and trade-offs rather than hiding them behind a score.')+
+      panel('Current decision context','synthetic scenario','<div class="wfm-kpis">'+kpi('Service',pct(s.serviceLevel),'current staffing')+kpi('Target',pct(s.target),'configured')+kpi('Agent gap',fmt(s.gap),s.gap>0?'shortfall':'surplus')+kpi('FTE',fmt(s.fte,1),'capacity requirement')+'</div>')+
+      panel('Decision evidence','what the planner must inspect','<div class="wfm-command-grid">'+
+      ['Volume vs forecast','AHT vs plan','Shrinkage vs assumption','Skill coverage','Schedule gap','Intraday state'].map(x=>'<div class="wfm-highlight"><b>'+x+'</b><span>evidence before action</span></div>').join('')+'</div>');
+  }
+
+  function view(){
+    switch(rootState.view){
+      case 'setup':return setup();
+      case 'data':return dataHub();
+      case 'forecast':return forecastView();
+      case 'staffing':return staffingView();
+      case 'capacity':return capacityView();
+      case 'schedule':return scheduleView();
+      case 'adherence':return adherenceView();
+      case 'intraday':return intradayView();
+      case 'multichannel':return multichannelView();
+      case 'scenario':return scenarioView();
+      case 'reporting':return reportingView();
+      case 'validation':return validationView();
+      case 'decision':return decisionView();
+      default:return command();
+    }
+  }
+
+  function mount(el){
+    if(!el) return;
+    function render(){ el.innerHTML=shellNav()+view(); bind(); }
+    function bind(){
+      el.querySelectorAll('[data-wfm-view]').forEach(b=>b.addEventListener('click',()=>{rootState.view=b.dataset.wfmView;render();}));
+      el.querySelectorAll('[data-wfm-input]').forEach(input=>input.addEventListener('change',()=>{
+        const key=input.dataset.wfmInput;
+        if(key in rootState.inputs) rootState.inputs[key]=n(input.value);
+        render();
+      }));
+      el.querySelectorAll('[data-wfm-action="recalc"]').forEach(b=>b.addEventListener('click',render));
+    }
+    render();
+  }
+
+  window.WFM_LAB = {
+    version:'2.0.0',
+    mount,
+    state:rootState,
+    engine:{erlangC,staffing,capacity,forecast,intervals}
   };
 })();
