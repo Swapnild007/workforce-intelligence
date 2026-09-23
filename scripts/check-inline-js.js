@@ -55,6 +55,19 @@ if (!screenRoot.innerHTML.includes('Command Center')) throw new Error('WFM Scree
 if (!screenRoot.innerHTML.includes('Required agents')) throw new Error('WFM Screen 01 KPI missing');
 if (!screenRoot.innerHTML.includes('Intraday snapshot')) throw new Error('WFM Screen 01 intraday panel missing');
 if (screenRoot.innerHTML.includes('null first projected')) throw new Error('WFM Screen 01 contains invalid forecast output');
+wfmContext.window.WFM_LAB.state.view='setup';
+wfmContext.window.WFM_LAB.mount(screenRoot);
+const setupHtml = screenRoot.innerHTML;
+for (const marker of ['Operations Setup','Planning controls','Active LOB','LOB catalogue','Skill coverage','Downstream model chain']) {
+  if (!setupHtml.includes(marker)) throw new Error(`WFM Screen 02 marker missing: ${marker}`);
+}
+for (const marker of ['data-wfm-lob-select','data-wfm-input="planningGrain"','data-wfm-input="lobAht"','data-wfm-input="lobSl"']) {
+  if (!setupHtml.includes(marker)) throw new Error(`WFM Screen 02 control missing: ${marker}`);
+}
+if (wfmContext.window.WFM_LAB.state.operation?.planningGrain !== undefined && wfmContext.window.WFM_LAB.state.interval !== 30) {
+  throw new Error('WFM Screen 02 default planning grain changed unexpectedly');
+}
+
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
 const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
