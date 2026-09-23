@@ -32,7 +32,7 @@ for (const marker of requiredMarkers) {
 // Static interaction audit for every button authored in index.html.
 // Generated WFM Lab controls are validated separately by the WFM mount/engine checks below.
 const buttonHtml = [...html.matchAll(/<button\b[^>]*>[\s\S]*?<\/button>/gi)].map(m => m[0]);
-const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search|content-lesson)(?:=|\\s|>)|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
+const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search|content-lesson)(?:=|\s|>)|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
 const deadButtons = buttonHtml.filter(button => !handledButton.test(button));
 if (deadButtons.length) throw new Error('Unwired button(s) in index.html: ' + deadButtons.join(' | '));
 
