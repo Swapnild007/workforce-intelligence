@@ -115,7 +115,7 @@ const content02 = context.window.WI_CURRICULUM_CONTENT?.['02'];
 if (!domain02 || !content02) throw new Error('Domain 02 WFM content is missing');
 const lessonCount = domain02.modules.reduce((n, m) => n + m.lessons.length, 0);
 const contentLessonCount = content02.modules.reduce((n, m) => n + m.lessons.length, 0);
-if (lessonCount !== 64 || contentLessonCount !== 64) {
+if (lessonCount !== 144 || contentLessonCount !== 144) {
   throw new Error(`Domain 02 lesson mismatch: curriculum=${lessonCount}, content=${contentLessonCount}`);
 }
 for (const module of content02.modules) {
@@ -125,4 +125,4 @@ for (const module of content02.modules) {
     }
   }
 }
-console.log(`Validated index.html, external curriculum scripts, 13 domains, and 64 complete Domain 02 lessons.`);
+console.log(`Validated index.html, external curriculum scripts, 13 domains, and 144 complete Domain 02 lessons.`);
