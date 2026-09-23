@@ -1258,6 +1258,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.08": {
+    "title": "The End-to-End WFM Cycle",
+    "understanding": "The WFM cycle turns business demand into workforce decisions and feeds actual performance back into the next planning cycle. The core sequence is forecast demand, calculate requirements, build schedules, manage the day, measure outcomes and improve assumptions.",
+    "notes": [
+      "Forecasting estimates future demand; staffing translates workload and service objectives into required capacity.",
+      "Scheduling converts requirements into feasible coverage under skills, shifts, breaks and availability constraints.",
+      "Intraday management compares actual conditions with plan and coordinates controlled interventions.",
+      "Post-period analysis measures forecast error, service, staffing, adherence and other outcomes.",
+      "Feedback should improve future assumptions rather than merely explain the past."
+    ],
+    "highlights": [
+      "WFM is a closed learning cycle, not a one-time forecast.",
+      "Each stage has different inputs, decisions and owners.",
+      "Bad definitions or data propagate into later stages.",
+      "Actual outcomes should improve future planning."
+    ],
+    "qa": [
+      [
+        "What is the WFM cycle?",
+        "Forecast demand → calculate requirements → schedule capacity → manage intraday → measure outcomes → improve the next plan."
+      ],
+      [
+        "Why does scheduling follow staffing requirements?",
+        "Requirements describe needed coverage; scheduling attempts to satisfy them under real employee and business constraints."
+      ],
+      [
+        "What happens when actual demand differs from forecast?",
+        "Intraday management assesses the gap and chooses interventions; the event should also inform later review."
+      ],
+      [
+        "How does the cycle improve?",
+        "Actual results, errors and exceptions feed back into assumptions, models, calendars and operating rules."
+      ]
+    ],
+    "practice": "Build an end-to-end WFM flow. For every stage write input, activity, output, owner, decision and feedback signal. Then introduce a forecast miss and trace the response from intraday action through post-day review.",
+    "workedExample": "Forecast says 100 contacts per 30-minute interval, but actual demand reaches 130 while two scheduled agents are absent. Intraday compares demand and staffing with plan, estimates service risk, coordinates an approved intervention, records the cause and feeds the event into forecast and attendance review.",
+    "assessment": "Complete a one-page WFM cycle map and a case walkthrough showing how a forecast miss travels through staffing, schedule, intraday action, reporting and future planning.",
+    "commonMistakes": [
+      "Treating forecasting as the end of WFM.",
+      "Changing the schedule without checking skill and service impact.",
+      "Failing to feed actual outcomes into future planning."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "The WFM cycle turns business demand into workforce decisions and feeds actual performance back into the next planning cycle. The core sequence is forecast demand, calculate requirements, build schedules, manage the day, measure outcomes and improve assumptions.",
+      "mentalModel": "This cycle becomes the backbone for the remaining 17 WFM modules. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "Define the planning horizon and demand.",
+        "Translate demand into required capacity.",
+        "Build a feasible schedule.",
+        "Compare actual with forecast and schedule.",
+        "Intervene when material gaps appear.",
+        "Measure outcomes and root causes.",
+        "Feed validated learning into the next planning cycle."
+      ],
+      "mastery": "Run a complete WFM case from forecast through intraday recovery and explain how the evidence improves the next planning cycle.",
+      "prerequisites": "02.1.07",
+      "transfer": "This cycle becomes the backbone for the remaining 17 WFM modules.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
