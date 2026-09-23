@@ -208,6 +208,14 @@
       .nf-card,.nf-poster,.nf-lab,.nf-poster-art,.modal,.nf-row-control{transition-duration:.01ms!important}
     }
 
+  
+    /* Mobile navigation reliability */
+    @media(max-width:600px){
+      #mobileNav{display:flex!important;pointer-events:auto!important;touch-action:manipulation;isolation:isolate}
+      #mobileNav button{position:relative;z-index:2;pointer-events:auto!important;touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}
+      #mobileNav button:active{transform:scale(.94)}
+    }
+
   </style>
 </head>
 <body>
@@ -404,7 +412,18 @@
       });
       document.querySelectorAll('[data-enter]').forEach(button=>button.addEventListener('click',()=>openAcademy('home')));
       document.querySelectorAll('[data-search]').forEach(button=>button.addEventListener('click',()=>{openAcademy('learn');setTimeout(()=>{const input=document.getElementById('globalSearch');if(input){input.focus();input.scrollIntoView({block:'center',behavior:'smooth'});}},120);}));
-      navButtons.forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+      navButtons.forEach(button=>button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setView(button.dataset.view);}));
+      // Dedicated mobile-nav binding: keep bottom navigation independent from the desktop nav.
+      const mobileNav=document.getElementById('mobileNav');
+      if(mobileNav){
+        mobileNav.addEventListener('click',e=>{
+          const button=e.target.closest('button[data-view]');
+          if(!button)return;
+          e.preventDefault();
+          e.stopPropagation();
+          openAcademy(button.dataset.view);
+        });
+      }
       document.querySelectorAll('[data-view-go]').forEach(button=>{ button.addEventListener('click',()=>openAcademy(button.dataset.viewGo)); if(button.matches('[role="button"]'))button.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openAcademy(button.dataset.viewGo);}}); });
 
       document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
