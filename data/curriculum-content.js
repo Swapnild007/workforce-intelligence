@@ -1362,6 +1362,117 @@
     }
   }
 });
+
+  const wfmModule01Depth = {
+    "02.1.01": {
+      concepts:["contact center","interaction","channel","queue","routing","skill","workload","service objective","WFM"],
+      firstPrinciples:["Customer demand creates work.","Routing determines where work is offered.","Skills determine which resources are eligible.","Handling work consumes capacity.","Service objectives define the operating response expected."],
+      glossary:[["Contact center","An operation that receives, routes, handles and resolves customer or business interactions."],["Queue","A logical destination or waiting/work population."],["Skill","A capability or eligibility attribute used to determine who can handle work."],["WFM","Forecasting workload, planning capacity, scheduling resources and managing changes against the plan."]],
+      deepDive:["Use the chain Demand → Routing → Work → Capacity → Outcome → Data. WFM uses evidence from this chain to make planning decisions.","A contact count is not automatically a workload measure. Channel, handling effort, concurrency, backlog and skill requirements can change capacity needs.","Definition control comes first: confirm what the source counts, at what grain, and under which inclusion rules."],
+      caseAnalysis:"A 100-seat center handles voice, chat and email. Management asks for one staffing number for tomorrow. Classify the work by channel, arrival pattern, handling model, skills and service objective before discussing headcount.",
+      caseQuestions:["Which work is synchronous or asynchronous?","Which skills are exclusive?","Which measures need interval treatment?","What source definitions must be confirmed?"],
+      guidedPractice:["Draw the demand-to-outcome chain.","Add two channels and two queues.","Map three skills.","Add one service objective per work type.","Mark the WFM decision affected by each component."],
+      independentPractice:"Create an operating model for a fictional healthcare contact center with voice, chat and back-office work. Explain why one staffing formula cannot safely cover all three.",
+      takeaways:["A contact center is a system, not merely headcount.","WFM begins with definitions and operating structure.","Volume, workload and capacity are different.","Channel and skill structure must be visible before staffing."],
+      assessmentRubric:["Operating model is complete.","Definitions are explicit.","Channel/skill differences are correct.","WFM decisions are connected to components.","Assumptions and unknowns are labelled."],
+      reflection:"If an executive gave you only daily contact volume, what additional information would you request before discussing staffing?"
+    },
+    "02.1.02": {
+      concepts:["demand","workload","handling time","capacity","deployable capacity","interval","headroom","shortfall"],
+      firstPrinciples:["Demand describes arriving work.","Workload converts demand into effort.","Capacity is usable workforce time under stated constraints.","A gap exists only when workload and capacity use compatible units and grain."],
+      glossary:[["Demand","Observed or forecast work entering the operation."],["Workload","Effort required to process demand."],["Capacity","Usable processing capability in a defined period."],["Headroom","Capacity remaining after planned requirement."]],
+      deepDive:["For voice, a basic workload bridge is volume × handling time. That produces handling minutes; queueing and operating assumptions may require additional modelling.","Capacity is not paid hours. Breaks, training, absence, skills and schedule placement reduce usable capacity.","Daily totals can conceal interval shortages."],
+      caseAnalysis:"Eight 30-minute intervals have the same total daily volume, but AHT rises from 5 to 8 minutes in the afternoon. A daily volume-only plan misses the afternoon pressure.",
+      caseQuestions:["Where does workload change if volume is flat?","Which capacity losses are planned?","Why can daily capacity exceed workload while an interval is short?","What evidence confirms the cause?"],
+      guidedPractice:["Create eight 30-minute intervals.","Enter volume and AHT.","Calculate workload minutes.","Enter agents and interval length.","Calculate gross capacity.","Flag gaps.","Add an availability assumption and reassess."],
+      independentPractice:"Build a demand-work-capacity model for a 50-agent center and identify whether the largest gap is driven by demand, AHT, availability or skills.",
+      takeaways:["Volume is not workload.","Paid headcount is not deployable capacity.","Units and grain must match.","Interval gaps matter.","Diagnose before recommending staffing."],
+      assessmentRubric:["Units are explicit.","Workload reconciles.","Capacity basis is clear.","A gap is correctly diagnosed.","Arithmetic and assumptions are separated."],
+      reflection:"When someone says 'we have enough agents today', what evidence would you ask for?"
+    },
+    "02.1.03": {
+      concepts:["voice","chat","messaging","email","back office","concurrency","backlog","ageing","synchronous","asynchronous","blended capacity"],
+      firstPrinciples:["Channels create different arrival and completion patterns.","Synchronous work competes for immediate capacity.","Asynchronous work accumulates backlog and ageing.","Shared capacity requires eligibility, tooling, proficiency and operating rules."],
+      glossary:[["Concurrency","Active interactions handled simultaneously under a defined rule."],["Backlog","Arrived work not yet completed."],["Ageing","Time outstanding work has remained unresolved."],["Blended capacity","Capacity intentionally shared across work types."]],
+      deepDive:["Voice is usually immediate. Chat may permit controlled concurrency. Email and back-office work can be backlog-driven.","Do not add voice, chat and email contacts into one number without converting them to comparable planning units.","A blended team creates an allocation problem: moving capacity can relieve one shortage while creating another."],
+      caseAnalysis:"A blended team supports voice and chat. Voice volume is below forecast, but chat concurrency falls because contacts are unusually complex. Raw contact counts suggest spare capacity; workload does not.",
+      caseQuestions:["Did volume, handling effort or concurrency change?","Which channel has the tighter service requirement?","Can agents move without violating skills?","What measurement validates the reallocation?"],
+      guidedPractice:["Build a four-channel matrix.","Define each work unit.","Document arrival and service measures.","Define handling/concurrency assumptions.","Map skills and shared-capacity rules.","Test one blended scenario.","Explain the boundary."],
+      independentPractice:"Design a blended voice/chat/email team and write the rules under which an agent may move between channels during a 30-minute interval.",
+      takeaways:["Channel is a planning dimension.","Concurrency changes capacity relationships.","Backlog introduces ageing.","Blended capacity needs explicit rules."],
+      assessmentRubric:["Channel differences are correct.","Planning units are explicit.","Concurrency/backlog assumptions are stated.","Shared-capacity rules are feasible.","A model limitation is identified."],
+      reflection:"Which channel would you refuse to model with a simple voice staffing ratio, and why?"
+    },
+    "02.1.04": {
+      concepts:["queue","skill","routing","eligibility","skill matrix","multi-skill","proficiency","shared capacity"],
+      firstPrinciples:["Work can only be handled by eligible resources.","Eligibility depends on skills, proficiency, policy and availability.","Multi-skilled agents create shared capacity across competing queues.","Total headcount can look healthy while a skill queue remains short."],
+      glossary:[["Eligibility","Conditions under which a resource may handle work."],["Skill matrix","Mapping of employees to skills or certifications."],["Skills-based routing","Routing work using required capabilities."],["Multi-skill","A resource qualified for more than one work type."]],
+      deepDive:["Ask 'How many eligible agents can serve this work now?' rather than 'How many agents exist?'","A Billing + Spanish queue requires the intersection of those skills.","Shared skills create opportunity cost when one agent can serve competing queues."],
+      caseAnalysis:"A center has 20 agents. Queue A needs Billing, Queue B Technical, Queue C Technical + Spanish. Total headcount looks adequate, but only two agents qualify for Queue C.",
+      caseQuestions:["Which skills are required?","Which agents are eligible?","Where do shared skills compete?","Could routing or cross-training change effective capacity?"],
+      guidedPractice:["Create a six-agent skill matrix.","Define three queues.","Map required skills.","Calculate eligible headcount.","Identify shared agents.","Test a simultaneous spike.","Explain the trade-off."],
+      independentPractice:"Build a 10-agent, five-skill matrix and find one queue protected by dedicated capacity and one dependent on shared capacity.",
+      takeaways:["Headcount and skill capacity differ.","Routing creates actual eligibility.","Multi-skill planning requires conflict analysis.","Training can change effective capacity."],
+      assessmentRubric:["Skill matrix is consistent.","Eligibility is correct.","Shared conflicts are identified.","Headcount versus effective capacity is clear.","A bounded mitigation is proposed."],
+      reflection:"If a queue is short by three agents but 20 people are available elsewhere, what questions come first?"
+    },
+    "02.1.05": {
+      concepts:["service objective","service level","threshold","eligible population","denominator","customer promise","target","trade-off"],
+      firstPrinciples:["A customer promise must become a measurable definition.","A metric requires population, numerator, denominator, threshold and grain.","The target is a business requirement; WFM models its capacity implications.","Changing the target changes the planning problem."],
+      glossary:[["Service objective","A defined performance expectation for a work type."],["Answer threshold","Maximum response time qualifying for the criterion."],["Eligible population","Interactions included in the denominator."],["Target","Desired performance level set by the business."]],
+      deepDive:["Never treat 'SLA' as self-defining. The measurement rule determines the denominator and what counts as in-target.","Different channels may use different service units.","Service is one dimension of the trade-off alongside cost, quality and employee constraints."],
+      caseAnalysis:"Two reports both show 90% service level, but one excludes abandoned interactions and the other includes them. Reconcile definitions before comparing performance.",
+      caseQuestions:["What is each denominator?","What threshold is used?","What exclusions apply?","What grain should be managed?","What staffing implication follows?"],
+      guidedPractice:["Write a voice service specification.","Define denominator and threshold.","Create a 10-contact example.","Calculate it.","Add an exclusion and recalculate.","Explain the change.","State the business interpretation."],
+      independentPractice:"Create service definitions for voice, chat and email in a fictional operation and explain why their units need not be identical.",
+      takeaways:["Definitions control KPI meaning.","Targets are business decisions.","Interval performance matters.","Service cannot be interpreted without population and threshold."],
+      assessmentRubric:["Definition is reproducible.","Population and threshold are explicit.","Example calculation is correct.","Exclusions are controlled.","Operational impact is explained."],
+      reflection:"What could make two teams honestly report 90% service while disagreeing about performance?"
+    },
+    "02.1.06": {
+      concepts:["operating hours","calendar","holiday","closure","event","campaign","time zone","exception day","comparable history"],
+      firstPrinciples:["WFM plans on a calendar.","Operating hours define when work can arrive and capacity is expected.","Events can change demand, handling time, operating hours or availability.","Historical comparability requires classification, not just date filtering."],
+      glossary:[["Operating hours","Approved periods in which a work type is open."],["Exception day","A day with conditions different from normal."],["Event","A known occurrence expected to alter demand or capacity."],["Comparable day","A historical period judged sufficiently similar for a planning purpose."]],
+      deepDive:["Calendar configuration affects forecasting, scheduling and reporting. A campaign extension should not silently become part of the normal baseline.","Time zones matter when sources, sites or employees use different local clocks.","Events should be classified consistently so normal variation is separated from known structural change."],
+      caseAnalysis:"A center normally closes at 20:00 but stays open until 22:00 during a campaign. Historical Fridays have no comparable late hours. Create an explicit future demand and staffing assumption.",
+      caseQuestions:["Which history is comparable?","Which intervals are new?","What event metadata should be retained?","What staffing changes are needed?"],
+      guidedPractice:["Create a four-week calendar.","Add a holiday.","Add a closure.","Add a campaign extension.","Tag historical events.","Define forecast treatment.","Define staffing treatment."],
+      independentPractice:"Design a planning calendar for two time zones, one holiday calendar and three annual campaigns, with ownership and change control.",
+      takeaways:["Calendar is part of the model.","Exception days need classification.","Events affect demand and capacity.","Time-zone consistency matters."],
+      assessmentRubric:["Normal and exception periods are separated.","Time zone is explicit.","Events have defined treatment.","Operating hours map to staffing.","Ownership is documented."],
+      reflection:"When is deleting an unusual day defensible, and when is it safer to classify and model it?"
+    },
+    "02.1.07": {
+      concepts:["WFM roles","decision rights","RACI","forecast owner","scheduler","intraday","operations","approval","escalation","governance"],
+      firstPrinciples:["A model can inform a decision without owning it.","Different horizons need different responsibilities.","Inputs, assumptions, approvals and execution must be traceable.","Escalation needs thresholds and owners defined before the incident."],
+      glossary:[["Decision right","Authority to approve, change or execute a defined decision."],["RACI","Responsibility model for responsible, accountable, consulted and informed roles."],["Intraday","Current operating period where actuals are compared with plan."],["Governance","Controls that make definitions, assumptions and changes traceable."]],
+      deepDive:["Forecasting, staffing, scheduling and intraday are connected but distinct responsibilities. Organizations assign them differently.","A good decision-rights matrix identifies evidence, accountable owner, approver, execution team and escalation threshold.","Governance prevents multiple teams from independently changing assumptions."],
+      caseAnalysis:"Forecasting identifies a volume increase. Operations controls overtime approval. Supervisors control same-day offline activity. Intraday quantifies the gap and coordinates action but does not silently change policy.",
+      caseQuestions:["Who owns the forecast assumption?","Who approves overtime?","Who can change today's schedule?","What evidence triggers escalation?","How is the decision recorded?"],
+      guidedPractice:["List six WFM decisions.","Assign RACI roles.","Add required evidence.","Set approval boundaries.","Define escalation thresholds.","Add an audit field.","Test one ambiguous scenario."],
+      independentPractice:"Create a decision-rights matrix for a 500-agent center covering forecast, staffing, schedule publication, overtime, intraday reallocation and service escalation.",
+      takeaways:["Role clarity is operational control.","Decision ownership varies by organization.","Evidence and approval boundaries should be explicit.","Governance makes WFM reproducible."],
+      assessmentRubric:["Six decisions are mapped.","Accountability is unambiguous.","Approval and execution are separated.","Escalation thresholds are measurable.","One governance failure is explained."],
+      reflection:"What happens when an analyst owns the calculation but nobody owns the decision?"
+    },
+    "02.1.08": {
+      concepts:["forecast","staffing requirement","schedule","intraday","adherence","actuals","variance","feedback","continuous improvement"],
+      firstPrinciples:["Forecasting estimates future demand.","Staffing translates demand and service objectives into capacity.","Scheduling turns requirements into feasible coverage.","Intraday responds when reality departs from plan.","Measurement feeds validated learning into the next cycle."],
+      glossary:[["Forecast","Estimate of future workload using information available before the period."],["Staffing requirement","Capacity needed under stated workload and service assumptions."],["Intraday management","Comparing actual conditions with plan and coordinating controlled responses."],["Feedback loop","Using outcomes and root causes to improve future inputs and decisions."]],
+      deepDive:["Use the loop Forecast → Requirement → Schedule → Execute → Observe → Intervene → Measure → Improve.","A miss is not automatically a forecast problem; it may come from volume, AHT, absence, adherence, routing, skills, events or an incorrect assumption.","Post-day analysis should connect root cause to the planning layer that should change."],
+      caseAnalysis:"Forecast is 100 contacts per 30 minutes. Actual is 130, AHT is 10% higher, and two scheduled agents are absent. Separate demand variance from capacity variance before choosing an action.",
+      caseQuestions:["Which variance is demand-driven?","Which is capacity-driven?","What can be changed today?","What belongs in the next forecast or staffing assumption?","What evidence should be retained?"],
+      guidedPractice:["Draw the WFM cycle.","Create forecast-versus-actual.","Add scheduled-versus-actual staffing.","Separate gap drivers.","Choose an intraday action.","Set a recovery checkpoint.","Write post-day learning."],
+      independentPractice:"Run a full case from forecast through intraday recovery and post-day review. Produce a one-page evidence pack showing root cause, action and future planning change.",
+      takeaways:["WFM is a cycle, not a one-time forecast.","Different layers solve different problems.","Actual outcomes must feed future assumptions.","A good review changes something measurable."],
+      assessmentRubric:["All stages are connected.","Demand and capacity variance are separated.","Action is bounded and evidence-based.","Future change is specific.","Reasoning can be defended."],
+      reflection:"If both forecast and schedule were wrong, how would you avoid blaming the wrong layer?"
+    }
+  };
+  Object.keys(wfmModule01Depth).forEach(key=>{
+    if(authoredWfmModule01[key]) Object.assign(authoredWfmModule01[key],wfmModule01Depth[key]);
+  });
+
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
@@ -1385,6 +1496,7 @@
       ["How should I validate it?","Use a small known example and reconcile the result with an independent calculation."]
     ];
     return {
+      ...(authoredLesson || {}),
       id: domain+"."+module.split(".")[1]+"."+String(index+1).padStart(2,"0"),
       title:title,
       understanding:authoredLesson?.understanding || understanding,
