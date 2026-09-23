@@ -1027,16 +1027,27 @@
           roadmap+
           '<section class="lesson-section"><h3>01 · Start from zero</h3><p>'+esc(zero)+'</p></section>'+
           '<section class="lesson-section"><h3>02 · Build the mental model</h3><p>'+esc(mental)+'</p></section>'+
+          (Array.isArray(rich.firstPrinciples)&&rich.firstPrinciples.length?'<section class="lesson-section"><h3>First principles</h3>'+bullets(rich.firstPrinciples)+'</section>':'')+
+          (Array.isArray(rich.concepts)&&rich.concepts.length?'<section class="lesson-section"><h3>Concept map</h3><p>'+esc(rich.concepts.join(' · '))+'</p></section>':'')+
+          (Array.isArray(rich.glossary)&&rich.glossary.length?'<section class="lesson-section"><h3>Working vocabulary</h3>'+rich.glossary.map(x=>'<div class="lesson-qa"><b>'+esc(x[0])+'</b><p>'+esc(x[1])+'</p></div>').join('')+'</section>':'')+
+          (Array.isArray(rich.deepDive)&&rich.deepDive.length?'<section class="lesson-section"><h3>Deep dive</h3>'+bullets(rich.deepDive)+'</section>':'')
           buildHtml+
           notesHtml+
           highlightsHtml+
           '<section class="lesson-section"><h3>04 · Worked example</h3><p>'+esc(rich.workedExample||'Use a small controlled example to prove the concept before scaling it to a real operational dataset.')+'</p></section>'+
           '<section class="lesson-section"><h3>05 · Guided practice</h3><p>'+esc(rich.practice||'Apply the lesson to the supplied scenario. Show your inputs, assumptions, calculation or reasoning, and final conclusion.')+'</p></section>'+
           mistakesHtml+
+          (rich.caseAnalysis?'<section class="lesson-section"><h3>06 · Case analysis</h3><p>'+esc(rich.caseAnalysis)+'</p>'+(Array.isArray(rich.caseQuestions)?bullets(rich.caseQuestions):'')+'</section>':'')+
+          (Array.isArray(rich.guidedPractice)&&rich.guidedPractice.length?'<section class="lesson-section"><h3>Guided practice</h3>'+bullets(rich.guidedPractice,true)+'</section>':'')+
+          (rich.independentPractice?'<section class="lesson-section"><h3>Independent practice</h3><p>'+esc(rich.independentPractice)+'</p></section>':'')+
+          (Array.isArray(rich.takeaways)&&rich.takeaways.length?'<section class="lesson-section"><h3>Takeaways</h3>'+bullets(rich.takeaways)+'</section>':'')+
           '<section class="lesson-section"><h3>07 · Transfer to real work</h3><p>'+esc(transfer)+'</p></section>'+
           '<section class="lesson-section"><h3>08 · Hero challenge</h3><p>'+esc(depth.mastery||rich.assessment||'Complete the assessment and defend your reasoning.')+'</p><button class="primary" id="lessonChallenge" type="button">Start mastery challenge →</button></section>'+
           (qaHtml?'<section class="lesson-section"><h3>09 · Questions & answers</h3>'+qaHtml+'</section>':'')+
-          '<section class="lesson-section"><h3>10 · Assessment evidence</h3><p>'+esc(rich.assessment||'Submit the worked example and explain the assumptions and validation checks used.')+'</p></section>'+
+          '<section class="lesson-section"><h3>10 · Assessment evidence</h3><p>'+esc(rich.assessment||'Submit the worked example and explain the assumptions and validation checks used.')+'</p>'+
+          (Array.isArray(rich.assessmentRubric)&&rich.assessmentRubric.length?bullets(rich.assessmentRubric):'')+
+          (rich.reflection?'<p style="margin-top:18px"><b>Reflection</b><br>'+esc(rich.reflection)+'</p>':'')+
+          '</section>'+
           (sourceHtml?'<section class="lesson-section"><h3>11 · Research basis</h3><ul>'+sourceHtml+'</ul></section>':'')+
           '<div class="lesson-actions"><button class="primary" id="lessonComplete" type="button">Mark lesson complete →</button></div>';
         modal.classList.add('open');
