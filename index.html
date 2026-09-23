@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f8ff">
+  <meta name="description" content="Workforce Intelligence Academy — a futuristic learning operating system for WFM, analytics, data science, AI, optimization and automation.">
+  <title>Workforce Intelligence Academy</title>
+  <style>
+    :root{
+      --bg:#f4f7ff;--surface:rgba(255,255,255,.72);--surface-strong:rgba(255,255,255,.9);
+      --line:rgba(55,82,150,.12);--text:#111a3a;--muted:#687394;--blue:#2864ff;--cyan:#20bfff;
+      --violet:#7658ff;--mint:#24c7a1;--orange:#ff9f43;--pink:#ee6fa7;
+      --shadow:0 18px 55px rgba(42,72,145,.13);--radius:28px;--radius-sm:18px;
+      --nav:248px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--text);background:
+      radial-gradient(circle at 10% 0%,rgba(83,139,255,.22),transparent 28%),
+      radial-gradient(circle at 88% 12%,rgba(144,107,255,.18),transparent 26%),
+      linear-gradient(135deg,#f8fbff 0%,#eef4ff 48%,#f8f9ff 100%);min-height:100vh;overflow-x:hidden}
+    button,input{font:inherit}
+    button{cursor:pointer;border:0}
+    .orb{position:fixed;border-radius:50%;filter:blur(2px);pointer-events:none;z-index:-1}
+    .orb.a{width:340px;height:340px;left:-150px;top:22%;background:radial-gradient(circle,rgba(54,120,255,.17),transparent 68%)}
+    .orb.b{width:440px;height:440px;right:-180px;bottom:2%;background:radial-gradient(circle,rgba(143,91,255,.16),transparent 68%)}
+    .app{display:none;min-height:100vh}
+    .app.active{display:flex}
+    .sidebar{position:fixed;left:18px;top:18px;bottom:18px;width:var(--nav);padding:20px 14px;display:flex;flex-direction:column;
+      background:rgba(255,255,255,.67);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.85);
+      border-radius:30px;box-shadow:var(--shadow);z-index:20}
+    .brand{display:flex;align-items:center;gap:11px;padding:6px 10px 20px}
+    .logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,#2667ff,#7d5cff);box-shadow:0 10px 25px rgba(49,98,255,.3);display:grid;place-items:center;color:white;font-weight:900}
+    .brand strong{display:block;font-size:14px;letter-spacing:-.3px}.brand span{display:block;color:var(--muted);font-size:9px;margin-top:2px}
+    .nav{display:grid;gap:6px}
+    .nav button{display:flex;align-items:center;gap:11px;width:100%;padding:12px 13px;border-radius:16px;background:transparent;color:#455174;text-align:left;font-size:12px;font-weight:650;transition:.22s}
+    .nav button:hover{background:rgba(255,255,255,.8);transform:translateX(2px)}
+    .nav button.active{color:var(--blue);background:linear-gradient(100deg,rgba(42,103,255,.14),rgba(117,88,255,.07));box-shadow:inset 3px 0 0 var(--blue)}
+    .ico{width:19px;height:19px;display:grid;place-items:center;font-size:14px}
+    .side-bottom{margin-top:auto;padding:12px 8px 4px}
+    .profile{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.58)}
+    .avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#111f5f,#557cff);color:white;font-weight:800;font-size:11px}
+    .profile small{color:var(--muted);font-size:9px}.profile b{font-size:11px}
+    .main{width:calc(100% - var(--nav));margin-left:calc(var(--nav) + 36px);padding:18px 26px 80px;max-width:1600px}
+    .topbar{height:54px;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .search{flex:1;max-width:580px;height:44px;padding:0 16px;border-radius:15px;border:1px solid var(--line);background:rgba(255,255,255,.62);backdrop-filter:blur(16px);display:flex;align-items:center;gap:9px;color:var(--muted)}
+    .search input{border:0;outline:0;background:transparent;width:100%;color:var(--text);font-size:12px}
+    .search kbd{padding:4px 7px;border:1px solid var(--line);border-radius:7px;background:#fff;font-size:9px;color:var(--muted)}
+    .top-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .round{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.65);display:grid;place-items:center;color:#465378}
+    .date{font-size:10px;color:var(--muted);text-align:right;line-height:1.35}.date b{display:block;color:var(--text);font-size:11px}
+    .view{display:none}.view.active{display:block}
+    .hero{position:relative;min-height:320px;overflow:hidden;border:1px solid rgba(255,255,255,.88);border-radius:32px;padding:34px;
+      background:linear-gradient(110deg,rgba(255,255,255,.84),rgba(237,244,255,.62));box-shadow:var(--shadow);display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+    .hero:before{content:"";position:absolute;width:460px;height:460px;right:5%;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(70,116,255,.17),transparent 65%)}
+    .eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);font-weight:800}
+    h1{font-size:clamp(38px,4.6vw,68px);line-height:.95;letter-spacing:-3.5px;margin:13px 0 16px;max-width:640px}
+    h1 em{font-style:normal;background:linear-gradient(90deg,#1f63ff,#7455ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{max-width:560px;color:var(--muted);font-size:15px;line-height:1.7;margin:0}
+    .hero-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+    .primary,.secondary{padding:12px 17px;border-radius:14px;font-size:11px;font-weight:800;transition:.2s}
+    .primary{color:white;background:linear-gradient(100deg,#2168ff,#7355ff);box-shadow:0 12px 28px rgba(52,89,240,.28)}
+    .secondary{color:#385078;background:rgba(255,255,255,.72);border:1px solid var(--line)}
+    .primary:hover,.secondary:hover{transform:translateY(-2px)}
+    .hero-visual{display:grid;place-items:center;position:relative;min-height:250px}
+    .learning-orbit{width:230px;height:230px;border-radius:50%;border:1px solid rgba(58,111,255,.22);position:relative;display:grid;place-items:center;box-shadow:0 0 80px rgba(55,111,255,.16)}
+    .learning-orbit:before,.learning-orbit:after{content:"";position:absolute;border:1px solid rgba(74,91,255,.18);border-radius:50%;transform:rotate(58deg)}
+    .learning-orbit:before{inset:-30px 18px}.learning-orbit:after{inset:18px -30px;transform:rotate(-58deg)}
+    .core{width:108px;height:108px;border-radius:32px;background:linear-gradient(145deg,#2e72ff,#785cff);box-shadow:0 20px 50px rgba(53,95,241,.38);display:grid;place-items:center;color:white;font-size:38px;z-index:2}
+    .node{position:absolute;width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 28px rgba(49,77,150,.18);display:grid;place-items:center;font-size:15px}
+    .node.n1{top:-15px;left:95px}.node.n2{right:-15px;top:92px}.node.n3{bottom:-15px;left:92px}.node.n4{left:-15px;top:92px}
+    .hero-stat{position:absolute;right:4%;bottom:10px;display:flex;gap:6px;padding:9px 12px;border-radius:15px;background:rgba(255,255,255,.78);border:1px solid var(--line);font-size:10px;color:var(--muted)}
+    .hero-stat b{color:var(--text)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;margin:26px 2px 12px}.section-head h2{margin:0;font-size:18px;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:10px}
+    .grid{display:grid;gap:12px}.kpis{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .card{border:1px solid rgba(255,255,255,.9);background:var(--surface);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-radius:var(--radius-sm);box-shadow:0 12px 35px rgba(44,70,140,.08)}
+    .kpi{padding:16px;min-height:118px}.kpi-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px}.kpi-icon{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:rgba(52,107,255,.1);color:var(--blue)}
+    .kpi strong{font-size:25px;display:block;margin:12px 0 4px;letter-spacing:-1px}.delta{font-size:9px;color:#12a67c;font-weight:750}
+    .spark{height:28px;margin-top:8px}.spark svg{width:100%;height:100%}
+    .dashboard-grid{grid-template-columns:1.5fr 1fr 1fr}.panel{padding:18px;min-height:270px}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title b{font-size:12px}.panel-title span{font-size:9px;color:var(--muted)}
+    .chart{height:205px}.chart svg{width:100%;height:100%}.axis{font-size:8px;fill:#8490ad}.gridline{stroke:rgba(70,92,150,.1);stroke-width:1}.line{fill:none;stroke:#2c6cff;stroke-width:3;stroke-linecap:round}.forecast{fill:none;stroke:#8767ff;stroke-width:2;stroke-dasharray:5 5}
+    .donut-wrap{display:flex;align-items:center;justify-content:center;gap:18px;height:205px}.donut{width:142px;height:142px;border-radius:50%;background:conic-gradient(#2868ff 0 68%,#745cff 68% 84%,#20c7a3 84% 93%,#edf0f8 93%);display:grid;place-items:center;position:relative}.donut:after{content:"";position:absolute;width:96px;height:96px;border-radius:50%;background:#f8faff}.donut b{position:relative;z-index:1;font-size:24px}.legend{display:grid;gap:10px}.legend span{font-size:9px;color:var(--muted)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#2868ff}.legend span:nth-child(2) i{background:#745cff}.legend span:nth-child(3) i{background:#20c7a3}
+    .insights{display:grid;gap:8px}.insight{padding:12px;border-radius:14px;background:rgba(248,250,255,.72);border:1px solid var(--line);display:flex;gap:9px}.insight-num{width:24px;height:24px;border-radius:9px;background:linear-gradient(135deg,#2868ff,#7658ff);color:white;display:grid;place-items:center;font-size:9px;font-weight:800}.insight b{font-size:10px}.insight p{margin:3px 0 0;color:var(--muted);font-size:9px;line-height:1.45}
+    .learning-grid{grid-template-columns:1.4fr 1fr 1fr}.progress-card{padding:20px}.progress-big{display:flex;align-items:center;gap:22px}.ring{width:112px;height:112px;border-radius:50%;background:conic-gradient(#2d6cff 0 68%,#e8edf8 68%);display:grid;place-items:center;position:relative}.ring:after{content:"";position:absolute;inset:11px;border-radius:50%;background:#f8faff}.ring b{position:relative;z-index:1;font-size:22px}.progress-copy b{font-size:13px}.progress-copy p{color:var(--muted);font-size:9px;line-height:1.5}.tracks{margin-top:20px;display:grid;gap:10px}.track{display:grid;grid-template-columns:105px 1fr 34px;gap:8px;align-items:center;font-size:9px;color:var(--muted)}.bar{height:7px;border-radius:99px;background:#e8edf7;overflow:hidden}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2868ff,#7658ff)}
+    .lesson{padding:20px;position:relative;overflow:hidden}.lesson .tag{font-size:8px;color:#7058e9;font-weight:800;text-transform:uppercase;letter-spacing:1px}.lesson h3{font-size:17px;margin:10px 0 7px;max-width:220px}.lesson p{font-size:10px;color:var(--muted);line-height:1.55}.lesson-art{height:70px;border-radius:16px;background:linear-gradient(135deg,rgba(45,108,255,.13),rgba(118,88,255,.16));margin:12px 0;display:grid;place-items:center;font-size:29px}
+    .path-card{padding:20px;overflow:auto}.path{display:flex;align-items:center;min-width:600px;margin:22px 0 6px}.path-node{min-width:82px;text-align:center}.path-dot{margin:auto;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;color:white;background:linear-gradient(135deg,#2868ff,#7658ff);box-shadow:0 8px 20px rgba(56,93,238,.25)}.path-node span{display:block;font-size:8px;color:var(--muted);margin-top:7px}.connector{height:2px;flex:1;background:linear-gradient(90deg,#8eb1ff,#dfe5f5)}
+    .lab-grid{grid-template-columns:repeat(3,1fr)}.lab{padding:20px;min-height:190px;transition:.2s}.lab:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.lab-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(40,104,255,.13),rgba(118,88,255,.18));font-size:19px}.lab h3{margin:13px 0 5px;font-size:13px}.lab p{font-size:10px;color:var(--muted);line-height:1.55}.lab button{margin-top:10px}
+    .curriculum{grid-template-columns:repeat(2,1fr)}.module{padding:20px}.module-head{display:flex;justify-content:space-between;gap:10px}.module h3{font-size:15px;margin:0}.module p{font-size:9px;color:var(--muted);margin:6px 0 15px}.module .mini{font-size:8px;color:var(--blue);font-weight:800}.module-progress{height:8px;background:#e9edf7;border-radius:99px;overflow:hidden}.module-progress i{height:100%;display:block;background:linear-gradient(90deg,#2868ff,#7658ff);border-radius:inherit}
+    .full-progress{grid-template-columns:repeat(3,1fr)}.metric-card{padding:20px}.metric-card strong{font-size:32px;letter-spacing:-2px}.metric-card p{font-size:9px;color:var(--muted)}.heat{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:14px}.heat i{height:18px;border-radius:5px;background:#e9eef8}.heat i:nth-child(2n){background:#bfd2ff}.heat i:nth-child(3n){background:#7ca1ff}.heat i:nth-child(5n){background:#725cff}
+    .resources{grid-template-columns:repeat(4,1fr)}.resource{padding:18px}.resource b{font-size:11px}.resource p{font-size:9px;color:var(--muted);line-height:1.5}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(25,38,77,.22);backdrop-filter:blur(10px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(720px,100%);max-height:90vh;overflow:auto;padding:26px;border-radius:28px;background:rgba(255,255,255,.94);border:1px solid white;box-shadow:0 30px 90px rgba(20,35,80,.25)}.modal-head{display:flex;justify-content:space-between;gap:20px}.close{width:34px;height:34px;border-radius:50%;background:#edf2ff;color:#4e5a78}.mentor-chat{display:grid;gap:10px;margin-top:18px}.bubble{padding:13px 15px;border-radius:16px;font-size:11px;line-height:1.6;max-width:85%}.bubble.ai{background:#f0f4ff;color:#344266}.bubble.user{margin-left:auto;background:linear-gradient(100deg,#2868ff,#7658ff);color:white}.mentor-input{display:flex;gap:8px;margin-top:14px}.mentor-input input{flex:1;border:1px solid var(--line);border-radius:14px;padding:12px;outline:0}
+    .landing{min-height:100vh;display:grid;place-items:center;padding:24px;position:relative;overflow:hidden}.landing-card{width:min(1180px,100%);min-height:680px;border:1px solid rgba(255,255,255,.9);border-radius:42px;background:rgba(255,255,255,.56);backdrop-filter:blur(28px);box-shadow:0 30px 100px rgba(40,70,145,.15);display:grid;grid-template-columns:1.1fr .9fr;overflow:hidden}
+    .landing-copy{padding:clamp(32px,6vw,78px);display:flex;flex-direction:column;justify-content:center}.landing-logo{display:flex;align-items:center;gap:12px}.landing-logo .logo{width:46px;height:46px}.landing-logo b{font-size:15px}.landing-logo small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.landing h2{font-size:clamp(52px,7vw,94px);line-height:.88;letter-spacing:-5px;margin:42px 0 22px}.landing h2 span{background:linear-gradient(90deg,#1e65ff,#7b57ff);-webkit-background-clip:text;color:transparent}.landing-copy>p{font-size:15px;line-height:1.75;color:var(--muted);max-width:570px}.pill-row{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0}.pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid var(--line);font-size:9px;color:#536080}.landing-visual{position:relative;display:grid;place-items:center;background:radial-gradient(circle at 50% 48%,rgba(63,111,255,.18),transparent 42%)}.portal{width:min(390px,75%);aspect-ratio:1;border-radius:50%;border:1px solid rgba(55,108,255,.25);box-shadow:0 0 100px rgba(55,108,255,.2);display:grid;place-items:center;position:relative}.portal:before,.portal:after{content:"";position:absolute;border:1px solid rgba(121,86,255,.22);border-radius:50%;inset:9%;transform:rotate(30deg)}.portal:after{inset:-7%;transform:rotate(-30deg)}.portal-core{width:46%;aspect-ratio:1;border-radius:34px;background:linear-gradient(145deg,#236cff,#7658ff);box-shadow:0 30px 70px rgba(53,91,235,.35);display:grid;place-items:center;color:white;font-size:60px}.floating{position:absolute;padding:12px 14px;border-radius:17px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);box-shadow:0 15px 35px rgba(44,70,140,.12);font-size:9px}.floating b{display:block;font-size:12px;margin-top:3px}.f1{top:18%;right:10%}.f2{bottom:18%;left:8%}.f3{bottom:10%;right:18%}
+    .mobile-nav{display:none}.toast{position:fixed;right:20px;bottom:20px;z-index:200;padding:12px 15px;border-radius:14px;background:#14204c;color:white;font-size:10px;box-shadow:0 15px 40px rgba(20,32,76,.25);transform:translateY(20px);opacity:0;pointer-events:none;transition:.25s}.toast.show{transform:none;opacity:1}
+    @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.dashboard-grid,.learning-grid{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-visual{display:none}.lab-grid{grid-template-columns:repeat(2,1fr)}.resources{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:760px){:root{--nav:0px}.app.active{display:block}.sidebar{display:none}.main{width:100%;margin:0;padding:12px 14px 92px}.topbar{height:48px}.topbar .date{display:none}.search{max-width:none}.search kbd{display:none}.round{width:36px;height:36px}.hero{padding:24px;border-radius:26px;min-height:400px}.hero h1{font-size:46px;letter-spacing:-3px}.hero-visual{display:grid;min-height:180px}.learning-orbit{width:170px;height:170px}.core{width:78px;height:78px;font-size:28px;border-radius:24px}.hero-stat{position:relative;right:auto;bottom:auto;justify-content:center}.kpis{grid-template-columns:repeat(2,1fr)}.kpi{min-height:108px}.dashboard-grid,.learning-grid,.curriculum,.full-progress{grid-template-columns:1fr}.panel{min-height:240px}.lab-grid{grid-template-columns:1fr}.resources{grid-template-columns:1fr 1fr}.mobile-nav{position:fixed;display:flex;left:10px;right:10px;bottom:10px;height:66px;border-radius:24px;background:rgba(255,255,255,.82);backdrop-filter:blur(25px);border:1px solid white;box-shadow:0 16px 45px rgba(38,63,130,.18);z-index:50;align-items:center;justify-content:space-around}.mobile-nav button{width:54px;height:48px;border-radius:17px;background:transparent;color:#69748f;font-size:9px;display:grid;place-items:center}.mobile-nav button.active{color:var(--blue);background:#edf3ff}.mobile-nav .micon{font-size:17px;display:block}.landing{padding:12px}.landing-card{grid-template-columns:1fr;min-height:760px;border-radius:30px}.landing-copy{padding:32px 24px}.landing h2{font-size:57px;margin:34px 0 18px;letter-spacing:-4px}.landing-visual{min-height:300px}.portal{width:250px}.portal-core{font-size:42px}.f1{top:8%;right:4%}.f2{bottom:15%;left:4%}.f3{bottom:5%;right:7%}}
+  </style>
+</head>
+<body>
+  <div class="orb a"></div><div class="orb b"></div>
+
+  <section id="landing" class="landing">
+    <div class="landing-card">
+      <div class="landing-copy">
+        <div class="landing-logo"><div class="logo">WI</div><div><b>Workforce Intelligence</b><small>ACADEMY · LEARN. BUILD. MASTER.</small></div></div>
+        <h2>Learn the<br><span>future of work.</span></h2>
+        <p>A learning operating system for WFM, mathematics, analytics, Python, data science, machine learning, optimization, AI, MLOps and automation. Learn concepts, run experiments, build projects and measure mastery.</p>
+        <div class="pill-row"><span class="pill">WFM</span><span class="pill">Mathematics</span><span class="pill">Data Science</span><span class="pill">Machine Learning</span><span class="pill">AI</span><span class="pill">Optimization</span><span class="pill">Automation</span></div>
+        <div><div class="hero-actions"><button class="primary" data-enter>Enter Academy →</button><button class="secondary" data-demo>Explore curriculum</button></div></div>
+      </div>
+      <div class="landing-visual">
+        <div class="portal"><div class="portal-core">✦</div></div>
+        <div class="floating f1">LEARNING PROGRESS<b>68%</b></div>
+        <div class="floating f2">KNOWLEDGE NODES<b>1,284</b></div>
+        <div class="floating f3">ACTIVE PATH<b>WFM → AI</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="app" class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">WI</div><div><strong>Workforce Intelligence</strong><span>Learning Intelligence OS</span></div></div>
+      <nav class="nav" id="desktopNav">
+        <button class="active" data-view="home"><span class="ico">⌂</span>Home</button>
+        <button data-view="curriculum"><span class="ico">◈</span>Curriculum</button>
+        <button data-view="learning"><span class="ico">◎</span>Learning Path</button>
+        <button data-view="labs"><span class="ico">⌬</span>Practice Labs</button>
+        <button data-view="mentor"><span class="ico">✦</span>AI Mentor</button>
+        <button data-view="projects"><span class="ico">◇</span>Projects</button>
+        <button data-view="progress"><span class="ico">◌</span>Progress</button>
+        <button data-view="resources"><span class="ico">▤</span>Resources</button>
+      </nav>
+      <div class="side-bottom"><div class="profile"><div class="avatar">SD</div><div><b>Swapnil</b><small> Learner · Level 04</small></div><span style="margin-left:auto">⚙</span></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <label class="search">⌕ <input id="globalSearch" placeholder="Search lessons, tools, concepts or anything..."><kbd>⌘ K</kbd></label>
+        <div class="top-actions"><div class="date">23 Sep 2026<b>07:32 AM</b></div><button class="round" id="notifyBtn">♢</button><button class="round" id="mentorBtn">✦</button></div>
+      </header>
+
+      <section id="home" class="view active">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Your learning intelligence system</div>
+            <h1>Build the skills to <em>shape the future.</em></h1>
+            <p>One connected journey from WFM fundamentals to forecasting, data science, ML, optimization, GenAI and production automation.</p>
+            <div class="hero-actions"><button class="primary" data-view-go="learning">Continue learning →</button><button class="secondary" data-view-go="labs">Open a lab</button></div>
+          </div>
+          <div class="hero-visual"><div class="learning-orbit"><div class="core">✦</div><div class="node n1">∑</div><div class="node n2">⌘</div><div class="node n3">AI</div><div class="node n4">↗</div></div><div class="hero-stat"><span><b>188</b> lessons</span><span><b>12</b> modules</span><span><b>7</b> domains</span></div></div>
+        </div>
+
+        <div class="section-head"><div><h2>Learning intelligence</h2><p>Your current state across the curriculum.</p></div><button class="secondary" data-view-go="progress">View progress</button></div>
+        <div class="grid kpis">
+          <article class="card kpi"><div class="kpi-top"><span>Overall Progress</span><span class="kpi-icon">◌</span></div><strong>68%</strong><span class="delta">+4.2% this week</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 30 C20 28,25 20,42 23 S62 11,78 18 S100 13,116 14 S135 4,158 8"/></svg></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Lessons Complete</span><span class="kpi-icon">✓</span></div><strong>128</strong><span class="delta">of 188 lessons</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 31 C25 29,32 26,48 25 S75 22,88 17 S120 10,158 5"/></svg></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Practice Score</span><span class="kpi-icon">⌬</span></div><strong>82%</strong><span class="delta">+7% mastery</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 28 C24 24,30 30,48 21 S70 20,88 18 S110 7,128 12 S145 5,158 8"/></svg></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Projects</span><span class="kpi-icon">◇</span></div><strong>04</strong><span class="delta">2 in progress</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 29 C25 29,25 25,45 25 S70 25,86 16 S111 17,125 10 S145 11,158 4"/></svg></div></article>
+          <article class="card kpi"><div class="kpi-top"><span>Learning Streak</span><span class="kpi-icon">↗</span></div><strong>11 days</strong><span class="delta">personal best</span><div class="spark"><svg viewBox="0 0 160 35"><path class="line" d="M2 30 L28 30 L28 23 L53 23 L53 18 L79 18 L79 13 L106 13 L106 8 L133 8 L133 4 L158 4"/></svg></div></article>
+        </div>
+
+        <div class="section-head"><div><h2>Explore your intelligence layer</h2><p>Interactive visualizations, not static course pages.</p></div></div>
+        <div class="grid dashboard-grid">
+          <article class="card panel"><div class="panel-title"><b>Learning velocity</b><span>Last 12 weeks · lessons / week</span></div><div class="chart"><svg viewBox="0 0 500 205" preserveAspectRatio="none"><g><line class="gridline" x1="0" y1="30" x2="500" y2="30"/><line class="gridline" x1="0" y1="85" x2="500" y2="85"/><line class="gridline" x1="0" y1="140" x2="500" y2="140"/><line class="gridline" x1="0" y1="190" x2="500" y2="190"/></g><path class="forecast" d="M0 160 C70 140,110 150,160 122 S250 125,300 98 S390 92,500 48"/><path class="line" d="M0 170 C45 155,70 160,105 140 S155 142,195 122 S240 135,278 105 S330 117,365 90 S420 102,450 62 S475 72,500 43"/></svg></div></article>
+          <article class="card panel"><div class="panel-title"><b>Skill distribution</b><span>Current confidence</span></div><div class="donut-wrap"><div class="donut"><b>68%</b></div><div class="legend"><span><i></i>Foundations · 92%</span><span><i></i>Analytics · 64%</span><span><i></i>AI / ML · 24%</span></div></div></article>
+          <article class="card panel"><div class="panel-title"><b>AI learning signals</b><span>3 new</span></div><div class="insights"><div class="insight"><div class="insight-num">1</div><div><b>Forecasting is your next leverage point</b><p>Complete the current statistics block before the forecasting lab.</p></div></div><div class="insight"><div class="insight-num">2</div><div><b>Recall is behind understanding</b><p>Run a spaced-repetition review for probability.</p></div></div><div class="insight"><div class="insight-num">3</div><div><b>Build more, read less</b><p>Your project practice is below your concept completion rate.</p></div></div><button class="primary" id="openMentor">Ask AI Mentor →</button></div></article>
+        </div>
+
+        <div class="section-head"><div><h2>Continue your journey</h2><p>The next step is selected from your learning state.</p></div></div>
+        <div class="grid learning-grid">
+          <article class="card progress-card"><div class="progress-big"><div class="ring"><b>68%</b></div><div class="progress-copy"><b>Overall learning progress</b><p>128 of 188 lessons complete. Your current path is WFM → Statistics → Forecasting.</p></div></div><div class="tracks"><div class="track"><span>WFM</span><div class="bar"><i style="width:92%"></i></div><b>92%</b></div><div class="track"><span>Data</span><div class="bar"><i style="width:64%"></i></div><b>64%</b></div><div class="track"><span>ML</span><div class="bar"><i style="width:24%"></i></div><b>24%</b></div></div></article>
+          <article class="card lesson"><span class="tag">Current lesson · Module 04</span><h3>Forecasting Fundamentals</h3><p>Lesson 7 of 12 · 32 minutes estimated. Learn baseline forecasting, error metrics and validation.</p><div class="lesson-art">∿</div><button class="primary" data-lesson>Continue lesson →</button></article>
+          <article class="card path-card"><div class="panel-title"><b>Knowledge path</b><span>Next milestone · 75%</span></div><div class="path"><div class="path-node"><div class="path-dot">∑</div><span>Math</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">D</div><span>Data</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>AI / ML</span></div></div><button class="secondary" data-view-go="learning">Open full learning map</button></article>
+        </div>
+      </section>
+
+      <section id="curriculum" class="view">
+        <div class="section-head"><div><h2>Curriculum</h2><p>A connected curriculum from first principles to production systems.</p></div><button class="primary" data-view-go="learning">Open learning map</button></div>
+        <div class="grid curriculum">
+          <article class="card module"><div class="module-head"><h3>01 · Mathematics & Computational Foundations</h3><span class="mini">390 lessons</span></div><p>Arithmetic, algebra, functions, probability, statistics, calculus, linear algebra and computational thinking.</p><div class="module-progress"><i style="width:92%"></i></div><p>92% complete</p></article>
+          <article class="card module"><div class="module-head"><h3>02 · WFM Core & Queueing Systems</h3><span class="mini">248 lessons</span></div><p>Glossary, contact center mechanics, Erlang B/C/A, Little's Law, capacity, forecasting and scheduling.</p><div class="module-progress"><i style="width:84%"></i></div><p>84% complete</p></article>
+          <article class="card module"><div class="module-head"><h3>03 · Statistics & Data Analytics</h3><span class="mini">316 lessons</span></div><p>Descriptive statistics, inference, experimentation, SQL, Excel, Power Query, Power BI and analytical modeling.</p><div class="module-progress"><i style="width:64%"></i></div><p>64% complete</p></article>
+          <article class="card module"><div class="module-head"><h3>04 · Python & Data Science</h3><span class="mini">384 lessons</span></div><p>Python foundations, NumPy, pandas, visualization, data engineering and reproducible analysis.</p><div class="module-progress"><i style="width:41%"></i></div><p>41% complete</p></article>
+          <article class="card module"><div class="module-head"><h3>05 · Machine Learning</h3><span class="mini">452 lessons</span></div><p>Supervised and unsupervised learning, time series, evaluation, explainability and applied workforce models.</p><div class="module-progress"><i style="width:24%"></i></div><p>24% complete</p></article>
+          <article class="card module"><div class="module-head"><h3>06 · Optimization, AI & Automation</h3><span class="mini">520 lessons</span></div><p>Operations research, scheduling optimization, GenAI, RAG, agents, MLOps, governance and automation.</p><div class="module-progress"><i style="width:8%"></i></div><p>8% complete</p></article>
+        </div>
+      </section>
+
+      <section id="learning" class="view">
+        <div class="section-head"><div><h2>Learning Path</h2><p>A visual knowledge graph for the whole journey.</p></div><button class="secondary" data-lesson>Resume current lesson</button></div>
+        <article class="card path-card" style="min-height:320px"><div class="panel-title"><b>Intelligence learning graph</b><span>12 domains · 2,310+ knowledge nodes planned</span></div><div class="path" style="margin-top:70px"><div class="path-node"><div class="path-dot">∑</div><span>Mathematics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">◈</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">Py</div><span>Python</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">ML</div><span>Machine Learning</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>GenAI</span></div></div></article>
+        <div class="grid full-progress" style="margin-top:12px"><article class="card metric-card"><span class="eyebrow">Current mastery</span><strong>68%</strong><p>Across completed concepts, practice and project work.</p></article><article class="card metric-card"><span class="eyebrow">Knowledge depth</span><strong>7.4/10</strong><p>Average depth across active domains.</p></article><article class="card metric-card"><span class="eyebrow">Next milestone</span><strong>75%</strong><p>Finish Statistics + Forecasting lab sequence.</p></article></div>
+      </section>
+
+      <section id="labs" class="view">
+        <div class="section-head"><div><h2>Practice Labs</h2><p>Learn by changing variables and seeing the system respond.</p></div></div>
+        <div class="grid lab-grid">
+          <article class="card lab"><div class="lab-icon">λ</div><h3>Erlang Calculator</h3><p>Experiment with arrival rate, AHT, service level and staffing requirements.</p><button class="secondary" data-lab="Erlang C Lab">Launch lab →</button></article>
+          <article class="card lab"><div class="lab-icon">∿</div><h3>Forecasting Lab</h3><p>Build a baseline forecast, compare errors and understand seasonality and bias.</p><button class="secondary" data-lab="Forecasting Lab">Launch lab →</button></article>
+          <article class="card lab"><div class="lab-icon">⌗</div><h3>Scheduling Lab</h3><p>Explore coverage, constraints, breaks, shifts and optimization objectives.</p><button class="secondary" data-lab="Scheduling Lab">Launch lab →</button></article>
+          <article class="card lab"><div class="lab-icon">SQL</div><h3>Data Explorer</h3><p>Transform a synthetic contact-center dataset using SQL and analytical questions.</p><button class="secondary" data-lab="Data Explorer">Launch lab →</button></article>
+          <article class="card lab"><div class="lab-icon">ML</div><h3>ML Experiment</h3><p>Train, evaluate and explain a small workforce prediction model.</p><button class="secondary" data-lab="ML Experiment">Launch lab →</button></article>
+          <article class="card lab"><div class="lab-icon">AI</div><h3>Agentic AI Lab</h3><p>Design tool calls, retrieval context and evaluation loops without requiring a local LLM.</p><button class="secondary" data-lab="Agentic AI Lab">Launch lab →</button></article>
+        </div>
+      </section>
+
+      <section id="mentor" class="view">
+        <div class="section-head"><div><h2>AI Mentor</h2><p>A teaching layer that explains, questions, challenges and adapts.</p></div><button class="primary" id="startMentor">Start session</button></div>
+        <article class="card" style="padding:22px;min-height:440px"><div style="display:flex;align-items:center;gap:12px"><div class="logo">✦</div><div><b>Intelligence Mentor</b><p style="margin:3px 0;color:var(--muted);font-size:9px">Concept coach · Socratic questioning · Practice generation</p></div></div><div class="mentor-chat"><div class="bubble ai">Welcome. I can teach the concept, ask you questions, generate exercises, inspect your reasoning and connect today's lesson to the larger learning graph.</div><div class="bubble user">Teach me Erlang C from first principles.</div><div class="bubble ai">We'll build it from arrival rate → offered traffic → utilization → queueing probability → service level. Start with this: if 60 calls arrive per hour and AHT is 5 minutes, what is the offered traffic in Erlangs?</div></div><div class="mentor-input"><input id="mentorInput" placeholder="Ask a learning question..."><button class="primary" id="mentorSend">Send</button></div></article>
+      </section>
+
+      <section id="projects" class="view">
+        <div class="section-head"><div><h2>Projects</h2><p>Turn knowledge into evidence of capability.</p></div></div>
+        <div class="grid curriculum"><article class="card module"><span class="eyebrow">Capstone · 12 milestones</span><h3 style="margin-top:10px">Workforce Intelligence Engine</h3><p>Build a complete local-first platform: data ingestion, WFM calculations, forecasting, analytics, optimization and automation.</p><div class="module-progress"><i style="width:28%"></i></div><p>28% · 4 / 14 milestones</p><button class="primary">Open project →</button></article><article class="card module"><span class="eyebrow">Applied · 8 milestones</span><h3 style="margin-top:10px">Forecasting Studio</h3><p>Compare naive, moving-average, exponential-smoothing and ML approaches against synthetic workload data.</p><div class="module-progress"><i style="width:54%"></i></div><p>54% · 4 / 8 milestones</p><button class="secondary">Continue →</button></article></div>
+      </section>
+
+      <section id="progress" class="view">
+        <div class="section-head"><div><h2>Progress & Mastery</h2><p>Completion is only one dimension. Measure understanding, recall, application and building.</p></div></div>
+        <div class="grid full-progress"><article class="card metric-card"><span class="eyebrow">Completion</span><strong>68%</strong><p>128 / 188 current lessons</p></article><article class="card metric-card"><span class="eyebrow">Recall</span><strong>73%</strong><p>Spaced review performance</p></article><article class="card metric-card"><span class="eyebrow">Application</span><strong>61%</strong><p>Practice and lab performance</p></article></div>
+        <article class="card panel" style="margin-top:12px"><div class="panel-title"><b>Knowledge heatmap</b><span>Recent practice intensity</span></div><div class="heat"><i title="Learning activity 1"></i><i title="Learning activity 2"></i><i title="Learning activity 3"></i><i title="Learning activity 4"></i><i title="Learning activity 5"></i><i title="Learning activity 6"></i><i title="Learning activity 7"></i><i title="Learning activity 8"></i><i title="Learning activity 9"></i><i title="Learning activity 10"></i><i title="Learning activity 11"></i><i title="Learning activity 12"></i><i title="Learning activity 13"></i><i title="Learning activity 14"></i><i title="Learning activity 15"></i><i title="Learning activity 16"></i><i title="Learning activity 17"></i><i title="Learning activity 18"></i><i title="Learning activity 19"></i><i title="Learning activity 20"></i><i title="Learning activity 21"></i><i title="Learning activity 22"></i><i title="Learning activity 23"></i><i title="Learning activity 24"></i><i title="Learning activity 25"></i><i title="Learning activity 26"></i><i title="Learning activity 27"></i><i title="Learning activity 28"></i><i title="Learning activity 29"></i><i title="Learning activity 30"></i><i title="Learning activity 31"></i><i title="Learning activity 32"></i><i title="Learning activity 33"></i><i title="Learning activity 34"></i><i title="Learning activity 35"></i><i title="Learning activity 36"></i><i title="Learning activity 37"></i><i title="Learning activity 38"></i><i title="Learning activity 39"></i><i title="Learning activity 40"></i><i title="Learning activity 41"></i><i title="Learning activity 42"></i><i title="Learning activity 43"></i><i title="Learning activity 44"></i><i title="Learning activity 45"></i><i title="Learning activity 46"></i><i title="Learning activity 47"></i><i title="Learning activity 48"></i><i title="Learning activity 49"></i><i title="Learning activity 50"></i><i title="Learning activity 51"></i><i title="Learning activity 52"></i><i title="Learning activity 53"></i><i title="Learning activity 54"></i><i title="Learning activity 55"></i><i title="Learning activity 56"></i><i title="Learning activity 57"></i><i title="Learning activity 58"></i><i title="Learning activity 59"></i><i title="Learning activity 60"></i><i title="Learning activity 61"></i><i title="Learning activity 62"></i><i title="Learning activity 63"></i><i title="Learning activity 64"></i><i title="Learning activity 65"></i><i title="Learning activity 66"></i><i title="Learning activity 67"></i><i title="Learning activity 68"></i><i title="Learning activity 69"></i><i title="Learning activity 70"></i></div></article>
+      </section>
+
+      <section id="resources" class="view">
+        <div class="section-head"><div><h2>Resources</h2><p>Reference material connected to the curriculum.</p></div></div>
+        <div class="grid resources"><article class="card resource"><b>WFM Glossary</b><p>Definitions, formulas, operational terminology and examples.</p><button class="secondary">Open →</button></article><article class="card resource"><b>Formula Library</b><p>Erlang, Little's Law, forecasting metrics, statistics and optimization formulas.</p><button class="secondary">Open →</button></article><article class="card resource"><b>SQL Notebook</b><p>Progressive SQL exercises using synthetic workforce datasets.</p><button class="secondary">Open →</button></article><article class="card resource"><b>Project Playbooks</b><p>Step-by-step build guides for portfolio-grade projects.</p><button class="secondary">Open →</button></article></div>
+      </section>
+    </main>
+
+    <nav class="mobile-nav" id="mobileNav"><button class="active" data-view="home"><span class="micon">⌂</span>Home</button><button data-view="learning"><span class="micon">◎</span>Learn</button><button data-view="labs"><span class="micon">⌬</span>Lab</button><button data-view="mentor"><span class="micon">✦</span>AI</button><button data-view="projects"><span class="micon">◇</span>More</button></nav>
+  </section>
+
+  <div class="modal-backdrop" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Interactive learning</div><h2 id="modalTitle" style="margin:7px 0;font-size:26px">Lesson</h2></div><button class="close" id="modalClose">×</button></div><p id="modalBody" style="font-size:12px;color:var(--muted);line-height:1.7"></p><div class="card" style="padding:18px;margin-top:14px;background:#f4f7ff"><b>Challenge</b><p style="font-size:11px;color:var(--muted);line-height:1.6">A learning platform should make you do something with the concept. Change the inputs, predict the outcome, then compare it with the model.</p><button class="primary" id="modalAction">Start challenge →</button></div></div></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (() => {
+      const landing = document.getElementById('landing');
+      const app = document.getElementById('app');
+      const views = [...document.querySelectorAll('.view')];
+      const navButtons = [...document.querySelectorAll('[data-view]')];
+      const modal = document.getElementById('modal');
+      const toast = document.getElementById('toast');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBody');
+
+      function showToast(message){
+        toast.textContent = message; toast.classList.add('show');
+        clearTimeout(showToast.timer); showToast.timer = setTimeout(()=>toast.classList.remove('show'),2400);
+      }
+      function enterAcademy(){
+        landing.style.display='none'; app.classList.add('active'); window.scrollTo(0,0);
+      }
+      function setView(name){
+        views.forEach(v=>v.classList.toggle('active',v.id===name));
+        navButtons.forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      document.querySelectorAll('[data-enter]').forEach(b=>b.addEventListener('click',enterAcademy));
+      document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{enterAcademy();setView('curriculum')}));
+      navButtons.forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+      document.querySelectorAll('[data-view-go]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewGo)));
+      document.getElementById('mentorBtn').addEventListener('click',()=>setView('mentor'));
+      document.getElementById('openMentor').addEventListener('click',()=>setView('mentor'));
+      document.getElementById('startMentor').addEventListener('click',()=>showToast('Mentor session ready.'));
+      document.getElementById('notifyBtn').addEventListener('click',()=>showToast('3 learning signals need your attention.'));
+      document.querySelectorAll('[data-lesson]').forEach(b=>b.addEventListener('click',()=>{
+        title.textContent='Forecasting Fundamentals';
+        body.textContent='Lesson 7 of 12. Build a baseline forecast, understand forecast error, identify bias and prepare for the Forecasting Lab.';
+        modal.classList.add('open');
+      }));
+      document.querySelectorAll('[data-lab]').forEach(b=>b.addEventListener('click',()=>{
+        title.textContent=b.dataset.lab;
+        body.textContent='Lab shell ready. The interactive engine will connect here as the curriculum modules are implemented.';
+        modal.classList.add('open');
+      }));
+      document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
+      modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+      document.getElementById('modalAction').addEventListener('click',()=>{modal.classList.remove('open');showToast('Challenge started. Lab integration is next.');});
+      document.getElementById('mentorSend').addEventListener('click',sendMentor);
+      document.getElementById('mentorInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMentor()});
+      function sendMentor(){
+        const input=document.getElementById('mentorInput'); const value=input.value.trim();
+        if(!value)return;
+        const chat=document.querySelector('.mentor-chat');
+        const user=document.createElement('div'); user.className='bubble user'; user.textContent=value; chat.appendChild(user);
+        const ai=document.createElement('div'); ai.className='bubble ai'; ai.textContent='Good question. I would break that into first principles, a worked example, then a short practice problem. The live mentor connector will be attached after the UI foundation.';
+        chat.appendChild(ai); input.value=''; chat.scrollTop=chat.scrollHeight;
+      }
+      const search=document.getElementById('globalSearch');
+      search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
+      window.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();} if(e.key==='Escape')modal.classList.remove('open')});
+    })();
+  </script>
+</body>
+</html>
