@@ -946,6 +946,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.05": {
+    "title": "Service Objectives and Customer Promises",
+    "understanding": "Service objectives translate customer expectations and business priorities into measurable operating targets. In WFM, those objectives influence staffing requirements, scheduling priorities and intraday decisions. The exact definition matters more than the label.",
+    "notes": [
+      "Document the target, answer threshold and eligible population.",
+      "Different channels can require different service measures.",
+      "Service level is meaningful only when numerator, denominator and threshold are defined.",
+      "Targets are business decisions; WFM estimates their capacity implications.",
+      "Do not optimize service percentage in isolation from cost, quality and customer outcomes."
+    ],
+    "highlights": [
+      "A target is a business requirement; the model estimates resources needed to pursue it.",
+      "Service-level definitions must be explicit.",
+      "Different work types can require different service objectives.",
+      "Interval performance matters because customer waiting is time-dependent."
+    ],
+    "qa": [
+      [
+        "Is 80% service level universally good?",
+        "No. Appropriateness depends on the operation, customer promise, channel, cost and business requirements."
+      ],
+      [
+        "Why record an answer threshold?",
+        "It defines what counts as an interaction answered within the objective."
+      ],
+      [
+        "Can two reports both show 90% SLA and disagree?",
+        "Yes. They may use different populations, exclusions, thresholds or time windows."
+      ],
+      [
+        "How does a service target affect WFM?",
+        "Changing the target changes the capacity and operating strategy required to pursue it."
+      ]
+    ],
+    "practice": "Write a service-objective specification for a fictional voice queue: target, threshold, denominator, exclusions, reporting grain and escalation rule. Create a separate objective for email and explain the difference.",
+    "workedExample": "If 900 eligible contacts exist and 810 meet the defined threshold, service level is 810 ÷ 900 = 90%. The calculation is simple; proving that both counts use identical definitions is the real control.",
+    "assessment": "Create a metric specification another analyst could reproduce without asking a question. Include formula, inputs, exclusions, threshold, grain and business purpose.",
+    "commonMistakes": [
+      "Quoting a target without its definition.",
+      "Using a daily average to hide interval failures.",
+      "Changing the denominator to improve the reported result."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "Service objectives translate customer expectations and business priorities into measurable operating targets. In WFM, those objectives influence staffing requirements, scheduling priorities and intraday decisions. The exact definition matters more than the label.",
+      "mentalModel": "Use this specification in Module 02 when learning service-level formulas. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "Write the customer promise.",
+        "Convert it into a measurable objective.",
+        "Define threshold and population.",
+        "Define exclusions and time grain.",
+        "Calculate a known example.",
+        "Connect target to staffing implications.",
+        "Define reporting and escalation."
+      ],
+      "mastery": "Build a complete service-objective specification and explain how changing the target changes the planning problem.",
+      "prerequisites": "02.1.04",
+      "transfer": "Use this specification in Module 02 when learning service-level formulas.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
