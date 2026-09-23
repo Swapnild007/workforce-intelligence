@@ -420,6 +420,7 @@
 
   <script src="data/curriculum.js"></script>
   <script src="data/curriculum-content-02.js"></script>
+  <script src="data/curriculum-content.js"></script>
   <script src="data/wfm-lab.js"></script>
   <script>
     window.addEventListener('load',()=>{const c=window.WI_CURRICULUM;if(!c)return;const domains=c.domains.length;const modules=c.domains.reduce((n,d)=>n+d.modules.length,0);const lessons=c.domains.reduce((n,d)=>n+d.modules.reduce((m,x)=>m+x.lessons.length,0),0);const el=document.getElementById('curriculumStats');if(el)el.textContent=domains+' domains · '+modules+' modules · '+lessons+' lessons';});
@@ -655,7 +656,7 @@
         title.textContent=lesson.id+' · '+lesson.title;
         body.innerHTML='<p style="margin-top:0"><b>Understanding language</b><br>'+lesson.understanding+'</p>'+
           '<div class="card" style="padding:14px;margin-top:12px"><b>Key notes</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.notes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
-          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+          '<div class="card" style="padding:14px;margin-top:10px"><b>Highlights</b><ul style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0;padding-left:18px">'+lesson.highlights.map(x=>'<li>'+x+'</li>').join('')+'</ul></div><div class="card" style="padding:14px;margin-top:10px"><b>Worked example</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.workedExample+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Practice</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.practice+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Assessment evidence</b><p style="font-size:10px;color:#9a9a9a;line-height:1.6;margin:8px 0 0">'+lesson.assessment+'</p></div><div class="card" style="padding:14px;margin-top:10px"><b>Research basis</b><div style="font-size:10px;color:#9a9a9a;line-height:1.6;margin-top:8px">'+lesson.sources.map(s=>'<div>'+s.label+'</div>').join('')+'</div></div>'+
           '<div class="card" style="padding:14px;margin-top:10px"><b>Questions & answers</b><div style="display:grid;gap:9px;margin-top:8px">'+lesson.qa.map(q=>'<div><b style="font-size:10px">Q. '+q[0]+'</b><div style="font-size:10px;color:#9a9a9a;line-height:1.5;margin-top:3px">A. '+q[1]+'</div></div>').join('')+'</div></div>';
       });
 
