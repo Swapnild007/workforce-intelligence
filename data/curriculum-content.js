@@ -1154,6 +1154,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.07": {
+    "title": "WFM Roles and Decision Rights",
+    "understanding": "WFM is a cross-functional operating discipline. Forecasting, capacity planning, scheduling, intraday management, operations, HR and finance can own different decisions. Clear decision rights prevent conflicting changes and make assumptions auditable.",
+    "notes": [
+      "Separate accountability for forecast, staffing requirement, schedule and intraday action.",
+      "Document who supplies inputs, approves assumptions and executes changes.",
+      "RTA/intraday teams generally focus on current-day control; responsibilities vary by organization.",
+      "Operations often executes actions while WFM provides evidence and recommendations.",
+      "Escalation paths should be defined before a service or staffing issue occurs."
+    ],
+    "highlights": [
+      "Role clarity is part of WFM control.",
+      "Decision rights should follow the time horizon and decision type.",
+      "Owning a model does not automatically mean owning the business decision.",
+      "Governance makes assumptions traceable."
+    ],
+    "qa": [
+      [
+        "Who owns the forecast?",
+        "The organization should explicitly assign ownership; there is no universal title that must own it."
+      ],
+      [
+        "What does an intraday analyst typically do?",
+        "Monitor actuals against plan, identify material gaps, coordinate interventions and escalate using defined thresholds."
+      ],
+      [
+        "Why involve operations?",
+        "Operations executes many actions and supplies context not visible in historical data."
+      ],
+      [
+        "Why does governance matter?",
+        "It prevents conflicting changes to assumptions, targets and actions and creates an audit trail."
+      ]
+    ],
+    "practice": "Create a RACI-style decision map for forecast, staffing requirement, schedule publication, intraday intervention, overtime approval and service escalation.",
+    "workedExample": "Forecasting identifies a volume increase, while operations controls overtime approval and supervisors control same-day offline activity. WFM can quantify the gap and recommend an action, but approval and execution rights remain with the defined owners.",
+    "assessment": "Submit a decision-rights matrix covering at least six WFM decisions, their inputs, accountable owner, approver, execution team and escalation path.",
+    "commonMistakes": [
+      "Assuming the analyst can change operational policy.",
+      "Allowing multiple people to overwrite assumptions independently.",
+      "Escalating without defining a threshold or requested decision."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "WFM is a cross-functional operating discipline. Forecasting, capacity planning, scheduling, intraday management, operations, HR and finance can own different decisions. Clear decision rights prevent conflicting changes and make assumptions auditable.",
+      "mentalModel": "Reuse the decision-rights map throughout the remaining WFM modules. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "List recurring decisions.",
+        "Identify required inputs.",
+        "Assign accountable owners.",
+        "Define approval rights.",
+        "Define execution responsibility.",
+        "Set escalation thresholds.",
+        "Document the audit trail."
+      ],
+      "mastery": "Build a decision-rights map that removes ambiguity from six common WFM decisions.",
+      "prerequisites": "02.1.06",
+      "transfer": "Reuse the decision-rights map throughout the remaining WFM modules.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
