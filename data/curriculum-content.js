@@ -738,6 +738,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.03": {
+    "title": "Voice, Digital and Back-Office Channels",
+    "understanding": "Contact-center work is not limited to synchronous voice calls. Voice, chat, messaging, email and back-office tasks differ in arrival behaviour, handling pattern, concurrency, urgency and service measurement. WFM must classify those differences before comparing demand.",
+    "notes": [
+      "Voice is generally immediate and queue-based.",
+      "Chat can support concurrency, subject to policy and capability.",
+      "Email and asynchronous work create backlog and ageing dynamics.",
+      "Back-office work may be deadline-based rather than live-queue based.",
+      "Blended planning requires explicit rules for shared capacity."
+    ],
+    "highlights": [
+      "Channel is a planning dimension, not just a reporting label.",
+      "Concurrency changes the relationship between contacts and agent capacity.",
+      "Asynchronous work introduces backlog and ageing.",
+      "Do not force every channel into a voice-only staffing formula."
+    ],
+    "qa": [
+      [
+        "Why can't chat always use voice staffing logic?",
+        "Chat can support multiple active sessions per agent, so contact count and capacity are related differently."
+      ],
+      [
+        "What changes with email?",
+        "Work can be deferred, creating backlog, ageing and deadline-based capacity decisions."
+      ],
+      [
+        "Can channels share agents?",
+        "Yes, when skills, tooling, policy and service objectives permit it; the shared-capacity rule must be explicit."
+      ],
+      [
+        "What should a WFM analyst document?",
+        "Arrival pattern, handling effort, concurrency or backlog assumptions, service objective, skills and capacity rules."
+      ]
+    ],
+    "practice": "Build a channel matrix for voice, chat, email and back-office work. Include arrival pattern, urgency, handling model, concurrency, service measure, skills and planning unit.",
+    "workedExample": "A 30-minute period contains 20 voice calls at 6 minutes AHT and 15 chats with an assumed concurrency of 2. The raw contact counts cannot simply be added. Voice creates 120 handling minutes; chat capacity depends on the organisation's concurrency and handling assumptions.",
+    "assessment": "Create a four-channel planning matrix and propose a shared-capacity rule for one blended team. State when that rule would be invalid.",
+    "commonMistakes": [
+      "Adding channel volumes as if contacts were identical.",
+      "Assuming a fixed chat concurrency is universally valid.",
+      "Ignoring backlog and ageing for asynchronous work."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "Contact-center work is not limited to synchronous voice calls. Voice, chat, messaging, email and back-office tasks differ in arrival behaviour, handling pattern, concurrency, urgency and service measurement. WFM must classify those differences before comparing demand.",
+      "mentalModel": "Reuse the matrix later for multi-channel and blended WFM. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "List channels.",
+        "Describe arrival behaviour.",
+        "Define the work unit.",
+        "Document concurrency or backlog behaviour.",
+        "Define service objectives.",
+        "Map required skills.",
+        "Define shared-capacity rules."
+      ],
+      "mastery": "Explain why four channels cannot safely be collapsed into one contact-volume number and defend the planning matrix.",
+      "prerequisites": "02.1.02",
+      "transfer": "Reuse the matrix later for multi-channel and blended WFM.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
