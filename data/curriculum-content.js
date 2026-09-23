@@ -634,6 +634,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.02": {
+    "title": "Demand, Work and Capacity",
+    "understanding": "Demand is the amount of work arriving or expected to arrive. Work is the effort required to process that demand. Capacity is the usable amount of workforce time available to process that work. WFM connects these three concepts before staffing or scheduling.",
+    "notes": [
+      "Measure demand at the same time grain at which capacity must respond.",
+      "Workload normally combines demand with handling effort; volume alone is not a capacity requirement.",
+      "Capacity depends on available time, skills, productivity assumptions and constraints.",
+      "Paid headcount is not the same as deployable capacity.",
+      "Compare demand and capacity using consistent units before calculating a gap."
+    ],
+    "highlights": [
+      "Volume answers 'how much arrived'; workload answers 'how much effort did it create'.",
+      "Capacity is time- and skill-dependent.",
+      "A daily capacity surplus can coexist with an interval-level shortage.",
+      "Always reconcile units before comparing demand with capacity."
+    ],
+    "qa": [
+      [
+        "Why is volume alone insufficient?",
+        "Two intervals can have identical volume but different handling times, creating different workload and staffing requirements."
+      ],
+      [
+        "What is capacity?",
+        "Capacity is the usable amount of work the available workforce can process under stated assumptions and constraints."
+      ],
+      [
+        "Can a center be overstaffed and understaffed on the same day?",
+        "Yes. Aggregate daily capacity can exceed demand while specific intervals or skills have shortages."
+      ],
+      [
+        "What is the first calculation check?",
+        "Confirm that demand and capacity are expressed in compatible units and at the same time grain."
+      ]
+    ],
+    "practice": "Create a 30-minute demand table with volume and AHT for eight intervals. Convert each interval to workload minutes, compare it with available agent minutes, and mark the intervals with a capacity gap.",
+    "workedExample": "An interval has 40 contacts and a 6-minute average handling time. Workload is 240 handling minutes. If 10 agents are available for the full 30-minute interval, gross available time is 300 agent-minutes. Before queueing and occupancy assumptions, there is 60 agent-minutes of gross headroom. At 8-minute AHT, workload becomes 320 minutes and the headroom disappears.",
+    "assessment": "Produce a demand-work-capacity table for eight intervals, show all units, identify the largest gap and explain at least two reasons gross capacity may overstate usable capacity.",
+    "commonMistakes": [
+      "Comparing contacts directly with agent count.",
+      "Using daily averages for interval staffing decisions.",
+      "Ignoring skills and assuming all capacity is interchangeable."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "Demand is the amount of work arriving or expected to arrive. Work is the effort required to process that demand. Capacity is the usable amount of workforce time available to process that work. WFM connects these three concepts before staffing or scheduling.",
+      "mentalModel": "Carry the demand → workload → capacity chain into forecasting and staffing. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "Define the planning interval.",
+        "Record volume.",
+        "Record the handling-time assumption.",
+        "Convert volume and handling time into workload.",
+        "Calculate usable capacity.",
+        "Compare workload with capacity.",
+        "Investigate each material gap."
+      ],
+      "mastery": "Build an interval-level demand/work/capacity model and explain why the same daily volume can require different staffing plans.",
+      "prerequisites": "02.1.01",
+      "transfer": "Carry the demand → workload → capacity chain into forecasting and staffing.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
