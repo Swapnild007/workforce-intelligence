@@ -4,7 +4,7 @@ A futuristic, local-first learning interface for mastering Workforce Management,
 
 ## Current milestone
 
-This repository currently contains the **landing page + responsive frontend UI foundation**.
+This repository contains the **Workforce Intelligence learning system and its integrated WFM simulation lab**. The WFM Lab is part of this repository and is not a future standalone project.
 
 ### Included
 
@@ -12,10 +12,10 @@ This repository currently contains the **landing page + responsive frontend UI f
 - Responsive desktop/mobile layouts
 - Learning-focused landing page
 - Curriculum explorer
-- Visual learning path
+- Unified Learn experience: journey + curriculum + lessons
 - Learning progress and mastery surfaces
-- Practice Labs
-- AI Mentor UI
+- Integrated WFM Lab: queueing, forecasting, capacity, scheduling, intraday and what-if analysis
+- Decision Lab
 - Projects
 - Resources
 - Interactive modal/lesson shell
@@ -37,8 +37,10 @@ Then open `http://localhost:8000`.
 
 ## Engineering direction
 
-The UI is deliberately separated conceptually from the future learning engines. Subsequent milestones will connect:
+The UI is deliberately separated conceptually from the future learning engines. Engineering direction:
 
-`Curriculum → Knowledge Graph → Labs → WFM Engine → Data/ML → Optimization → AI Mentor → Automation`
+`Learn → WFM Lab → Decision Lab → Projects → Analytics/ML → Optimization → GenAI/Automation`
+
+The WFM Lab is intentionally dependency-free and offline-first. It uses synthetic scenarios and transparent calculations so the learning environment remains portable and safe for corporate environments.
 
 No corporate data or credentials belong in this public repository.
