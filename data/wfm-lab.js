@@ -307,7 +307,7 @@
     root.innerHTML=nav()+'<div class="wfm-content">'+views[state.tab]()+'</div>';
     $$('.wfm-tabs button[data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
     $$('.wfm-content [data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render();}));
-    $$('.wfm-field input[data-wfm-input],.wfm-field select[data-wfm-input]',root).forEach(el=>el.addEventListener('input',()=>{
+    $$('.wfm-field input[data-wfm-input],.wfm-field select[data-wfm-input]',root).forEach(el=>el.addEventListener('change',()=>{
       const k=el.dataset.wfmInput.split('.');
       if(k[0]==='s')state.staffing[k[1]]=num(el.value);
       else if(k[0]==='f')state.forecast[k[1]]=num(el.value);
