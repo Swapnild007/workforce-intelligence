@@ -39,9 +39,11 @@ const s = wfm.staffing({volume:600,period:60,aht:300,sl:80,threshold:20,shrinkag
 if (!(s.required > 0 && Number.isFinite(s.erlangs) && Number.isFinite(s.fte))) throw new Error('WFM staffing engine failed');
 const c = wfm.capacity({weeklyVolume:18000,aht:300,shrinkage:28,paidHours:40});
 if (!(c.fte > 0 && Number.isFinite(c.fte))) throw new Error('WFM capacity engine failed');
-const f = wfm.forecast();
-if (f.future.length !== 12 || f.history.length !== 24) throw new Error('WFM forecast engine failed');
-if (wfm.intervals().length !== 48) throw new Error('WFM interval engine failed');
+const f = wfm.forecastModel();
+if (f.future.length !== 12 || f.history.length !== 24 || !Number.isFinite(f.mape)) throw new Error('WFM forecast engine failed');
+if (wfm.intervalPlan().length !== 48) throw new Error('WFM interval engine failed');
+if (!(wfm.schedulePlan().assigned.length >= 1)) throw new Error('WFM schedule engine failed');
+if (!(wfm.adherenceSummary().length >= 1)) throw new Error('WFM adherence engine failed');
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
 const contentSource = fs.readFileSync('data/curriculum-content-02.js', 'utf8');
