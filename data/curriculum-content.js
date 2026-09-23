@@ -254,6 +254,217 @@
     return out;
   }
 
+
+  function deepLesson(domain,module,title,index){
+    const t=title.toLowerCase();
+    const family =
+      domain==="02" ? (
+        /forecast|moving average|smoothing|holt|arima|regression|trend|seasonality|accuracy|bias|error/.test(t) ? "forecast" :
+        /erlang|queue|arrival|service rate|traffic/.test(t) ? "queue" :
+        /schedule|shift|break|coverage|multi-skilled/.test(t) ? "schedule" :
+        /intraday|real-time|queue and service|recovery|escalation/.test(t) ? "intraday" :
+        /shrinkage|adherence|attendance|absenteeism|conformance/.test(t) ? "people" :
+        /service level|asa|abandon|offered|handled|aht|occupancy|utilization|fte|staffing|capacity/.test(t) ? "metric" : "foundation"
+      ) :
+      domain==="05" ? (
+        /lookup|xlookup|vlookup|index|match/.test(t) ? "lookup" :
+        /date|time|workday|networkdays|calendar/.test(t) ? "time" :
+        /power query|merge|append|unpivot|m language|refresh/.test(t) ? "query" :
+        /pivot|power pivot|dax|measure|relationship|fact|dimension|model/.test(t) ? "model" :
+        /what-if|solver|sensitivity|scenario/.test(t) ? "scenario" :
+        /text|clean|trim|substitute|replace/.test(t) ? "cleaning" :
+        /dynamic array|filter|sort|unique|sequence/.test(t) ? "arrays" : "excel"
+      ) :
+      domain==="08" ? (
+        /power query|transform|merge|append|unpivot|data type|refresh/.test(t) ? "query" :
+        /relationship|fact|dimension|calendar|semantic|granularity|model/.test(t) ? "model" :
+        /dax|calculate|context|iterator|time intelligence|measure/.test(t) ? "dax" :
+        /report|visual|drill|tooltip|dashboard|kpi/.test(t) ? "report" :
+        /security|governance|publish|refresh|performance|automation/.test(t) ? "production" : "powerbi"
+      ) :
+      (
+        /collection|list|tuple|set|dictionary|loop|condition/.test(t) ? "python-core" :
+        /function|module|package|software engineering|testing/.test(t) ? "engineering" :
+        /file|json|csv|api|automation|data engineering/.test(t) ? "io" :
+        /pandas|numpy|time-series|statistics|forecast|visualization/.test(t) ? "analytics" :
+        /exception|error/.test(t) ? "errors" : "python"
+      );
+
+    const packs={
+      foundation:{
+        zero:"Imagine you have a workforce problem but only a spreadsheet of numbers. This lesson teaches you what the numbers mean before you try to calculate anything.",
+        mental:"The core chain is demand → work → capacity → outcome. A WFM decision is only as good as the definition and time grain behind each link.",
+        build:["Define the business question in one sentence.","List every input and its unit.","Choose the time grain at which the decision must work.","Calculate or classify the measure.","Reconcile it against the source.","Explain what action the result supports."],
+        hero:"Take an unfamiliar operational extract, define its fields and produce a one-page calculation specification that another analyst could reproduce."
+      },
+      metric:{
+        zero:"A metric is a measurement with a definition. The same word can produce different numbers when the population, threshold, exclusions or time grain changes.",
+        mental:"Think numerator ÷ denominator, plus the rules that decide which rows enter each side. Then connect the metric to workload, capacity or customer outcome.",
+        build:["Write the exact metric definition.","Identify numerator and denominator.","Confirm units and time grain.","Calculate a small known example by hand.","Compare the result with the source system.","Interpret the operational consequence."],
+        hero:"Create a metric specification with definition, formula, inputs, exclusions, validation test and decision threshold. Then challenge it with one edge case."
+      },
+      queue:{
+        zero:"A queue forms when work arrives faster than it can be completed at that moment. Queueing theory gives you a mathematical way to reason about waiting and capacity.",
+        mental:"Volume becomes workload through handling time. Workload relative to available service capacity drives delay; the queue model adds the waiting behaviour.",
+        build:["Convert arrivals and handling time into a common unit.","Calculate offered workload.","State the queueing model and assumptions.","Estimate capacity or delay.","Compare the theoretical result with an operational scenario.","Document where the assumptions break."],
+        hero:"Solve a small queueing case, change one assumption, and explain why the result changes rather than simply reporting the new number."
+      },
+      forecast:{
+        zero:"A forecast is an estimate of future demand made from information available before the future happens. It is a planning input, not a guarantee.",
+        mental:"Separate history, pattern, model, adjustment and error. A good forecast process makes each of those visible.",
+        build:["Define the forecast target and grain.","Create a simple baseline.","Identify trend, recurring patterns and events.","Fit or calculate the candidate method.","Backtest on periods not used for selection.","Measure error and bias.","Document overrides and assumptions."],
+        hero:"Build two forecasts for the same history, backtest both, explain the error difference, and state when a human override would be justified."
+      },
+      schedule:{
+        zero:"A schedule is a coverage plan: people are placed into time periods, skills and activities so that available capacity lines up with requirements.",
+        mental:"Start with interval requirement, then add real-world constraints such as shift length, breaks, days off, skills and labour rules.",
+        build:["Create the interval requirement curve.","Define shift and labour constraints.","Place feasible shift patterns.","Overlay coverage against requirement.","Locate under- and over-coverage.","Test skill compatibility.","Measure schedule quality.","Document trade-offs."],
+        hero:"Take a 30-minute requirement curve and create a feasible schedule that covers the critical intervals while respecting stated constraints."
+      },
+      intraday:{
+        zero:"Intraday management is what happens after the plan meets reality. The question is not only 'what is happening?' but 'what can we safely change now?'",
+        mental:"Compare actual demand, actual handling, scheduled capacity and service state. Then choose an intervention with a measurable expected effect.",
+        build:["Establish the start-of-day baseline.","Compare actual with forecast.","Compare actual staffing with schedule.","Identify the material gap.","Estimate the service/capacity effect.","Choose an intervention.","Set a recovery checkpoint.","Escalate when the defined threshold is crossed."],
+        hero:"Diagnose an interval with a service miss, identify the likely driver, choose two possible interventions and explain the trade-off between them."
+      },
+      people:{
+        zero:"People capacity is affected by attendance, breaks, meetings, training and other non-production activities. WFM models these effects rather than pretending every paid hour is deployable.",
+        mental:"Paid capacity → unavailable time → productive capacity → coverage. The exact categories and denominators must be defined locally.",
+        build:["Define the capacity base.","Separate planned and unplanned loss.","Calculate productive hours.","Compare plan with actual.","Locate the largest variance.","Trace the operational cause.","Feed the learning back into planning."],
+        hero:"Build a shrinkage/adherence bridge for one week and explain which variance should change the forecast, schedule, staffing assumption or coaching action."
+      },
+      lookup:{
+        zero:"A lookup answers a simple question: 'Given this key, which value belongs to it?' It is the spreadsheet equivalent of following a relationship between two tables.",
+        mental:"Key → matching row → returned field. Correctness depends on key quality, data types, uniqueness and missing-match handling.",
+        build:["Identify the lookup key.","Check uniqueness on the lookup side.","Normalise data types and text.","Choose the appropriate lookup method.","Define missing-match behaviour.","Test duplicates and edge cases.","Reconcile a sample manually."],
+        hero:"Create a two-table employee mapping, deliberately introduce a duplicate and a missing key, and diagnose both instead of hiding them."
+      },
+      time:{
+        zero:"Excel dates and times are stored as numeric values, which is why subtraction can measure elapsed time. The display format is not the underlying value.",
+        mental:"Separate calendar date, clock time, duration and business-day logic. WFM calculations often fail when those concepts are mixed.",
+        build:["Inspect the source type.","Convert text dates/times when required.","Choose the correct grain.","Calculate elapsed duration.","Apply business-day rules when needed.","Format only after the calculation is correct.","Test midnight and boundary cases."],
+        hero:"Build an interval timestamp model that correctly handles a shift crossing midnight and prove the elapsed duration independently."
+      },
+      cleaning:{
+        zero:"Data cleaning means turning messy source values into consistent analytical values without destroying the original evidence.",
+        mental:"Profile first, transform second, validate third. Every cleaning rule should be explainable and repeatable.",
+        build:["Profile values and data types.","Identify whitespace, case, nulls and duplicates.","Define the intended canonical value.","Apply the smallest deterministic transformation.","Check row counts and key uniqueness.","Keep the raw source unchanged.","Document exceptions."],
+        hero:"Clean a deliberately messy operational export and produce a validation report showing what changed and why."
+      },
+      arrays:{
+        zero:"Dynamic arrays let one formula return a range of results that can spill into neighbouring cells. This changes how you design reports and intermediate calculations.",
+        mental:"Think in arrays of values rather than one-cell-at-a-time formulas. The formula becomes the source of a dynamic result set.",
+        build:["Define the desired output set.","Choose the array function.","Control the source range or table.","Test empty and duplicate cases.","Check spill space and errors.","Combine functions only after each part works.","Use the result in a downstream calculation."],
+        hero:"Build a dynamic WFM exception list that updates automatically when new interval records are added."
+      },
+      query:{
+        zero:"Power Query is a repeatable data-preparation pipeline. Instead of cleaning the same export manually every week, you describe the transformation once and refresh it.",
+        mental:"Source → profile → transform → combine → validate → load. The sequence matters because later steps operate on the output of earlier steps.",
+        build:["Connect to the source.","Inspect structure and data types.","Remove or transform unnecessary fields.","Combine sources when required.","Apply business rules.","Validate row counts and keys.","Load the result.","Refresh using a changed input."],
+        hero:"Build a refreshable pipeline from two monthly exports, introduce a controlled source change, and make the pipeline detect or handle it."
+      },
+      model:{
+        zero:"A data model is a structured map of facts and descriptive information. Relationships tell the analytical engine how filters should travel.",
+        mental:"Fact table = events/measures at a defined grain. Dimension = descriptive context. Relationship = the path connecting them.",
+        build:["State the grain of every table.","Identify candidate keys.","Separate facts from dimensions.","Create relationships deliberately.","Check cardinality and filter direction.","Test a known total.","Add calculations only after the model is sound."],
+        hero:"Design a small star schema for interval WFM data and prove that filtering by date and LOB produces the expected totals."
+      },
+      scenario:{
+        zero:"Scenario analysis changes an explicit assumption and observes how the result changes. It is a controlled experiment, not a guess.",
+        mental:"Base case → assumption change → recalculation → delta → decision. Keep assumptions visible so the result can be audited.",
+        build:["Create a stable base case.","Move assumptions into input cells.","Define the output measure.","Change one assumption at a time.","Record the delta.","Run combined scenarios.","Explain the operational trade-off."],
+        hero:"Model three staffing scenarios and show how volume, AHT and shrinkage assumptions change required capacity."
+      },
+      report:{
+        zero:"A report is a decision interface. Its job is to help someone understand status, find exceptions and decide what to do next.",
+        mental:"Question → metric → visual → interaction → diagnosis → action. Remove anything that does not support that chain.",
+        build:["Write the decision questions.","Define KPI calculations and grain.","Choose the visual that matches each question.","Create hierarchy from summary to detail.","Add controlled interactions.","Test with a user who did not build it.","Validate numbers against source data."],
+        hero:"Build an executive page and a diagnostic page from the same model, then explain why every visual exists."
+      },
+      dax:{
+        zero:"DAX is the calculation language used by Power BI semantic models. Its most important idea is that calculations evaluate under a context.",
+        mental:"Measure expression + current filter context = result. CALCULATE can modify that context; row context and filter context are different ideas.",
+        build:["Define the business calculation in plain language.","Identify the model table and grain.","Write the simplest valid measure.","Test it without filters.","Add one filter.","Add a second filter or iterator only when needed.","Compare against an independent result."],
+        hero:"Build a KPI measure, slice it by date and LOB, then explain exactly which filters changed the result."
+      },
+      production:{
+        zero:"A production analytical solution must remain trustworthy after you publish it. Refresh, permissions, performance, ownership and change control are part of the product.",
+        mental:"Build → validate → publish → refresh → monitor → change safely. A report that works only on the author's laptop is not a finished solution.",
+        build:["Define ownership and audience.","Validate model and measures.","Configure refresh or connectivity.","Apply security rules where required.","Test performance with realistic volume.","Document dependencies.","Monitor failures and changes.","Revalidate after updates."],
+        hero:"Create a production-readiness checklist for a WFM report and identify the evidence required before release."
+      },
+      "python-core":{
+        zero:"Python starts with values, names, collections and control flow. The goal is to make the computer follow a rule you can explain.",
+        mental:"Input → transformation → output. Data structures hold information; conditions choose paths; loops repeat work.",
+        build:["Write the smallest example.","Inspect the value and type.","Add the required operation.","Handle one edge case.","Refactor repeated logic.","Test the result.","Explain the code in plain language."],
+        hero:"Solve the same small WFM problem first with basic Python constructs, then refactor it for readability and testability."
+      },
+      engineering:{
+        zero:"Software engineering is how you turn working code into code that another person can understand, test and safely change.",
+        mental:"Small responsibility → clear interface → test → refactor. Reliability comes from structure as much as syntax.",
+        build:["Define the function/module responsibility.","Choose explicit inputs and outputs.","Implement the smallest behaviour.","Add normal and edge-case tests.","Handle expected failures.","Remove duplication.","Document the interface.","Run the full test set."],
+        hero:"Take a working analytical script and refactor it into small testable components without changing its validated output."
+      },
+      io:{
+        zero:"Files, APIs and external datasets are boundaries between your program and the outside world. Assume their structure can change or contain bad values.",
+        mental:"Acquire → validate schema → validate values → transform → calculate → output → log.",
+        build:["Define the expected schema.","Read the source.","Validate required fields.","Validate types and ranges.","Handle missing/duplicate records.","Transform to the internal model.","Write the output.","Record success or failure."],
+        hero:"Build a small ingestion pipeline that refuses an invalid schema and produces a traceable output when the input is valid."
+      },
+      analytics:{
+        zero:"Analytical libraries make calculations fast, but they do not decide what the calculation means. You still own the definition, grain and validation.",
+        mental:"Dataframe/array → inspect → transform → aggregate/model → validate → communicate.",
+        build:["Inspect shape and types.","Define the analytical grain.","Clean the minimum required fields.","Perform the calculation.","Check the result on a small subset.","Compare with an independent calculation.","Scale the operation.","Present the result."],
+        hero:"Take a small workforce dataset from raw rows to a validated analytical result, then explain every transformation."
+      },
+      errors:{
+        zero:"An error is information about a broken assumption, invalid input or program state. Good Python makes the failure understandable instead of hiding it.",
+        mental:"Detect → classify → handle or propagate → preserve evidence. Do not catch an error merely to make the program look successful.",
+        build:["Reproduce the failure.","Identify the exception type.","Inspect the failing input.","Decide whether recovery is valid.","Handle the narrow case.","Preserve useful diagnostic context.","Add a regression test.","Re-run the normal path."],
+        hero:"Introduce a controlled failure into a data pipeline, diagnose it, handle it correctly and add a test so the same defect cannot silently return."
+      },
+      python:{
+        zero:"Python becomes powerful when you combine language fundamentals with data and automation workflows. Start small and make every transformation observable.",
+        mental:"Read → understand → transform → validate → automate. Each stage should have a clear responsibility.",
+        build:["Define the task and expected output.","Create a tiny example.","Implement the transformation.","Inspect intermediate results.","Validate edge cases.","Wrap reusable logic in functions.","Automate only after correctness is proven."],
+        hero:"Turn a manual WFM calculation into a reproducible Python workflow and show the evidence that the automated result matches the known result."
+      },
+      excel:{
+        zero:"Excel is a grid for storing values, expressing calculations and building analytical models. The professional skill is not knowing more buttons; it is designing a model that stays correct.",
+        mental:"Inputs → calculations → checks → outputs. References, formulas and tables connect the layers.",
+        build:["Define the required output.","Create a small structured input table.","Build one calculation at a time.","Use references instead of hard-coded constants.","Add validation checks.","Test a changed input.","Separate presentation from calculation."],
+        hero:"Build a small operational workbook from raw inputs through calculations and checks, then change one assumption and trace the effect."
+      },
+      powerbi:{
+        zero:"Power BI turns prepared data into a semantic model and interactive report. The visual is the final layer, not the starting point.",
+        mental:"Source → Power Query → model → DAX → visual → interaction → validation.",
+        build:["Connect to a small source.","Profile and prepare it.","Model relationships.","Create one measure.","Build one visual.","Add a filter interaction.","Validate the result against source data.","Expand only after correctness is proven."],
+        hero:"Build a miniature WFM report end-to-end and explain how the same number travels from source row to semantic model to visual."
+      }
+    };
+
+    const p=packs[family]||packs.foundation;
+    const previous=index>0 ? "The previous lesson in this module is your immediate prerequisite. Revisit it if any term here feels unfamiliar." : "No prior lesson is required. Start with the Zero level and do not skip the vocabulary.";
+    const next="After mastery, continue to the next lesson in this module and carry forward the same dataset/project so the skills compound.";
+    return {
+      zero:p.zero,
+      mentalModel:p.mental,
+      buildSteps:p.build,
+      mastery:p.hero,
+      prerequisites:previous,
+      transfer:"Use the concept twice: first on the controlled example, then on a slightly different workforce-intelligence case. If the answer changes, explain why.",
+      levelPlan:[
+        {level:"01 · Zero",goal:"Understand the idea without jargon.",task:"Explain the lesson in your own words and identify its real-world purpose."},
+        {level:"02 · Foundation",goal:"Learn the vocabulary, inputs and rules.",task:"Write the definition, units, assumptions and expected output."},
+        {level:"03 · Build",goal:"Perform the method yourself.",task:"Follow the numbered build steps on the controlled example."},
+        {level:"04 · Apply",goal:"Use it on realistic data.",task:"Repeat the method with a changed input or second scenario."},
+        {level:"05 · Diagnose",goal:"Handle mistakes and edge cases.",task:"Break one assumption deliberately and explain the resulting failure."},
+        {level:"06 · Hero",goal:"Teach and defend the result.",task:"Complete the mastery task and explain every important decision."}
+      ],
+      sourceNote:"The lesson is grounded in the official/industry references listed below. Where terminology or implementation varies by organisation or product version, the learner must verify the local definition rather than memorise a universal rule."
+    };
+  }
+
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
@@ -286,7 +497,8 @@
       workedExample:s.workedExample,
       commonMistakes:mistakes,
       assessment:s.assessment || "Submit the worked example, explain the assumptions, and show one validation check.",
-      sources:sourceMap[domain]
+      sources:sourceMap[domain],
+      depth:deepLesson(domain,module,title,index)
     };
   }
 
