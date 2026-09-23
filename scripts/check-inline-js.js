@@ -14,6 +14,24 @@ for (const [i, source] of scripts.entries()) {
   new vm.Script(source, { filename: `index.html:inline-script-${i + 1}.js` });
 }
 
+
+const typographyAudit = [
+  'Final typography, colour & rendering audit',
+  'body{font-size:16px;line-height:1.55}',
+  '.lesson-section p,.lesson-section li{',
+  '.modal{',
+  '.nf-copy p,.hero p,.learn-hero p{font-size:16px',
+  '.nf-card-copy p,.nf-poster p,.nf-lab-copy p{font-size:12px',
+  '4 learning tracks',
+  '624 lessons'
+];
+for (const marker of typographyAudit) {
+  if (!html.includes(marker)) throw new Error('Missing typography/rendering audit marker: ' + marker);
+}
+if (html.includes('13 learning areas') || html.includes('632 lessons') || html.includes('79 modules')) {
+  throw new Error('Stale curriculum statistics remain in index.html; expected 4 tracks, 78 modules, 624 lessons.');
+}
+
 const requiredMarkers = [
   'Workforce Intelligence Academy',
   'Learn',
@@ -136,4 +154,4 @@ for (const domain of domains) {
     }
   }
 }
-console.log(`Validated index.html, external curriculum scripts, 4 domains, 624 curriculum lessons, and 624 complete research-backed lesson records.`);
+console.log(`Validated index.html, external curriculum scripts, 4 domains, 624 curriculum lessons, lesson structure, typography markers, and rendering safeguards.`);
