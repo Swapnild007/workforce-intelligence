@@ -308,8 +308,13 @@
 
 
       const returnHome=()=>{
-        if(app.classList.contains('active')){ setView('home'); window.scrollTo({top:0,behavior:'smooth'}); }
-        else { landing.style.display=''; window.scrollTo({top:0,behavior:'smooth'}); }
+        // Academy branding always returns to the public opening screen (Screen 01),
+        // not the internal Home dashboard (Screen 02).
+        app.classList.remove('active');
+        landing.style.display='';
+        views.forEach(view=>view.classList.remove('active'));
+        navButtons.forEach(button=>button.classList.toggle('active',button.dataset.view==='home'));
+        window.scrollTo({top:0,behavior:'smooth'});
       };
       document.querySelectorAll('[data-home-brand],[data-app-home]').forEach(brand=>{
         brand.addEventListener('click',returnHome);
