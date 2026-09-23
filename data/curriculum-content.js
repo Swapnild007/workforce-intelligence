@@ -842,6 +842,110 @@
     }
   }
 });
+  Object.assign(authoredWfmModule01, {
+  "02.1.04": {
+    "title": "Queues, Skills and Routing",
+    "understanding": "A queue is a waiting or work destination; a skill describes the capability required to handle work; routing determines where and to whom work is offered. WFM must understand this structure because staffing the wrong skill does not solve a demand gap.",
+    "notes": [
+      "Define the actual work behind each queue rather than relying on queue names.",
+      "Skills can represent language, product, certification or process knowledge.",
+      "Routing determines which agents are eligible.",
+      "Multi-skilled agents create shared capacity but competing demand can constrain it.",
+      "Distinguish total headcount from skill-specific capacity."
+    ],
+    "highlights": [
+      "Headcount is not the same as skill capacity.",
+      "Routing can create a shortage even when total headcount looks sufficient.",
+      "Skill matrices are essential for multi-skill planning.",
+      "Trace a demand gap to the eligible agent population."
+    ],
+    "qa": [
+      [
+        "Why can 20 agents be insufficient for a queue?",
+        "Only a subset may possess the required skill or be available in the required interval."
+      ],
+      [
+        "What is routing?",
+        "The logic determining which eligible resource receives or works an interaction."
+      ],
+      [
+        "What is a skill matrix?",
+        "A mapping of agents to the skills or eligibility required for work."
+      ],
+      [
+        "What should staffing analysis ask after finding a gap?",
+        "Which work has the gap, which agents are eligible, and whether routing or skills limit capacity."
+      ]
+    ],
+    "practice": "Create a six-agent skill matrix covering Billing, Technical and Spanish. Design three queues and identify which agents are eligible. Then find one queue where total headcount appears healthy but effective capacity is not.",
+    "workedExample": "Six agents exist: four are Billing-skilled, three Technical-skilled and two Spanish-skilled. A Spanish Technical queue can only use agents with both skills. Effective capacity is therefore based on the intersection of skills, not total headcount.",
+    "assessment": "Submit a queue-skill-routing diagram and skill matrix. Identify one scenario where total headcount looks healthy but the queue is under-capacity.",
+    "commonMistakes": [
+      "Counting every agent as available for every queue.",
+      "Ignoring simultaneous demand for shared skills.",
+      "Treating every skill as binary when proficiency or certification matters."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "NiCE — What is WFM Software https://www.nice.com/glossary/what-is-wfm-software"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "A queue is a waiting or work destination; a skill describes the capability required to handle work; routing determines where and to whom work is offered. WFM must understand this structure because staffing the wrong skill does not solve a demand gap.",
+      "mentalModel": "Reuse the skill matrix later for scheduling and intraday reallocation. The core chain is demand → work → capacity → decision → feedback.",
+      "buildSteps": [
+        "List work types.",
+        "Define required skills.",
+        "Create the agent-skill matrix.",
+        "Define queue eligibility.",
+        "Document routing rules.",
+        "Calculate eligible capacity.",
+        "Test shared-skill conflicts."
+      ],
+      "mastery": "Diagnose a queue shortage by proving whether the root cause is headcount, unavailable skills or routing constraints.",
+      "prerequisites": "02.1.03",
+      "transfer": "Reuse the skill matrix later for scheduling and intraday reallocation.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Understand the idea.",
+          "task": "Explain the lesson in plain language without relying on software."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Learn the vocabulary and rules.",
+          "task": "Write the definitions, units, assumptions and boundaries."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Perform the method.",
+          "task": "Complete the controlled exercise and show your working."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Use it in operations.",
+          "task": "Apply the concept to a changed workforce scenario."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Handle failure and edge cases.",
+          "task": "Break one assumption and explain the operational consequence."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the capability.",
+          "task": "Complete the assessment and teach the reasoning to another analyst."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
