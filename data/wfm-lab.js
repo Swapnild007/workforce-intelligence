@@ -10,6 +10,7 @@
     view:'command',
     interval:30,
     selectedLob:'voice',
+    operation:{startHour:6,endHour:24,historyMonths:24,planningGrain:30,timezone:'Asia/Kolkata'},
     inputs:{
       volume:600, period:60, aht:300, sl:80, threshold:20,
       shrinkage:28, occupancy:85, currentAgents:30,
@@ -206,10 +207,48 @@
   }
 
   function setup(){
-    return intro('Operations Setup','The control plane for LOBs, service targets, shrinkage and planning grain.')+
-      '<div class="wfm-kpis">'+kpi('LOBs',state.lobs.length,'configured')+kpi('Agents',state.agents.length,'synthetic roster')+kpi('Interval',state.interval+' min','planning grain')+kpi('History',state.history.length+' mo','forecast history')+'</div>'+
-      panel('LOB catalogue','model assumptions','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>LOB</th><th>Channel</th><th>AHT</th><th>SL</th><th>Shrinkage</th></tr></thead><tbody>'+state.lobs.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+x.channel+'</td><td>'+x.aht+' s</td><td>'+pct(x.sl)+'</td><td>'+pct(x.shrinkage)+'</td></tr>').join('')+'</tbody></table></div>')+
-      panel('Roster','synthetic IDs only','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Agent</th><th>Skills</th></tr></thead><tbody>'+state.agents.slice(0,10).map(x=>'<tr><td>'+x.id+'</td><td>'+x.skills.join(', ')+'</td></tr>').join('')+'</tbody></table></div>');
+    const selected=state.lobs.find(x=>x.id===state.selectedLob)||state.lobs[0];
+    const hours=state.operation.endHour-state.operation.startHour;
+    const selectedSummary=staffing({
+      ...state.inputs,
+      aht:selected.aht,
+      sl:selected.sl*100,
+      threshold:selected.threshold,
+      shrinkage:selected.shrinkage*100
+    });
+    return intro('Operations Setup','Configure the operating model once, then carry the same assumptions into forecasting, staffing, capacity and scheduling.')+
+      '<div class="wfm-kpis">'+
+        kpi('LOBs',state.lobs.length,'configured')+
+        kpi('Agents',state.agents.length,'synthetic roster')+
+        kpi('Planning grain',state.interval+' min','interval')+
+        kpi('Operating window',hours+' h','daily coverage')+
+      '</div>'+
+      '<div class="wfm-tool-layout">'+
+        panel('Planning controls','shared operating assumptions','<div class="wfm-mini-grid">'+
+          field('Interval (min)','planningGrain',state.interval)+
+          field('History (months)','historyMonths',state.operation.historyMonths)+
+          field('Start hour','startHour',state.operation.startHour)+
+          field('End hour','endHour',state.operation.endHour)+
+          '<label class="wfm-field"><span>Timezone</span><select data-wfm-operation="timezone"><option value="Asia/Kolkata" '+(state.operation.timezone==='Asia/Kolkata'?'selected':'')+'>Asia/Kolkata</option><option value="UTC" '+(state.operation.timezone==='UTC'?'selected':'')+'>UTC</option></select></label>'+
+        '</div><button class="primary" data-wfm-action="apply-operation">Apply planning controls</button>')+
+        panel('Active LOB','the selected configuration feeds staffing','<div class="wfm-mini-grid">'+
+          '<label class="wfm-field"><span>LOB</span><select data-wfm-lob-select>'+state.lobs.map(x=>'<option value="'+esc(x.id)+'" '+(x.id===state.selectedLob?'selected':'')+'>'+esc(x.name)+'</option>').join('')+'</select></label>'+
+          field('AHT (sec)','lobAht',selected.aht)+
+          field('Service level %','lobSl',selected.sl*100)+
+          field('Answer target (sec)','lobThreshold',selected.threshold)+
+          field('Shrinkage %','lobShrinkage',selected.shrinkage*100)+
+        '</div><button class="primary" data-wfm-action="apply-lob">Use LOB for staffing model</button>'+
+        '<div class="wfm-note">Active: <b>'+esc(selected.name)+'</b> · '+esc(selected.channel)+' · '+selectedSummary.required+' required agents at '+pct(selected.sl)+' target.</div>')+
+      '</div>'+
+      panel('LOB catalogue','editable synthetic assumptions','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>LOB</th><th>Channel</th><th>AHT</th><th>SL</th><th>Shrinkage</th><th>State</th></tr></thead><tbody>'+
+        state.lobs.map(x=>'<tr><td><b>'+esc(x.name)+'</b></td><td>'+esc(x.channel)+'</td><td>'+x.aht+' s</td><td>'+pct(x.sl)+'</td><td>'+pct(x.shrinkage)+'</td><td>'+(x.id===state.selectedLob?'<b>Active</b>':'Ready')+'</td></tr>').join('')+
+      '</tbody></table></div>')+
+      panel('Skill coverage','synthetic roster used by the learning lab','<div class="wfm-table-wrap"><table class="wfm-table"><thead><tr><th>Agent</th><th>Skills</th><th>Primary</th></tr></thead><tbody>'+
+        state.agents.slice(0,12).map(x=>'<tr><td>'+x.id+'</td><td>'+x.skills.join(', ')+'</td><td>'+x.skills[0]+'</td></tr>').join('')+
+      '</tbody></table></div>')+
+      panel('Downstream model chain','what changes when setup changes','<div class="wfm-command-grid">'+
+        [['Forecasting','uses history + planning grain'],['Staffing','uses AHT + SL + answer target'],['Capacity','uses AHT + shrinkage + paid hours'],['Scheduling','uses interval requirement + operating window'],['Intraday','uses interval demand + available staffing'],['Decision Engine','reads the same evidence chain']].map(x=>'<div class="wfm-highlight"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+
+      '</div>');
   }
 
   function dataHub(){
@@ -353,10 +392,35 @@
     const render=()=>{el.innerHTML=nav()+renderView();bind();};
     const bind=()=>{
       el.querySelectorAll('[data-wfm-view]').forEach(b=>b.addEventListener('click',()=>{state.view=b.dataset.wfmView;render();}));
-      el.querySelectorAll('[data-wfm-input]').forEach(i=>i.addEventListener('change',()=>{const k=i.dataset.wfmInput;if(k in state.inputs)state.inputs[k]=num(i.value);render();}));
+      el.querySelectorAll('[data-wfm-input]').forEach(i=>i.addEventListener('change',()=>{
+        const k=i.dataset.wfmInput;
+        if(k in state.inputs)state.inputs[k]=num(i.value);
+        else if(k==='planningGrain')state.interval=Math.max(5,num(i.value)||30);
+        else if(k==='historyMonths')state.operation.historyMonths=Math.max(1,num(i.value)||24);
+        else if(k==='startHour')state.operation.startHour=Math.max(0,Math.min(23,num(i.value)||6));
+        else if(k==='endHour')state.operation.endHour=Math.max(state.operation.startHour+1,Math.min(24,num(i.value)||24));
+        else if(k==='lobAht'){const lob=state.lobs.find(x=>x.id===state.selectedLob);if(lob)lob.aht=Math.max(1,num(i.value)||300);}
+        else if(k==='lobSl'){const lob=state.lobs.find(x=>x.id===state.selectedLob);if(lob)lob.sl=Math.max(0,Math.min(1,num(i.value)/100));}
+        else if(k==='lobThreshold'){const lob=state.lobs.find(x=>x.id===state.selectedLob);if(lob)lob.threshold=Math.max(1,num(i.value)||20);}
+        else if(k==='lobShrinkage'){const lob=state.lobs.find(x=>x.id===state.selectedLob);if(lob)lob.shrinkage=Math.max(0,Math.min(1,num(i.value)/100));}
+      }));
+      el.querySelectorAll('[data-wfm-operation]').forEach(i=>i.addEventListener('change',()=>{
+        state.operation.timezone=i.value;
+      }));
+      const lobSelect=el.querySelector('[data-wfm-lob-select]');
+      if(lobSelect)lobSelect.addEventListener('change',()=>{state.selectedLob=lobSelect.value;render();});
       const file=$('#wfmCsv',el); if(file)file.addEventListener('change',()=>file.files[0]&&importCsv(file.files[0],render));
       el.querySelectorAll('[data-wfm-action="export"]').forEach(b=>b.addEventListener('click',exportCsv));
-      el.querySelectorAll('[data-wfm-action="recalc"]').forEach(b=>b.addEventListener('click',render));
+      el.querySelectorAll('[data-wfm-action="recalc"],[data-wfm-action="apply-operation"],[data-wfm-action="apply-lob"]').forEach(b=>b.addEventListener('click',()=>{
+        const lob=state.lobs.find(x=>x.id===state.selectedLob);
+        if(lob&&b.dataset.wfmAction==='apply-lob'){
+          state.inputs.aht=lob.aht;
+          state.inputs.sl=lob.sl*100;
+          state.inputs.threshold=lob.threshold;
+          state.inputs.shrinkage=lob.shrinkage*100;
+        }
+        render();
+      }));
     };
     render();
   }
