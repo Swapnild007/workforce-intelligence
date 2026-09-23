@@ -57,14 +57,14 @@
     const raw=Math.max(1,Math.ceil(num(q.volume)*num(q.aht)/(60*num(q.period))));
     for(let agents=raw;agents<=10000;agents++){
       const m=queueMetrics({...q,agents});
-      const targetSL=num(q.sl)>1?num(q.sl)/100:num(q.sl); const maxOcc=num(q.occupancy)>1?num(q.occupancy)/100:num(q.occupancy); if(m.sl >= targetSL && m.occupancy <= maxOcc)return agents;
+      const targetSL=num(q.sl)>1?num(q.sl)/100:num(q.sl); const occInput=q.occupancy!=null?q.occupancy:q.maxOcc; const maxOcc=num(occInput)>1?num(occInput)/100:num(occInput||1); if(m.sl >= targetSL && m.occupancy <= maxOcc)return agents;
     }
     return 10000;
   }
 
   function fteRequired(q=state.staffing){
     const raw=requiredAgents(q);
-    const shrink=Math.max(0,Math.min(.95,num(q.shrinkage)/100));
+    const shrinkRaw=num(q.shrinkage); const shrink=Math.max(0,Math.min(.95,shrinkRaw>1?shrinkRaw/100:shrinkRaw));
     return raw/(1-shrink);
   }
 
@@ -130,7 +130,7 @@
 
   function capacityMetrics(c=state.capacity){
     const workload=num(c.weeklyVolume)*num(c.aht)/3600;
-    const productive=num(c.paidHours)*(1-num(c.shrinkage)/100)*(num(c.efficiency)/100);
+    const shrinkRaw=num(c.shrinkage); const shrink=shrinkRaw>1?shrinkRaw/100:shrinkRaw; const efficiencyRaw=num(c.efficiency)||100; const efficiency=efficiencyRaw>1?efficiencyRaw/100:efficiencyRaw; const productive=num(c.paidHours)*(1-shrink)*efficiency;
     return {workload,productive,fte:productive?workload/productive:Infinity};
   }
 
