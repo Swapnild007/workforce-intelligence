@@ -22,7 +22,7 @@ window.WI_CURRICULUM = {
       "modules": [
         {
           "id": "02.1",
-          "name": "Contact-Center & WFM Foundations",
+          "name": "WFM & Contact-Center Systems",
           "lessons": [
             "What a Contact Center Is",
             "Demand, Work and Capacity",
