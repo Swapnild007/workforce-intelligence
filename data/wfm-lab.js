@@ -112,7 +112,7 @@
       const avg=data.slice(0,seasonLen).reduce((a,v)=>a+v,0)/seasonLen;
       for(let i=0;i<seasonLen;i++)seas[i]=data[i]/Math.max(1,avg);
       for(let t=1;t<n;t++){
-        const si=(t-seasonLen)%seasonLen;
+        const si=((t-seasonLen)%seasonLen+seasonLen)%seasonLen;
         const oldL=level, oldS=seas[si];
         level=L*(data[t]/Math.max(.01,oldS))+(1-L)*(level+trend);
         trend=T*(level-oldL)+(1-T)*trend;
