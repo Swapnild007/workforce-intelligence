@@ -216,7 +216,8 @@
     `;
     document.head.appendChild(s);
   }
-\n  function render(root){
+
+  function render(root){
     ensureStyles();
     const tabs=[
       ['erlang','Erlang Staffing'],['capacity','Capacity Planner'],['forecast','Forecasting Studio'],
