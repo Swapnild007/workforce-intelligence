@@ -5,6 +5,6 @@
   "description": "Futuristic learning interface for Workforce Intelligence Academy",
   "scripts": {
     "start": "python -m http.server 8000",
-    "check": "node --check scripts/check-inline-js.js"
+    "check": "node --check scripts/check-inline-js.js && node scripts/check-wfm-lab.js"
   }
 }
