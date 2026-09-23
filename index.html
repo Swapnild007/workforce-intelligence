@@ -365,7 +365,7 @@
   </div>
 
   <div class="section-head learn-section-head">
-    <div><h2>Learning Journey</h2><p>Build the foundations first, then move into applied workforce intelligence.</p></div>
+    <div><h2>Learning Journey</h2><p>Build four practical capabilities: WFM, Excel, Power BI and Python.</p></div>
   </div>
   <div class="learn-journey" id="learnJourney"></div>
 
@@ -547,8 +547,8 @@
         ['learnDomainCount','learnModuleCount','learnLessonCount'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=[stats.domains,stats.modules,stats.lessons][i];});
         const journey=document.getElementById('learnJourney');
         if(journey){
-          const icons=['∑','W','◈','Py','ML','AI'];
-          const preferred=['01','02','04','07','09','11'];
+          const icons=['WFM','X','BI','Py'];
+          const preferred=['02','05','08','07'];
           journey.innerHTML=preferred.map((id,i)=>{const d=c.domains.find(x=>x.id===id);if(!d)return '';return '<button class="learn-step" data-journey-domain="'+id+'"><span class="learn-step-index">0'+(i+1)+'</span><div class="learn-step-icon">'+icons[i]+'</div><b>'+d.name+'</b><span>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</span></button>';}).join('');
           journey.querySelectorAll('[data-journey-domain]').forEach(b=>b.addEventListener('click',()=>openDomainLearning(b.dataset.journeyDomain)));
         }
