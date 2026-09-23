@@ -16,6 +16,9 @@ for (const [i, source] of scripts.entries()) {
 
 const requiredMarkers = [
   'Workforce Intelligence Academy',
+  'Learn',
+  'WFM Lab',
+  'Decision Lab',
   'Curriculum',
   'Projects',
   'Progress',
