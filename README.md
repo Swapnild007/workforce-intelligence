@@ -40,7 +40,7 @@ Then open `http://localhost:8000`.
 
 The UI is deliberately separated conceptually from the future learning engines. Engineering direction:
 
-`Learn → WFM Lab → WFM Project Studio → Decision Lab → Analytics/ML → Optimization → GenAI/Automation`
+`Learn → WFM Lab (including Toolbox) → Decision Lab → Projects → Analytics/ML → Optimization → GenAI/Automation`
 
 The WFM Lab is intentionally dependency-free and offline-first. It uses synthetic scenarios and transparent calculations so the learning environment remains portable and safe for corporate environments.
 
@@ -58,3 +58,18 @@ The Project Studio converts the core practical WFM workflows found in widely use
 6. Multichannel Simulator — blended voice/chat/email workload and staffing scenarios.
 
 These are original web implementations for learning. They do not copy third-party workbook code or assets. Source concepts are credited in the application and used as curriculum/reference material.
+
+
+## Product relationship
+
+The navigation intentionally separates functions that are easy to confuse:
+
+- **Learn** = knowledge: curriculum, lessons, explanations, examples and assessments.
+- **WFM Lab** = experimentation: queueing, forecasting, capacity, scheduling, intraday, what-if and the integrated **WFM Toolbox**.
+- **WFM Toolbox** = practical browser conversions of spreadsheet/calculator workflows such as Erlang staffing, forecasting, capacity, adherence, KPI dashboard and multichannel workload.
+- **Decision Lab** = judgement: diagnose a WFM situation and defend the operational decision.
+- **Projects** = end-to-end portfolio builds that connect Learn + WFM Lab + Decision Lab.
+- **Home** = the single progress/momentum dashboard. There is no separate Progress navigation page.
+- **Resources** = reference material and formula/library support.
+
+This avoids maintaining separate pages for the same learning state or calculator functionality.
