@@ -32,7 +32,7 @@ for (const marker of requiredMarkers) {
 // Static interaction audit for every button authored in index.html.
 // Generated WFM Lab controls are validated separately by the WFM mount/engine checks below.
 const buttonHtml = [...html.matchAll(/<button\b[^>]*>[\s\S]*?<\/button>/gi)].map(m => m[0]);
-const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search)(?:=|\\s|>)|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
+const handledButton = /data-(?:enter|view|view-go|lesson|decision|resource|more-view|search|content-lesson)(?:=|\\s|>)|id="(?:notifyBtn|decisionBtn|moreBtn|modalClose|modalAction)"/;
 const deadButtons = buttonHtml.filter(button => !handledButton.test(button));
 if (deadButtons.length) throw new Error('Unwired button(s) in index.html: ' + deadButtons.join(' | '));
 
@@ -46,6 +46,7 @@ for (const m of html.matchAll(/data-view-go="([^"]+)"/g)) {
 if ((html.match(/data-demo/g) || []).length) throw new Error('Legacy data-demo control remains; use an explicit route/action.');
 if (!html.includes("document.querySelectorAll('[data-resource]'")) throw new Error('Resource controls are missing their handler.');
 if (!html.includes("getElementById('modalAction').addEventListener")) throw new Error('Modal challenge action is not wired.');
+if (!html.includes("closest('[data-content-lesson]')")) throw new Error('Dynamic curriculum lesson controls are missing their delegated handler.');
 
 const wfmSource = fs.readFileSync('data/wfm-lab.js', 'utf8');
 const wfmContext = { window: {} };
