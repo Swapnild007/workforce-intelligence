@@ -1,0 +1,315 @@
+/* Research-backed lesson content layer for the four-track Academy.
+   Sources:
+   WFM: Call Centre Helper WFM reference/training material.
+   Excel: Microsoft Support for Excel, Power Query, Power Pivot and DAX.
+   Power BI: Microsoft Learn Power BI learning paths and semantic-model/DAX guidance.
+   Python: Python 3.14 official tutorial.
+   The lesson generator is deliberately conservative: where organisations use different
+   definitions or operating rules, the lesson tells the learner to verify the local definition. */
+
+(function(){
+  const sourceMap = {
+    "02": [
+      {label:"Call Centre Helper — Workforce Management Reference Guide", url:"https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"},
+      {label:"Call Centre Helper — WFM in BPO", url:"https://www.callcentrehelper.com/what-is-workforce-management-57249.htm"}
+    ],
+    "05": [
+      {label:"Microsoft Support — Excel / Power Query / PivotTables / Power Pivot", url:"https://support.microsoft.com/en-us/excel"},
+      {label:"Microsoft Support — DAX in Power Pivot", url:"https://support.microsoft.com/en-us/excel/data-analysis-expressions-dax-in-power-pivot"}
+    ],
+    "08": [
+      {label:"Microsoft Learn — Prepare data for Power BI", url:"https://learn.microsoft.com/en-us/training/paths/prepare-data-power-bi/"},
+      {label:"Microsoft Learn — Model data with Power BI", url:"https://learn.microsoft.com/en-us/training/paths/model-power-bi/"},
+      {label:"Microsoft Learn — DAX in semantic models", url:"https://learn.microsoft.com/en-us/training/paths/dax-power-bi/"}
+    ],
+    "07": [
+      {label:"Python 3.14 Documentation — The Python Tutorial", url:"https://docs.python.org/3/tutorial/index.html"},
+      {label:"Python 3.14 Documentation — Errors and Exceptions", url:"https://docs.python.org/3/tutorial/errors.html"}
+    ]
+  };
+
+  const domainFrames = {
+    "02": "WFM is the discipline of matching expected workload and service objectives with available capacity over time. Treat every metric as a defined operational measurement, not just a number.",
+    "05": "Excel is used here as an analytical tool: structure the data, make calculations auditable, transform repeatably, model relationships when needed, and present a decision-ready result.",
+    "08": "Power BI separates data preparation, semantic modelling, calculations and report interaction. Good reports begin with trustworthy data and a coherent model, not with visual formatting.",
+    "07": "Python is taught as a practical analytical programming language. Learn the language first, then use it to load, validate, transform, analyse and automate workforce data."
+  };
+
+  const commonMistakes = {
+    "02": [
+      "Mixing units or time grains without explicitly converting them.",
+      "Using a KPI without checking its numerator, denominator and local definition.",
+      "Treating an average as if it describes every interval.",
+      "Changing an assumption without recording the impact on the downstream plan."
+    ],
+    "05": [
+      "Hard-coding values that should be driven by a cell, table or parameter.",
+      "Using inconsistent data types or hidden whitespace in operational exports.",
+      "Building formulas before deciding the required grain and business rule.",
+      "Overwriting source data instead of keeping a repeatable transformation path."
+    ],
+    "08": [
+      "Building visuals before confirming the model grain and relationships.",
+      "Using a calculated column where a measure is required, or vice versa.",
+      "Allowing ambiguous relationships or duplicate keys to drive incorrect totals.",
+      "Treating refresh, security and performance as afterthoughts."
+    ],
+    "07": [
+      "Skipping data validation because the code runs without a syntax error.",
+      "Writing one large script instead of separating reusable functions and responsibilities.",
+      "Ignoring data types, missing values, duplicate rows or time-zone assumptions.",
+      "Handling exceptions by hiding errors rather than making failures diagnosable."
+    ]
+  };
+
+  function clean(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function focusFor(domain, module, lesson){
+    const t = lesson.toLowerCase();
+    if(domain==="02"){
+      if(/service level|asa|abandon|offered|handled|aht|occupancy|utilization|adherence|conformance|shrinkage|fte|staffing|erlang/.test(t))
+        return "Define the metric first, write the unit and denominator, then connect the result to the staffing or service decision it is meant to support.";
+      if(/forecast|trend|seasonality|moving|smoothing|holt|arima|regression|accuracy|bias|error|tracking/.test(t))
+        return "Separate demand history, forecast method, assumptions and forecast error. A forecast is a planning input, not a promise that the future will equal the estimate.";
+      if(/schedule|shift|break|coverage|multi-skilled|intraday|real-time|queue|capacity/.test(t))
+        return "Work at interval level whenever the decision is interval-sensitive. Compare requirement, scheduled capacity and actual state before choosing an intervention.";
+      return "Start with the operational question, establish definitions and grain, identify constraints, then calculate and interpret the result.";
+    }
+    if(domain==="05"){
+      if(/lookup|xlookup|vlookup|index|match/.test(t)) return "A lookup is a relationship between a search key and a return value. Validate key uniqueness, data type and missing-match behaviour before trusting the result.";
+      if(/date|time|workday|networkdays|calendar/.test(t)) return "Excel stores dates and times as numeric values. Make the intended grain explicit before calculating elapsed time, working time or interval labels.";
+      if(/power query|merge|append|pivot|unpivot|m language|refresh/.test(t)) return "Power Query should be treated as a repeatable transformation pipeline: connect, profile, transform, validate, then load.";
+      if(/pivot|power pivot|dax|measure|relationship|fact|dimension|model/.test(t)) return "Model the data at a clear grain and separate stored attributes from calculations. A good model makes downstream analysis simpler and more reliable.";
+      if(/what-if|solver|sensitivity|scenario/.test(t)) return "A scenario model changes explicit assumptions and measures the resulting output. Keep assumptions separate from formulas so the model remains auditable.";
+      return "Build the smallest correct workbook first, then add structure, controls and analysis. Every important output should be traceable to its source and rule.";
+    }
+    if(domain==="08"){
+      if(/power query|transform|merge|append|pivot|unpivot|data type|refresh/.test(t)) return "Prepare data before visual design. Profile columns, correct data types, remove unnecessary complexity and preserve a clear transformation sequence.";
+      if(/model|relationship|fact|dimension|calendar|semantic|granularity/.test(t)) return "The semantic model defines how fields relate and how calculations evaluate. Confirm grain, keys, cardinality and filter direction before building measures.";
+      if(/dax|calculate|context|iterator|time intelligence|measure/.test(t)) return "DAX calculations depend on model context. Learn the difference between row context, filter context and context transition before using advanced patterns.";
+      if(/report|visual|drill|tooltip|dashboard|kpi/.test(t)) return "A report should answer a decision question. Use hierarchy, interaction and visual encoding to move from status to diagnosis without hiding the underlying definition.";
+      if(/security|governance|publish|refresh|performance|automation/.test(t)) return "A production report is more than a PBIX file: ownership, refresh, permissions, model size, performance and change control all affect reliability.";
+      return "Follow the Power BI workflow: connect, prepare, model, calculate, visualise, validate, publish and maintain.";
+    }
+    if(domain==="07"){
+      if(/collection|list|tuple|set|dictionary|loop|condition/.test(t)) return "Learn the data structure and its operations first. Then choose the structure that matches the problem rather than forcing every problem into a list.";
+      if(/function|module|package|software engineering|testing/.test(t)) return "Good Python code separates responsibilities, exposes clear inputs and outputs, and can be tested independently.";
+      if(/file|json|csv|api|automation|data engineering/.test(t)) return "Treat external data as untrusted input: validate structure, types, encoding, missing values and failure modes before using it in calculations.";
+      if(/numpy|pandas|time-series|statistics|forecast|visualization/.test(t)) return "The analytical workflow is load → inspect → clean → transform → calculate → validate → communicate. Do not skip validation simply because a library returned a result.";
+      if(/exception|error/.test(t)) return "Distinguish syntax errors from runtime exceptions and handle only failures you can meaningfully recover from. Preserve diagnostic information.";
+      return "Learn the Python construct, practise it on a small example, then apply it to a realistic workforce-data task.";
+    }
+  }
+
+  function lessonSpecific(domain, module, lesson){
+    const t=lesson.toLowerCase();
+    const out={notes:[],highlights:[],qa:[],practice:"",workedExample:"",assessment:""};
+    if(domain==="02"){
+      if(t.includes("service level")){
+        out.notes=["Write the organisation's exact service-level definition before calculating it.","State the answer threshold and the eligible contact population.","Do not assume that two platforms with the same label use identical inclusion rules."];
+        out.highlights=["Service level is definition-dependent.","A daily percentage can hide interval failures.","Reconcile the source counts before reporting the KPI."];
+        out.qa=[["Why can two systems show different SLA values?","They may use different eligible populations, thresholds, exclusions or calculation rules."],["Why is interval analysis important?","Because staffing and customer waiting are time-dependent; a daily average can conceal periods of poor service."]];
+        out.practice="Take one day of interval data and document the SLA numerator, denominator, threshold and exclusions before calculating the percentage.";
+        out.workedExample="If 900 contacts are in the eligible denominator and 810 are answered within the defined threshold, the resulting service level is 810 ÷ 900 = 90%. The lesson is to verify that both counts use the same population.";
+      } else if(t.includes("aht")){
+        out.notes=["AHT is commonly decomposed into talk/handling and after-contact work, but the exact components depend on the platform definition.","Keep seconds and minutes consistent.","AHT changes workload even when contact volume is unchanged."];
+        out.highlights=["Workload is driven by both volume and handling time.","AHT is an average; inspect its distribution when possible.","Never mix platform AHT definitions in one trend line without reconciliation."];
+        out.qa=[["What happens to workload when AHT rises?","For the same volume, required handling time rises, increasing workload and potentially staffing need."],["Should AHT be reduced at any cost?","No. A lower AHT is only useful when it does not damage quality, resolution or customer outcomes."]];
+        out.practice="Calculate workload for 600 contacts at 300 seconds AHT, then recalculate it at 330 seconds and quantify the change.";
+        out.workedExample="600 × 300 seconds = 180,000 seconds = 3,000 minutes = 50 workload hours before occupancy, shrinkage or queueing effects.";
+      } else if(t.includes("shrinkage")){
+        out.notes=["Separate planned and unplanned shrinkage where the operation can measure them.","Clarify whether the rate is applied to paid hours, scheduled hours or another defined base.","Use a documented assumption rather than silently embedding a percentage in a formula."];
+        out.highlights=["Shrinkage reduces deployable capacity.","Small assumption changes can materially change FTE requirements.","Actual shrinkage should be compared with the planning assumption."];
+        out.qa=[["Why is shrinkage not simply absenteeism?","Shrinkage can include multiple unavailable or non-production activities; absenteeism is only one component."],["Why document the denominator?","Because the same percentage can produce different capacity results if applied to different bases."]];
+        out.practice="Build a shrinkage bridge showing paid hours → planned offline → unplanned absence → productive hours.";
+        out.workedExample="If 100 paid hours are available and the defined shrinkage assumption is 25%, planned productive capacity is 75 hours before any additional operational constraints.";
+      } else if(t.includes("erlang")){
+        out.notes=["Erlang models are queueing approximations, not universal replacements for operational judgement.","Erlang C assumes no abandonment and therefore can overstate waiting behaviour when abandonment is material.","Use Erlang A or simulation when abandonment and patience behaviour matter."];
+        out.highlights=["Traffic intensity is workload expressed in Erlangs.","Queueing results depend on assumptions.","Always state the model and assumptions used."];
+        out.qa=[["Why does an Erlang result change with interval length?","Arrival rate and service time are tied to the observation period; changing the period changes the input traffic intensity."],["Why can real operations differ from Erlang C?","Real centres have abandonment, non-stationary arrivals, skill routing, breaks, shrinkage and other effects that may violate model assumptions."]];
+        out.practice="For a fixed volume and AHT, calculate workload in Erlangs for two different interval lengths and explain why the result changes.";
+        out.workedExample="Traffic intensity is workload time divided by interval duration. 30 calls in 30 minutes with 5-minute AHT produce 150 handling minutes ÷ 30 minutes = 5 Erlangs.";
+      } else if(/forecast|moving average|smoothing|holt|arima|regression|trend|seasonality/.test(t)){
+        out.notes=["Keep forecast grain aligned with the planning decision.","Separate baseline history from event adjustments.","Backtest methods on historical periods rather than selecting a method only because it fits one chart."];
+        out.highlights=["Forecasts should be reproducible.","Error must be measured on unseen periods.","Business events may require explicit overrides or causal inputs."];
+        out.qa=[["Why backtest?","To estimate how the method behaves on data that was not used to fit or choose it."],["Is the most complex model always best?","No. Complexity should be justified by measurable improvement, stability and operational usefulness."]];
+        out.practice="Create a simple baseline forecast, hold out the latest periods, calculate error, then compare with a second method.";
+        out.workedExample="A naive forecast can use the previous comparable period as the next estimate. It is a valid baseline because more complex methods should demonstrate improvement against it.";
+      } else if(/schedule|shift|break|coverage/.test(t)){
+        out.notes=["Start from interval staffing requirements, then map them to feasible shifts.","Break placement must respect policy and coverage requirements.","Measure schedule inefficiency as excess or misplaced capacity, not simply as a visual preference."];
+        out.highlights=["A schedule is a constrained coverage plan.","A mathematically adequate total headcount can still fail interval coverage.","Agent preferences and labour rules are constraints, not decoration."];
+        out.qa=[["Why is total daily staffing insufficient?","Service objectives are time-sensitive, so the operation needs the right capacity when demand arrives."],["What makes a schedule inefficient?","Capacity may exist but be positioned in the wrong intervals, skills or channels."]];
+        out.practice="Overlay a simple interval requirement curve with shift coverage and identify under-covered and over-covered periods.";
+        out.workedExample="If requirement is 20 agents from 10:00–11:00 and the schedule supplies 17, the interval has a 3-agent shortfall even if the daily headcount is adequate.";
+      } else {
+        out.notes=["Define the operational question and the grain.","List required inputs and assumptions before calculating.","Reconcile source data before interpreting the output.","Record the rule used so another analyst can reproduce the result."];
+        out.highlights=["Definition precedes calculation.","Granularity matters.","A correct formula can still support a poor decision if assumptions are wrong."];
+        out.qa=[["What should be checked first?","Definition, unit, grain, source and business rule."],["What is a common failure mode?","Producing a precise number from inconsistent or poorly defined inputs."]];
+        out.practice="Write a one-page calculation specification for the lesson topic: definition, inputs, formula/process, exclusions, validation and decision use.";
+        out.workedExample="Use a small three-interval dataset and show the input, transformation and final decision rather than reporting only the final number.";
+      }
+    } else if(domain==="05"){
+      if(t.includes("sumifs")) {
+        out.notes=["SUMIFS adds values from a sum range when multiple criteria are satisfied.","Criteria ranges must align with the sum range.","Keep criteria logic readable; helper columns can be preferable to deeply nested formulas."];
+        out.highlights=["Criteria are evaluated against corresponding rows.","Data type mismatches can produce unexpected results.","Use structured references when working with Excel Tables."];
+        out.qa=[["What is SUMIFS useful for in WFM?","Filtering operational measures by date, LOB, skill, interval or other dimensions while aggregating a numeric field."],["What must align?","The dimensions of the criteria ranges and the sum range must correspond."]];
+        out.practice='Build a SUMIFS that returns handled contacts for one LOB and one date from an interval table.';
+        out.workedExample='=SUMIFS(Handled,LOB,"CountyCare",Date,A2) aggregates the rows matching both conditions when the named ranges/columns are correctly defined.';
+      } else if(/xlookup|vlookup|index|match/.test(t)){
+        out.notes=["Choose a key that represents the intended relationship.","Test whether the key is unique on the lookup side.","Decide what should happen when no match exists."];
+        out.highlights=["Lookup correctness depends on key quality.","Approximate matching requires sorted/appropriate data and an explicit reason.","Returning a blank can hide data-quality problems."];
+        out.qa=[["Why can a lookup return the wrong agent?","Duplicate or malformed keys can make the relationship ambiguous or match an unintended record."],["What should a missing match mean?","It should be an explicit exception to investigate unless a missing value is genuinely expected."]];
+        out.practice="Create an employee-to-skill mapping and deliberately introduce one missing and one duplicate key; explain the results.";
+        out.workedExample="Use a unique EmployeeID as the lookup key and return the assigned LOB. Validate uniqueness before using the result in a staffing calculation.";
+      } else if(/power query|merge|append|unpivot|pivot|m language/.test(t)){
+        out.notes=["Profile source columns before transforming.","Prefer deterministic steps that can refresh against the next export.","Keep source, transformation and output responsibilities separate."];
+        out.highlights=["Merge joins tables on keys; append stacks rows.","Unpivot converts repeated period columns into attribute-value rows.","Step order affects the final result and refresh cost."];
+        out.qa=[["When should you merge?","When you need to bring attributes or measures from one table into another using a relationship key."],["When should you append?","When multiple tables have the same logical columns and should become one longer table."]];
+        out.practice="Take two monthly operational exports, append them, standardise data types, remove duplicates and load the result.";
+        out.workedExample="January and February tables with the same columns should normally be appended; an employee master table should usually be merged by EmployeeID when adding attributes.";
+      } else if(/pivot|power pivot|dax|measure|relationship|fact|dimension|model/.test(t)){
+        out.notes=["Define table grain before creating relationships.","Use dimensions for descriptive slicing and facts for events/measures.","Prefer measures for context-dependent analytical results."];
+        out.highlights=["Relationships are part of the calculation logic.","A duplicate key on a supposed one-side relationship is a data-quality problem.","DAX operates over model tables rather than ordinary worksheet cell references."];
+        out.qa=[["Why does grain matter?","If one row represents an interval while another represents an agent-day, joining them without care can multiply values."],["Why use a measure?","A measure evaluates in the current filter context, making it suitable for dynamic reporting."]];
+        out.practice="Sketch a star-style WFM model with Date, LOB, Agent and Interval dimensions plus a fact table of operational observations.";
+        out.workedExample="A fact table at interval × LOB grain should not be joined directly to an agent-level table unless the relationship reflects a valid key and grain.";
+      } else {
+        out.notes=["Start with the data structure, not the formatting.","Use explicit assumptions and named inputs for important business rules.","Test the model with small known examples before scaling it."];
+        out.highlights=["Traceability is part of spreadsheet quality.","A refreshable model is more reliable than repeated manual copy/paste.","Keep raw inputs separate from calculation and presentation layers."];
+        out.qa=[["What makes a workbook auditable?","Clear inputs, formulas, assumptions, checks and a readable calculation path."],["What should be automated first?","Repeatable, high-volume transformations and checks that have stable rules."]];
+        out.practice="Build the lesson concept on a small WFM dataset and add at least two validation checks.";
+        out.workedExample="Create a small interval table, calculate one KPI, validate it against a manually computed row, then expand the model.";
+      }
+    } else if(domain==="08"){
+      if(/power query|transform|merge|append|unpivot|data type|refresh/.test(t)){
+        out.notes=["Power Query is used to extract and transform data before it enters the model.","Profile columns and set appropriate data types early.","Keep transformation steps readable and testable."];
+        out.highlights=["Preparation reduces downstream model complexity.","Import and query design affect refresh and performance.","A successful refresh does not prove the business logic is correct."];
+        out.qa=[["Why set data types deliberately?","Types affect sorting, calculations, joins and interpretation."],["What should be validated after refresh?","Row counts, key uniqueness, date coverage, totals and important business rules."]];
+        out.practice="Load a CSV of interval WFM data, profile it, correct types, remove a known duplicate and document the transformation.";
+        out.workedExample="After loading a CSV, compare source row count with transformed row count and explain every intentional difference.";
+      } else if(/relationship|fact|dimension|calendar|semantic|granularity|model/.test(t)){
+        out.notes=["Choose a grain for each table.","Use stable keys for relationships.","Validate cardinality and filter direction rather than accepting defaults blindly."];
+        out.highlights=["A semantic model is the analytical contract between data and report.","Ambiguous relationships can produce incorrect totals.","Date dimensions are foundational for consistent time analysis."];
+        out.qa=[["What is a fact table?","A table that records events or measurable observations at a defined grain."],["What is a dimension?","A descriptive table used to filter, group or label facts."]];
+        out.practice="Model Date, LOB, Agent and Interval dimensions around a WFM fact table and test a total against the source.";
+        out.workedExample="If a fact row represents one LOB × interval, a Date dimension should filter that fact through a valid date key without multiplying rows.";
+      } else if(/dax|calculate|context|iterator|time intelligence|measure/.test(t)){
+        out.notes=["DAX is a formula language for model calculations.","Measures evaluate in filter context; calculated columns are evaluated row by row during model processing.","CALCULATE changes filter context and is central to many advanced measures."];
+        out.highlights=["Context is the core DAX idea.","An expression can be syntactically valid and still semantically wrong.","Validate measures against small, known totals."];
+        out.qa=[["Why can a measure change when a slicer changes?","Because the filter context changes the rows included in the calculation."],["Why use DIVIDE rather than raw division in many models?","It provides a controlled way to handle division-by-zero or blank denominators."]];
+        out.practice="Create a measure for handled contacts and a second measure for SLA percentage; validate both against a manually calculated sample.";
+        out.workedExample="A simple measure such as [Handled] := SUM(FactWFM[Handled]) responds to the current report filters without storing a separate value for every possible combination.";
+      } else if(/report|visual|drill|tooltip|dashboard|kpi/.test(t)){
+        out.notes=["Start from the decision the report must support.","Use consistent definitions and hierarchy across pages.","Provide a route from summary to diagnosis."];
+        out.highlights=["Visual polish cannot repair an incorrect model.","Every KPI should have a visible or accessible definition.","Interaction should reduce investigation time, not add novelty."];
+        out.qa=[["What should the first page answer?","The primary operational question, current state and material exceptions."],["Why provide drillthrough or tooltips?","To let users investigate detail without overcrowding the main view."]];
+        out.practice="Design one executive page and one diagnostic page for the same WFM dataset; document the questions each page answers.";
+        out.workedExample="Executive page: SLA, AHT, volume and staffing variance. Diagnostic page: interval trend, LOB comparison and root-cause detail.";
+      } else {
+        out.notes=["Connect, prepare, model, calculate, visualise and validate in that order.","Keep business definitions separate from cosmetic formatting.","Test the report with known totals and filters."];
+        out.highlights=["A report is an analytical product.","Model quality determines many report behaviours.","Validation is part of development, not the final step only."];
+        out.qa=[["What should happen before visual design?","Source profiling, transformation, modelling and metric definition."],["What is a useful validation test?","Compare a report result to an independently calculated known result under the same filter."]];
+        out.practice="Implement the concept on a small WFM model and record one expected result before building the visual.";
+        out.workedExample="Use three LOBs and two dates, calculate a known total outside Power BI, then confirm the model reproduces it under the same filters.";
+      }
+    } else {
+      if(/exception|error/.test(t)){
+        out.notes=["Python distinguishes syntax errors from exceptions raised during execution.","Catch exceptions only when you can handle or add useful context.","Use finally/with patterns when resources require cleanup."];
+        out.highlights=["An error message is diagnostic evidence.","Broad exception handling can hide real defects.","Input validation and clear error messages reduce downstream failures."];
+        out.qa=[["What is a SyntaxError?","A parsing error that prevents Python from interpreting the source code as valid syntax."],["What is an exception?","An error condition raised during execution, such as TypeError, NameError or FileNotFoundError."]];
+        out.practice="Write a small file-reading function that reports a missing file clearly and does not silently return fabricated data.";
+        out.workedExample="Use try/except FileNotFoundError around an external file operation and preserve the original problem in the diagnostic message.";
+      } else if(/collection|list|tuple|set|dictionary|loop|condition/.test(t)){
+        out.notes=["Choose data structures according to required operations and semantics.","Lists preserve order and allow duplicates; sets model unique elements; dictionaries map keys to values; tuples are immutable sequences.","Use clear iteration rather than clever one-liners when readability matters."];
+        out.highlights=["Data structure choice affects clarity and operations.","Dictionary keys should represent stable identifiers.","Set operations are useful for uniqueness and membership checks."];
+        out.qa=[["When is a dictionary useful in WFM?","For mappings such as EmployeeID → LOB or Skill → priority."],["Why use a set?","When uniqueness or fast membership testing is the main requirement."]];
+        out.practice="Represent an employee-to-LOB mapping and produce a list of employees missing from the master mapping.";
+        out.workedExample="A dictionary such as {'E101':'CountyCare','E102':'Premera'} expresses a key-to-value relationship directly and can be validated for missing keys.";
+      } else if(/function|module|package|software engineering|testing/.test(t)){
+        out.notes=["Functions should have clear inputs, outputs and responsibilities.","Modules separate related code and reduce duplication.","Tests should verify behaviour with representative and edge-case inputs."];
+        out.highlights=["Readable code is part of analytical reliability.","Small functions are easier to test.","A passing test suite does not prove business logic is correct; tests must encode the intended rules."];
+        out.qa=[["Why avoid one giant script?","It is harder to test, reuse, review and troubleshoot."],["What makes a useful test?","It checks an expected behaviour with controlled inputs and a clear expected result."]];
+        out.practice="Extract one calculation from a script into a function and write tests for normal, boundary and invalid inputs.";
+        out.workedExample="A calculate_workload(volume,aht_seconds) function can validate non-negative inputs and return workload seconds, making the rule reusable.";
+      } else if(/pandas|numpy|time-series|statistics|forecast|visualization/.test(t)){
+        out.notes=["Inspect shape, columns, types and missingness before transformation.","Keep transformations explicit and reproducible.","Validate analytical results against known examples or independent calculations."];
+        out.highlights=["Libraries accelerate work but do not define your business rules.","Time-series analysis requires correct ordering and time representation.","A chart is evidence only when the underlying aggregation is correct."];
+        out.qa=[["What should you inspect first in a new dataframe?","Shape, column names, data types, missing values, duplicates and a small sample."],["Why validate a library result?","Because a technically correct operation can still implement the wrong business definition."]];
+        out.practice="Load a small interval dataset, profile it, clean one issue, calculate one KPI and validate the result independently.";
+        out.workedExample="Group interval records by LOB and date, calculate total handled, then compare one group with a manual sum from the source.";
+      } else if(/file|json|csv|api|automation|data engineering/.test(t)){
+        out.notes=["Treat external files and APIs as variable inputs.","Validate schema and required fields before calculations.","Log enough information to reproduce failures without exposing sensitive data."];
+        out.highlights=["Automation should fail visibly when assumptions are broken.","Idempotent transformations are safer to rerun.","Separate acquisition, validation, transformation and output stages."];
+        out.qa=[["What should happen when an input schema changes?","The pipeline should detect the change and stop or route it for review rather than silently producing incorrect output."],["Why separate stages?","Each stage has a distinct responsibility and can be tested independently."]];
+        out.practice="Build a small pipeline: read CSV → validate columns → clean data → calculate KPI → write output.";
+        out.workedExample="Require Date, LOB, Volume and AHT columns before processing; if one is missing, raise a clear validation error instead of guessing a replacement.";
+      } else {
+        out.notes=["Understand the Python construct before applying it to a large dataset.","Use small examples to confirm behaviour.","Document assumptions that are not encoded directly in the code.","Validate outputs independently."];
+        out.highlights=["Code that runs is not necessarily code that is correct.","Data quality is part of programming.","Simple, testable code is preferable to opaque cleverness."];
+        out.qa=[["What is the first practical step?","Create the smallest example that demonstrates the concept."],["How do you know the result is trustworthy?","You can explain the transformation, validate key cases and reproduce the output."]];
+        out.practice="Apply the concept to a three-row WFM example, then add one edge case and one validation check.";
+        out.workedExample="Keep the input tiny enough that you can calculate the expected result by hand, then compare Python's result with that expectation.";
+      }
+    }
+    return out;
+  }
+
+  function buildLesson(domain,module,title,index){
+    const focus=focusFor(domain,module,title);
+    const s=lessonSpecific(domain,module,title);
+    const mistakes=commonMistakes[domain];
+    const understanding=domainFrames[domain]+" "+focus+" This lesson is intentionally tied to the module sequence: "+module+".";
+    const notes=s.notes.length?s.notes:[
+      "Define the lesson's terms and expected unit before doing the calculation or build.",
+      "Identify the source fields and assumptions required.",
+      "Apply the concept to a small controlled example.",
+      "Validate the result before using it in a decision."
+    ];
+    const highlights=s.highlights.length?s.highlights:[
+      "Definitions and assumptions are part of the result.",
+      "Use the smallest example that proves the logic.",
+      "Validate important outputs independently."
+    ];
+    const qa=s.qa.length?s.qa:[
+      ["What should I check first?","Definition, inputs, unit, grain and expected output."],
+      ["What is the common mistake?","Producing a precise result from an incorrect or incomplete input."],
+      ["How should I validate it?","Use a small known example and reconcile the result with an independent calculation."]
+    ];
+    return {
+      id: domain+"."+module.split(".")[1]+"."+String(index+1).padStart(2,"0"),
+      title:title,
+      understanding:understanding,
+      notes:notes,
+      highlights:highlights,
+      qa:qa,
+      practice:s.practice,
+      workedExample:s.workedExample,
+      commonMistakes:mistakes,
+      assessment:s.assessment || "Submit the worked example, explain the assumptions, and show one validation check.",
+      sources:sourceMap[domain]
+    };
+  }
+
+  const curriculum=window.WI_CURRICULUM;
+  if(!curriculum?.domains)return;
+  const content={};
+  curriculum.domains.forEach(d=>{
+    const modules=d.modules.map(m=>({
+      id:m.id,
+      title:m.name,
+      executivePoint:focusFor(d.id,m.name,m.lessons[0]||m.name),
+      lessons:m.lessons.map((lesson,i)=>buildLesson(d.id,m.id,lesson,i))
+    }));
+    content[d.id]={
+      executiveFrame:domainFrames[d.id],
+      researchBasis:sourceMap[d.id],
+      modules
+    };
+  });
+  window.WI_CURRICULUM_CONTENT=content;
+  window.WI_CURRICULUM_CONTENT_META={
+    version:"2.0.0",
+    standard:"Research-backed, source-attributed, practical lesson layer",
+    totals: curriculum.domains.reduce((n,d)=>n+d.modules.reduce((a,m)=>a+m.lessons.length,0),0)
+  };
+})();
