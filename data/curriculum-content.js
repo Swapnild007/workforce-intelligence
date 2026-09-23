@@ -531,6 +531,109 @@
   }
 
   const authoredWfmModule01 = {};
+  Object.assign(authoredWfmModule01, {
+  "02.1.01": {
+    "understanding": "A contact center is an operation designed to receive, route, handle and resolve customer or business interactions across one or more channels. WFM sits inside that operating system: it translates expected demand and service objectives into the people, skills and time required to handle the work.",
+    "notes": [
+      "Separate the customer interaction from the work required to complete it. One contact can create talk time, hold time, after-contact work or deferred follow-up.",
+      "Identify the channel, queue or work type before comparing volumes. A voice contact and an email case are not automatically equivalent units of work.",
+      "Understand the operating chain: customer demand → routing → agent activity → outcome → operational data.",
+      "Service objectives are business rules, not universal mathematical constants. The target and measurement definition must be documented.",
+      "Every WFM calculation should eventually answer a business question about demand, capacity, service, cost or risk."
+    ],
+    "highlights": [
+      "A contact center is a system of demand, routing, people, technology and outcomes—not simply a room full of agents.",
+      "WFM is concerned with matching capacity to demand at the time and skill where the work occurs.",
+      "Different channels create different workload patterns and therefore require different planning assumptions.",
+      "Definitions come before calculations."
+    ],
+    "qa": [
+      [
+        "What makes a contact center different from a simple help desk?",
+        "A contact center can manage multiple interaction types, queues, skills, routing rules, service objectives and operational channels at scale."
+      ],
+      [
+        "Where does WFM fit?",
+        "WFM plans and manages workforce capacity so the operation has the right number and mix of available people for expected work."
+      ],
+      [
+        "Why can two contacts require different amounts of capacity?",
+        "Their handling time, channel, complexity, skill requirement, concurrency and follow-up work can differ."
+      ],
+      [
+        "What should I document before analysing a contact-center metric?",
+        "The population, channel or queue, time window, unit, formula, exclusions and source system."
+      ]
+    ],
+    "practice": "Draw the operating model for a fictional 100-agent contact center. Include customers, channels, queues, routing, agents, outcomes and the data generated at each stage. Then mark where forecasting, scheduling and intraday management act on the system.",
+    "workedExample": "Suppose a center receives 1,200 voice calls and 300 chat sessions in a day. The first WFM question is not 'How many agents?' It is 'What work does each channel create, when does it arrive, what skills are required, and what service objective applies?' The answer determines which demand and capacity measures can be compared.",
+    "assessment": "Submit a one-page contact-center operating map with at least two channels, two queues or work types, three skills, one service objective and the WFM decision affected by each component.",
+    "commonMistakes": [
+      "Treating every contact as the same unit of workload.",
+      "Jumping directly from daily volume to agent count without time grain or handling time.",
+      "Assuming the label 'service level' has the same definition in every platform."
+    ],
+    "sources": [
+      {
+        "label": "NiCE — What is Workforce Management? https://www.nice.com/glossary/what-is-contact-center-workforce-management-wfm"
+      },
+      {
+        "label": "NiCE — Workforce Management for Contact Centers https://www.nice.com/guide/wfo/workforce-management-for-call-centers"
+      },
+      {
+        "label": "Call Centre Helper — Workforce Management Reference Guide https://www.callcentrehelper.com/workforce-management-reference-guide-57260.htm"
+      }
+    ],
+    "depth": {
+      "zero": "Think of a contact center as a place where work arrives, gets routed to the right capability, is handled by people or technology, and produces an outcome. WFM makes sure enough capable people are available when that work arrives.",
+      "mentalModel": "Demand enters through channels. Routing decides where it goes. Skills determine who can handle it. Handling creates workload. Service objectives define how quickly or successfully it should be handled. WFM connects these pieces to capacity.",
+      "buildSteps": [
+        "List every customer/work channel.",
+        "Define each queue, work type or routing destination.",
+        "List the skills required for each work type.",
+        "Describe the handling lifecycle from arrival to completion.",
+        "Identify the service objective for each major work type.",
+        "Identify the operational data produced.",
+        "Map each data element to a WFM decision."
+      ],
+      "mastery": "Explain the complete operating model to a new analyst using a diagram and defend why volume alone is insufficient for staffing.",
+      "prerequisites": "None. This is the entry point to Module 01.",
+      "transfer": "Use the same operating map later when learning forecasting, staffing, scheduling and intraday management.",
+      "levelPlan": [
+        {
+          "level": "01 · Zero",
+          "goal": "Recognize a contact-center system.",
+          "task": "Explain demand, routing, skills, people and outcomes in plain language."
+        },
+        {
+          "level": "02 · Foundation",
+          "goal": "Build the vocabulary.",
+          "task": "Classify channels, queues, skills, service objectives and operational data."
+        },
+        {
+          "level": "03 · Build",
+          "goal": "Map the operation.",
+          "task": "Create the contact-center operating model from demand to outcome."
+        },
+        {
+          "level": "04 · Apply",
+          "goal": "Connect the model to WFM.",
+          "task": "Identify where forecasting, staffing, scheduling and intraday decisions occur."
+        },
+        {
+          "level": "05 · Diagnose",
+          "goal": "Spot definition errors.",
+          "task": "Challenge a staffing analysis that uses only daily contact volume."
+        },
+        {
+          "level": "06 · Hero",
+          "goal": "Defend the operating model.",
+          "task": "Teach the model and explain every assumption and boundary."
+        }
+      ]
+    }
+  }
+});
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
