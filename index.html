@@ -1034,7 +1034,7 @@
           buildHtml+
           notesHtml+
           highlightsHtml+
-          '<section class="lesson-section"><h3>04 · Worked example</h3><p>'+esc(rich.workedExample||'Use a small controlled example to prove the concept before scaling it to a real operational dataset.')+'</p></section>'+
+          '<section class="lesson-section"><h3>04 · Worked example</h3><p>'+esc(rich.workedExampleExpansion||rich.workedExample||'Use a small controlled example to prove the concept before scaling it to a real operational dataset.')+'</p>'+(rich.formulaNote?'<p style="margin-top:16px"><b>Method note</b><br>'+esc(rich.formulaNote)+'</p>':'')+'</section>'+
           '<section class="lesson-section"><h3>05 · Guided practice</h3><p>'+esc(rich.practice||'Apply the lesson to the supplied scenario. Show your inputs, assumptions, calculation or reasoning, and final conclusion.')+'</p></section>'+
           mistakesHtml+
           (rich.caseAnalysis?'<section class="lesson-section"><h3>06 · Case analysis</h3><p>'+esc(rich.caseAnalysis)+'</p>'+(Array.isArray(rich.caseQuestions)?bullets(rich.caseQuestions):'')+'</section>':'')+
