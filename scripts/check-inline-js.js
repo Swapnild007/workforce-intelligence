@@ -31,8 +31,8 @@ for (const marker of requiredMarkers) {
 for (const marker of ['--font-ui','font-synthesis:none','prefers-reduced-motion','data-home-brand','app.classList.remove(\'active\')']) {
   if (!html.includes(marker)) throw new Error('Missing final UI quality marker: ' + marker);
 }
-if (!/<h3>Intraday Management<\\/h3>[\\s\\S]*?<button data-view-go="labs">Open Lab/.test(html)) throw new Error('Landing Intraday Lab button does not route to Labs');
-if (!/<h3>Workforce Planning<\\/h3>/.test(html) || !/<article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW<\\/b><\\/div><h3>Workforce Planning<\\/h3>/.test(html)) throw new Error('Landing Workforce Planning card is not interactive');
+if (!html.includes('<h3>Intraday Management</h3>') || !html.includes('<h3>Intraday Management</h3><p>Work through real-time changes and decisions.</p><button data-view-go="labs">Open Lab')) throw new Error('Landing Intraday Lab button does not route to Labs');
+if (!html.includes('<article class="nf-poster" data-view-go="learn" role="button" tabindex="0"><div class="nf-poster-art"><b>NEW</b></div><h3>Workforce Planning</h3>')) throw new Error('Landing Workforce Planning card is not interactive');
 
 // Static interaction audit for every button authored in index.html.
 // Generated WFM Lab controls are validated separately by the WFM mount/engine checks below.
