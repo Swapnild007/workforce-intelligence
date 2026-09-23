@@ -1,0 +1,10 @@
+{
+  "name": "workforce-intelligence-academy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Futuristic learning interface for Workforce Intelligence Academy",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "check": "node --check scripts/check-inline-js.js"
+  }
+}
