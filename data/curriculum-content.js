@@ -1473,9 +1473,172 @@
     if(authoredWfmModule01[key]) Object.assign(authoredWfmModule01[key],wfmModule01Depth[key]);
   });
 
+
+  /*
+   * WFM FULL AUTHORING LAYER
+   * Every one of the 144 WFM lessons receives a topic-specific mini-course record.
+   * Module 01 can override these fields with its separately authored material.
+   */
+  const WFM_MODULE_CONTEXT={
+    "02.1":["contact-center operating model","demand, channels, queues, skills and service objectives","define how work enters, routes and consumes capacity","Create a contact-center operating map and identify the WFM decision affected by each component."],
+    "02.2":["WFM mathematics","units, workload, service, occupancy, shrinkage and FTE arithmetic","convert operational observations into reproducible calculations","Build a calculation sheet with explicit units, formulas, assumptions and reconciliation checks."],
+    "02.3":["KPI architecture","definitions, numerators, denominators, grain, reconciliation and governance","make every KPI reproducible and decision-ready","Write a KPI specification and reconcile it against a controlled sample."],
+    "02.4":["queueing theory","arrival rate, service rate, traffic intensity and Erlang models","estimate delay/capacity while stating queueing assumptions","Solve a small queueing case, then change one assumption and explain the effect."],
+    "02.5":["WFM data preparation","sources, grain, definitions, missingness, duplicates, anomalies and reconciliation","turn raw operational exports into a trusted planning dataset","Build a data-quality checklist and reconcile a synthetic interval extract."],
+    "02.6":["forecasting fundamentals","baseline history, time grain, patterns, trend, seasonality and events","create a transparent demand forecast before adding model complexity","Build a baseline forecast and document every adjustment."],
+    "02.7":["advanced forecasting","moving averages, smoothing, regression, ARIMA concepts and backtesting","compare methods using out-of-sample evidence rather than visual fit","Backtest two candidate methods and document model selection."],
+    "02.8":["forecast governance","error, bias, aggregation, overrides, assumptions and version control","measure forecast performance and control changes to the planning baseline","Create a forecast review pack with error, bias, cause and action."],
+    "02.9":["staffing and capacity planning","workload, queueing, occupancy, shrinkage, interval requirements and scenarios","translate forecast demand into required capacity","Build an interval staffing requirement and test sensitivity to key assumptions."],
+    "02.10":["scheduling and shift planning","coverage curves, shifts, breaks, days off, skills and schedule efficiency","turn staffing requirements into feasible employee coverage","Overlay schedules on interval requirements and diagnose coverage gaps/excess."],
+    "02.11":["people capacity control","adherence, conformance, attendance, shrinkage, offline work and coaching","explain how planned and actual workforce availability change capacity","Build a shrinkage/adherence bridge and identify controllable root causes."],
+    "02.12":["intraday management","start-of-day readiness, forecast variance, staffing variance, queues, interventions and recovery","control the current operating period without confusing symptoms with causes","Run an intraday scenario and document trigger, action, owner and recovery checkpoint."],
+    "02.13":["multi-channel WFM","voice, asynchronous work, concurrency, blended capacity, skills and priority","plan shared capacity across different work mechanics","Create a multi-channel capacity matrix and test one competing-demand scenario."],
+    "02.14":["WFM reporting and analytics","KPI layers, interval views, variance, root cause and executive communication","turn operational data into decisions rather than dashboard decoration","Build an evidence-to-decision reporting page with one root-cause narrative."],
+    "02.15":["WFM technology and integration","spreadsheets, calculators, WFM platforms, ACD/CRM/HR data, APIs and controls","understand the data and system architecture behind a WFM process","Map source systems to a governed WFM data pipeline."],
+    "02.16":["workforce optimization","objective functions, constraints, cost, service, what-if and sensitivity","evaluate trade-offs without hiding constraints","Run a scenario matrix and explain the decision boundary."],
+    "02.17":["WFM governance and strategy","roles, stakeholder management, cadence, change control, long-term planning and maturity","connect operational planning to governance and workforce strategy","Create a WFM operating cadence and decision-rights map."],
+    "02.18":["integrated WFM case work","diagnosis, evidence, root cause, intervention, executive decision and end-to-end design","integrate the full WFM cycle into defensible case decisions","Complete the case from evidence through action, validation and executive communication."]
+  };
+
+  function wfmTopicType(title){
+    const t=title.toLowerCase();
+    if(/erlang|queueing|arrival rate|service rate|traffic intensity|probability of delay/.test(t))return"queue";
+    if(/forecast|moving average|smoothing|holt|arima|regression|trend|seasonality|backtest|bias|error/.test(t))return"forecast";
+    if(/schedule|shift|coverage|break|days off|multi-skilled|scheduling/.test(t))return"schedule";
+    if(/intraday|real-time|start-of-day|recovery|escalation|intervention|queue and service/.test(t))return"intraday";
+    if(/adherence|attendance|absenteeism|shrinkage|offline|conformance|coaching/.test(t))return"people";
+    if(/service level|asa|abandon|aht|occupancy|utilization|fte|staffing|capacity|offered|handled|workload|variance/.test(t))return"metric";
+    if(/data|reconciliation|missing|duplicate|outlier|anomal|granularity|source/.test(t))return"data";
+    if(/report|heatmap|analytics|executive|kpi/.test(t))return"analytics";
+    if(/tool|spreadsheet|calculator|application|acd|crm|hr|api|pipeline|cloud|automation/.test(t))return"technology";
+    if(/optimization|objective|constraint|scenario|sensitivity|trade-off/.test(t))return"optimization";
+    if(/role|stakeholder|governance|cadence|audit|planning team|strategy|maturity|transformation|attrition|hiring/.test(t))return"governance";
+    if(/case|diagnos|capstone|complete/.test(t))return"case";
+    return"foundation";
+  }
+
+  function wfmExpansion(domain,module,title,index){
+    if(domain!=="02")return null;
+    const ctx=WFM_MODULE_CONTEXT[module]||["WFM practice","operational concepts and decision evidence","connect the lesson to a measurable WFM decision","Apply the lesson to a controlled synthetic workforce scenario."];
+    const type=wfmTopicType(title);
+    const typeFrame={
+      foundation:["Start with the operating meaning of the topic before using a formula or tool.","Definition → inputs → mechanism → evidence → decision.","Define the term, identify its boundaries, build a small example, validate it and explain the operational consequence."],
+      metric:["Treat the topic as a measurement problem: definition, population, numerator, denominator, grain and interpretation.","Metric → data population → calculation → validation → decision.","Reconcile a small sample manually before trusting the dashboard result."],
+      queue:["Treat the topic as a queueing problem: arrivals, service capacity, waiting and assumptions.","Arrival → workload → capacity → waiting → service outcome.","Change one queueing assumption and explain why the output moves."],
+      forecast:["Treat the topic as a forecasting problem: target, history, pattern, model, error and decision.","History → baseline → pattern/model → forecast → error → action.","Hold out historical periods and evaluate the method rather than judging it only from the fitted series."],
+      schedule:["Treat the topic as a constrained coverage problem.","Requirement curve → feasible shifts → coverage → constraints → quality.","Overlay coverage against interval requirement and identify both shortage and excess."],
+      people:["Treat the topic as a workforce-availability problem.","Planned workforce → actual availability → productive capacity → variance → action.","Separate planned assumptions from observed exceptions before coaching or escalation."],
+      intraday:["Treat the topic as a control-loop problem.","Plan → actual → variance → threshold → intervention → recovery → review.","Choose an action only after separating demand variance from capacity variance."],
+      data:["Treat the topic as a data-quality problem.","Source → definition → grain → validation → transformation → trusted dataset.","Create a reconciliation test that can fail loudly when source data changes."],
+      analytics:["Treat the topic as an evidence-to-decision problem.","Question → KPI → variance → root cause → implication → decision.","Build one narrative where every conclusion can be traced to a measured input."],
+      technology:["Treat the topic as a system-control problem.","Source → integration → transformation → calculation → user → control.","Map dependencies and identify where a bad input can propagate into a WFM decision."],
+      optimization:["Treat the topic as a constrained decision problem.","Objective → variables → constraints → scenarios → trade-off → decision.","Change one constraint and explain why the solution space changes."],
+      governance:["Treat the topic as an accountability problem.","Decision → owner → evidence → approval → execution → audit.","Define who can change an assumption and how the change is recorded."],
+      case:["Treat the topic as an analyst case, not a theory question.","Evidence → diagnosis → root cause → options → decision → validation.","Defend the conclusion and state what evidence would change it."]
+    }[type]||null;
+    const concepts=title.split(/\s+(?:and|&|for|to|vs\.?|in|of)\s+/i).filter(Boolean).slice(0,8);
+    const firstPrinciples=[
+      title+" is useful only when its definition and operating boundary are explicit.",
+      ctx[1]+".",
+      "The result should be expressed at the same time grain and population as the decision it supports.",
+      "Observed facts, planning assumptions and business rules must be kept separate.",
+      "A strong WFM analyst validates the result before turning it into an action."
+    ];
+    const glossary=[
+      [title,"The specific WFM concept being studied in this lesson, defined by its operational use and measurement boundary."],
+      ["Decision grain","The time, population, channel, skill or organisational level at which the decision must be made."],
+      ["Planning assumption","A stated input used when the future value cannot yet be observed."],
+      ["Validation","A check that confirms the calculation, transformation or interpretation is consistent with trusted evidence."]
+    ];
+    const deepDive=[
+      typeFrame?.[0]||"Start with the operating meaning of the topic before applying it.",
+      typeFrame?.[1]||ctx[1],
+      "The lesson belongs to "+ctx[0]+". Do not isolate the calculation from the upstream inputs and downstream decision."
+    ];
+    const caseAnalysis="Synthetic WFM case: "+title+". A planning team sees a change in performance or capacity and must determine whether the signal is real, how it should be measured, what assumptions matter, and what action is justified. The analyst must distinguish evidence from inference before making the recommendation.";
+    const caseQuestions=[
+      "What exactly is being measured or decided?",
+      "Which source fields, assumptions and time grain are required?",
+      "What alternative explanation could produce the same observed result?",
+      "What evidence would change the decision?"
+    ];
+    const guidedPractice=[
+      "Write the operational question in one sentence.",
+      "List the required inputs and units.",
+      "Build a three-to-eight-row controlled example.",
+      "Apply the lesson method and show intermediate steps.",
+      "Reconcile the result against an independent check.",
+      "Interpret the result for service, capacity, cost or risk.",
+      "State the action, owner and validation checkpoint."
+    ];
+    const independentPractice="Create a small synthetic WFM scenario for '"+title+"'. Produce the calculation or analytical output, document assumptions, identify one failure mode, and write the operational decision that follows.";
+    const takeaways=[
+      "Definitions and grain are part of the answer.",
+      "WFM decisions require both quantitative evidence and operational context.",
+      "Assumptions should be visible and testable.",
+      "Validation should happen before escalation or recommendation.",
+      "The same method should be reproducible by another analyst."
+    ];
+    const assessmentRubric=[
+      "The topic is defined precisely.",
+      "Inputs, units and grain are explicit.",
+      "The worked example is reproducible.",
+      "At least one validation or reconciliation check is shown.",
+      "The operational consequence and limitation are explained."
+    ];
+    const formulaByType={
+      metric:"Where applicable, express the metric as a clearly defined numerator divided by denominator; document exclusions and threshold rules.",
+      queue:"Where applicable, convert arrival volume × handling time into workload and state the queueing assumptions before applying Erlang or another model.",
+      forecast:"Compare the forecast with held-out actuals using an appropriate error measure and inspect bias before accepting the method.",
+      schedule:"Compare scheduled coverage with interval requirement and quantify under-coverage and over-coverage separately.",
+      people:"Bridge planned workforce time to productive/available capacity and separate planned from unplanned losses.",
+      data:"Reconcile row counts, keys, totals, time grain and required fields before using the dataset for planning.",
+      analytics:"Trace every headline KPI to its source, definition, filter context and supporting evidence.",
+      technology:"Document source, interface, transformation, refresh, failure handling and ownership.",
+      optimization:"State objective, decision variables, constraints and scenario assumptions before interpreting a solution.",
+      governance:"Document decision owner, approver, evidence standard, change record and escalation threshold.",
+      case:"Structure the diagnosis as symptom → evidence → root cause → options → trade-off → action → validation.",
+      intraday:"Separate forecast variance, AHT/workload variance, staffing variance and routing/skill variance before selecting an intervention.",
+      forecast:"Separate baseline, adjustment and actual outcome; evaluate on periods not used to choose the method.",
+      foundation:"Define the concept, its inputs, its boundary and the downstream WFM decision before calculating."
+    };
+    const workedExample={
+      metric:"Example: create a 10-row interval sample, calculate the topic manually, then compare the result with the system value. If the numbers differ, reconcile definitions and population before changing the formula.",
+      queue:"Example: 30 contacts arrive in 30 minutes and average handling time is 5 minutes. Offered workload is 150 handling minutes, or 5 Erlangs, before queueing effects. The lesson is to state the interval and assumptions explicitly.",
+      forecast:"Example: use the previous comparable period as a naive baseline, forecast the next period, compare it with actual demand, calculate error, and only then test a more complex method.",
+      schedule:"Example: an interval requires 20 agents and the schedule provides 17. The interval has a three-agent coverage shortfall even if the daily headcount looks sufficient.",
+      people:"Example: begin with 100 paid hours, remove defined planned and unplanned losses, and compare the resulting productive capacity with the planning assumption.",
+      data:"Example: reconcile expected versus received interval rows, check duplicate keys, verify time-zone handling, and compare aggregate totals with the source before loading the planning table.",
+      analytics:"Example: start with one KPI variance, drill into the interval/LOB/skill dimension that explains it, and write the decision evidence in the same order a manager would review it.",
+      technology:"Example: trace one WFM number from ACD/CRM/HR source through transformation to the report. Mark each hand-off where definition or data quality could change the result.",
+      optimization:"Example: run a baseline scenario, change one constraint, compare service/cost/coverage outcomes, and document the trade-off instead of treating the solver output as automatically correct.",
+      governance:"Example: record a forecast override with owner, reason, evidence, timestamp, expected impact and post-period review. The control is incomplete if the change cannot be reconstructed.",
+      case:"Example: a KPI deteriorates. Reconcile the data, isolate the affected intervals and skills, separate demand from capacity causes, test options and document what evidence would confirm recovery.",
+      intraday:"Example: forecast is 100 contacts/30 minutes and actual is 130 while two scheduled agents are absent. Separate demand variance from capacity variance before choosing overtime, reallocation or another response.",
+      foundation:"Example: create a three-interval table, define every field, perform the lesson method step by step, reconcile the output, then state the operational action it supports."
+    }[type]||"Use a small controlled example and show every intermediate step.";
+    return {
+      concepts:concepts.concat([type,ctx[0]]).slice(0,10),
+      firstPrinciples,
+      glossary,
+      deepDive,
+      caseAnalysis,
+      caseQuestions,
+      guidedPractice,
+      independentPractice,
+      takeaways,
+      assessmentRubric,
+      reflection:"What assumption in "+title+" would you challenge first if the operational result looked wrong?",
+      formulaNote:formulaByType[type]||formulaByType.foundation,
+      topicType:type,
+      workedExampleExpansion:workedExample
+    };
+  }
+
   function buildLesson(domain,module,title,index){
     const focus=focusFor(domain,module,title);
     const s=lessonSpecific(domain,module,title);
+    const wfmGenerated=domain==="02" ? wfmExpansion(domain,module,title,index) : null;
     const authoredLesson=(domain==="02" && module==="02.1") ? authoredWfmModule01[module+"."+String(index+1).padStart(2,"0")] : null;
     const mistakes=commonMistakes[domain];
     const understanding=domainFrames[domain]+" "+focus+" This lesson is intentionally tied to the module sequence: "+module+".";
@@ -1496,6 +1659,7 @@
       ["How should I validate it?","Use a small known example and reconcile the result with an independent calculation."]
     ];
     return {
+      ...(wfmGenerated || {}),
       ...(authoredLesson || {}),
       id: domain+"."+module.split(".")[1]+"."+String(index+1).padStart(2,"0"),
       title:title,
