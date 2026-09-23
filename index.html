@@ -239,6 +239,52 @@
       const title = document.getElementById('modalTitle');
       const body = document.getElementById('modalBody');
 
+      function showToast(message){
+        if(!toast)return;
+        toast.textContent=message;
+        toast.classList.add('show');
+        clearTimeout(showToast.timer);
+        showToast.timer=setTimeout(()=>toast.classList.remove('show'),2200);
+      }
+
+      function setView(viewId){
+        const target=document.getElementById(viewId);
+        if(!target)return;
+        views.forEach(view=>view.classList.toggle('active',view.id===viewId));
+        navButtons.forEach(button=>button.classList.toggle('active',button.dataset.view===viewId));
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+
+      function openAcademy(viewId='home'){
+        landing.style.display='none';
+        app.classList.add('active');
+        setView(viewId);
+      }
+
+      document.querySelectorAll('[data-enter]').forEach(button=>button.addEventListener('click',()=>openAcademy('home')));
+      document.querySelectorAll('[data-demo]').forEach(button=>button.addEventListener('click',()=>openAcademy('curriculum')));
+      navButtons.forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+      document.querySelectorAll('[data-view-go]').forEach(button=>button.addEventListener('click',()=>openAcademy(button.dataset.viewGo)));
+
+      document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
+      modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+      document.querySelectorAll('[data-lesson]').forEach(button=>button.addEventListener('click',()=>{
+        title.textContent='Current lesson';
+        body.innerHTML='<p style="margin-top:0"><b>Forecasting Fundamentals</b><br>We will build the idea from historical demand to a baseline forecast, then measure error, bias and practical usefulness.</p>';
+        modal.classList.add('open');
+      }));
+      document.querySelectorAll('[data-lab]').forEach(button=>button.addEventListener('click',()=>{
+        title.textContent=button.dataset.lab;
+        body.innerHTML='<p style="margin-top:0">Lab shell ready. This workspace will let you change inputs, observe outputs and explain the operational trade-offs.</p>';
+        modal.classList.add('open');
+      }));
+      ['openMentor','startMentor','mentorBtn'].forEach(id=>{
+        const button=document.getElementById(id);
+        if(button)button.addEventListener('click',()=>openAcademy('mentor'));
+      });
+      document.getElementById('notifyBtn').addEventListener('click',()=>showToast('No new learning alerts.'));
+
+
       function renderCurriculum(){
         const grid=document.getElementById('curriculumGrid');
         if(!grid || !window.WI_CURRICULUM)return;
