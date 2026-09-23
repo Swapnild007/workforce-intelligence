@@ -1672,7 +1672,14 @@
       commonMistakes:authoredLesson?.commonMistakes || mistakes,
       assessment:authoredLesson?.assessment || s.assessment || "Submit the worked example, explain the assumptions, and show one validation check.",
       sources:authoredLesson?.sources || sourceMap[domain],
-      depth:authoredLesson?.depth || deepLesson(domain,module,title,index)
+      depth:authoredLesson?.depth || (wfmGenerated ? {
+        ...deepLesson(domain,module,title,index),
+        zero:wfmGenerated.firstPrinciples[0],
+        mentalModel:wfmGenerated.deepDive.join(" "),
+        buildSteps:wfmGenerated.guidedPractice,
+        transfer:wfmGenerated.independentPractice,
+        mastery:wfmGenerated.independentPractice
+      } : deepLesson(domain,module,title,index))
     };
   }
 
