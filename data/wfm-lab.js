@@ -184,7 +184,7 @@
     return panelIntro('Forecast Studio','Create a transparent baseline, inspect error and bias, then test how trend and seasonality change the planning signal.','Forecasting is an input to staffing decisions—not the staffing decision itself.','https://all.docs.genesys.com/PEC-WFM/Current/Administrator/Forecasting')+
       '<div class="wfm-form-grid">'+input('Baseline volume','f.base',state.forecast.base,'1','1','100000')+input('Trend %','f.trend',state.forecast.trend,'0.5','-50','100')+input('Seasonality %','f.seasonality',state.forecast.seasonality,'0.5','0','50')+input('Planning AHT sec','f.aht',state.forecast.aht,'1','1','3600')+'</div>'+
       '<div class="wfm-kpis">'+kpi('MAE',fmt(f.mae,1),'synthetic holdout')+kpi('MAPE',pct(f.mape),'synthetic holdout')+kpi('Bias',fmt(f.bias,1),'actual − forecast')+kpi('Forecast horizon','7 days','simulated')+'</div>'+
-      '<article class="wfm-panel"><div class="wfm-panel-head"><b>Forecast vs synthetic actual</b><span>blue = observed · violet = forecast</span></div><div class="wfm-chart"><svg viewBox="0 0 '+svgW+' '+svgH+'" preserveAspectRatio="none"><line x1="'+split+'" y1="0" x2="'+split+'" y2="'+svgH+'" class="wfm-split"></line><polyline points="'+points.slice(0, f.actual.length*2-1)+'" class="wfm-line"></polyline><polyline points="'+f.forecast.map((v,i)=>(((f.actual.length+i)/(all.length-1))*svgW)+','+(svgH-20-(v/max)*(svgH-45))).join(' ')+'" class="wfm-forecast"></polyline></svg></div></article>'+
+      '<article class="wfm-panel"><div class="wfm-panel-head"><b>Forecast vs synthetic actual</b><span>blue = observed · violet = forecast</span></div><div class="wfm-chart"><svg viewBox="0 0 '+svgW+' '+svgH+'" preserveAspectRatio="none"><line x1="'+split+'" y1="0" x2="'+split+'" y2="'+svgH+'" class="wfm-split"></line><polyline points="'+points.slice(0, f.actual.length).join(' ')+'" class="wfm-line"></polyline><polyline points="'+f.forecast.map((v,i)=>(((f.actual.length+i)/(all.length-1))*svgW)+','+(svgH-20-(v/max)*(svgH-45))).join(' ')+'" class="wfm-forecast"></polyline></svg></div></article>'+
       '<div class="wfm-note">The dataset is synthetic and intentionally deterministic so the same inputs produce the same result. In a real implementation, historical data quality, calendar events, trend, seasonality, interval patterns and overrides would all be governed explicitly.</div>';
   }
 
@@ -244,7 +244,7 @@
     const views={overview,queue,forecast,capacity,schedule,intraday,scenario};
     root.innerHTML=tabs()+'<div class="wfm-content">'+views[state.tab]()+'</div>';
     $$('.wfm-tabs [data-wfm-tab], [data-wfm-tab]',root).forEach(b=>b.addEventListener('click',()=>{state.tab=b.dataset.wfmTab;render(root);}));
-    $$('[data-wfm-input]',root).forEach(el=>el.addEventListener('input',()=>{
+    $('[data-wfm-input]',root).forEach(el=>el.addEventListener('change',()=>{
       const key=el.dataset.wfmInput.split('.');
       if(key[0]==='q'){ if(key[1]==='slPct') state.queue.sl=clamp(el.value/100,.01,.999); else if(key[1]==='maxOccPct') state.queue.maxOcc=clamp(el.value/100,.01,.999); else state.queue[key[1]]=n(el.value); }
       if(key[0]==='f') state.forecast[key[1]]=n(el.value);
