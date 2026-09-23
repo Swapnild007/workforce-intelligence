@@ -38,9 +38,9 @@ const wfm = wfmContext.window.WFM_LAB.engine;
 const q = { volume: 600, aht: 300, sl: 0.80, threshold: 20, agents: 30, maxOcc: 0.85 };
 if (!(wfm.queueMetrics(q).sl >= 0 && wfm.requiredAgents(q) >= 1)) throw new Error('WFM queueing engine failed');
 const f = wfm.forecastSeries({ base: 520, trend: 4, seasonality: 12, aht: 300 });
-if (f.actual.length !== 21 || f.forecast.length !== 7) throw new Error('WFM forecast engine failed');
+if (f.actual.length !== 21 || f.forecast.length !== 12) throw new Error('WFM forecast engine failed');
 if (!(wfm.capacityMetrics({weeklyVolume:18000,aht:300,shrinkage:.28,paidHours:40}).fte > 0)) throw new Error('WFM capacity engine failed');
-if (wfm.schedulePlan({agents:42,target:30,shiftLength:8,lunch:1,breaks:.5}).coverage.length !== 24) throw new Error('WFM scheduling engine failed');
+if (wfm.schedulePlan({agents:42,target:30,shiftLength:8,lunch:1,breaks:.5}).coverage.length !== 48) throw new Error('WFM scheduling engine failed');
 if (!Number.isFinite(wfm.intradayMetrics({forecast:100,actual:128,ahtPlan:300,ahtActual:345,scheduled:28,available:25}).volumeVar)) throw new Error('WFM intraday engine failed');
 
 const curriculumSource = fs.readFileSync('data/curriculum.js', 'utf8');
