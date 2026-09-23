@@ -176,20 +176,13 @@
       </section>
 
       <section id="curriculum" class="view">
-        <div class="section-head"><div><h2>Curriculum</h2><p>A connected curriculum from first principles to production systems.</p></div><button class="primary" data-view-go="learning">Open learning map</button></div>
-        <div class="grid curriculum">
-          <article class="card module"><div class="module-head"><h3>01 · Mathematics & Computational Foundations</h3><span class="mini">390 lessons</span></div><p>Arithmetic, algebra, functions, probability, statistics, calculus, linear algebra and computational thinking.</p><div class="module-progress"><i style="width:92%"></i></div><p>92% complete</p></article>
-          <article class="card module"><div class="module-head"><h3>02 · WFM Core & Queueing Systems</h3><span class="mini">248 lessons</span></div><p>Glossary, contact center mechanics, Erlang B/C/A, Little's Law, capacity, forecasting and scheduling.</p><div class="module-progress"><i style="width:84%"></i></div><p>84% complete</p></article>
-          <article class="card module"><div class="module-head"><h3>03 · Statistics & Data Analytics</h3><span class="mini">316 lessons</span></div><p>Descriptive statistics, inference, experimentation, SQL, Excel, Power Query, Power BI and analytical modeling.</p><div class="module-progress"><i style="width:64%"></i></div><p>64% complete</p></article>
-          <article class="card module"><div class="module-head"><h3>04 · Python & Data Science</h3><span class="mini">384 lessons</span></div><p>Python foundations, NumPy, pandas, visualization, data engineering and reproducible analysis.</p><div class="module-progress"><i style="width:41%"></i></div><p>41% complete</p></article>
-          <article class="card module"><div class="module-head"><h3>05 · Machine Learning</h3><span class="mini">452 lessons</span></div><p>Supervised and unsupervised learning, time series, evaluation, explainability and applied workforce models.</p><div class="module-progress"><i style="width:24%"></i></div><p>24% complete</p></article>
-          <article class="card module"><div class="module-head"><h3>06 · Optimization, AI & Automation</h3><span class="mini">520 lessons</span></div><p>Operations research, scheduling optimization, GenAI, RAG, agents, MLOps, governance and automation.</p><div class="module-progress"><i style="width:8%"></i></div><p>8% complete</p></article>
-        </div>
+        <div class="section-head"><div><h2>Curriculum</h2><p>13 domains · 79 modules · 632 lessons from first principles to production systems.</p></div><button class="primary" data-view-go="learning">Open learning map</button></div>
+        <div class="grid curriculum" id="curriculumGrid"></div>
       </section>
 
       <section id="learning" class="view">
         <div class="section-head"><div><h2>Learning Path</h2><p>A visual knowledge graph for the whole journey.</p></div><button class="secondary" data-lesson>Resume current lesson</button></div>
-        <article class="card path-card" style="min-height:320px"><div class="panel-title"><b>Intelligence learning graph</b><span>12 domains · 2,310+ knowledge nodes planned</span></div><div class="path" style="margin-top:70px"><div class="path-node"><div class="path-dot">∑</div><span>Mathematics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">◈</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">Py</div><span>Python</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">ML</div><span>Machine Learning</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>GenAI</span></div></div></article>
+        <article class="card path-card" style="min-height:320px"><div class="panel-title"><b>Intelligence learning graph</b><span>13 domains · 79 modules · 632 lessons</span></div><div class="path" style="margin-top:70px"><div class="path-node"><div class="path-dot">∑</div><span>Mathematics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">W</div><span>WFM</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">◈</div><span>Statistics</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">Py</div><span>Python</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">ML</div><span>Machine Learning</span></div><div class="connector"></div><div class="path-node"><div class="path-dot">AI</div><span>GenAI</span></div></div></article>
         <div class="grid full-progress" style="margin-top:12px"><article class="card metric-card"><span class="eyebrow">Current mastery</span><strong>68%</strong><p>Across completed concepts, practice and project work.</p></article><article class="card metric-card"><span class="eyebrow">Knowledge depth</span><strong>7.4/10</strong><p>Average depth across active domains.</p></article><article class="card metric-card"><span class="eyebrow">Next milestone</span><strong>75%</strong><p>Finish Statistics + Forecasting lab sequence.</p></article></div>
       </section>
 
@@ -245,6 +238,28 @@
       const title = document.getElementById('modalTitle');
       const body = document.getElementById('modalBody');
 
+      function renderCurriculum(){
+        const grid=document.getElementById('curriculumGrid');
+        if(!grid || !window.WI_CURRICULUM)return;
+        grid.innerHTML=window.WI_CURRICULUM.domains.map(d=>{
+          const lessons=d.modules.reduce((n,m)=>n+m.lessons.length,0);
+          const summary=d.modules.slice(0,4).map(m=>m.name).join(' · ');
+          return '<article class="card module" data-domain="'+d.id+'" style="cursor:pointer">'+
+            '<div class="module-head"><h3>'+d.id+' · '+d.name+'</h3><span class="mini">'+lessons+' lessons</span></div>'+
+            '<p>'+summary+' and '+(d.modules.length-4)+' more modules.</p>'+
+            '<div class="module-progress"><i style="width:0%"></i></div>'+
+            '<p>0% complete · '+d.modules.length+' modules</p>'+
+          '</article>';
+        }).join('');
+        grid.querySelectorAll('[data-domain]').forEach(card=>card.addEventListener('click',()=>{
+          const d=window.WI_CURRICULUM.domains.find(x=>x.id===card.dataset.domain);
+          title.textContent=d.id+' · '+d.name;
+          body.innerHTML='<strong>'+d.modules.length+' modules · '+d.modules.reduce((n,m)=>n+m.lessons.length,0)+' lessons</strong><br><br>'+
+            d.modules.map(m=>'<b>'+m.id+' · '+m.name+'</b><br><span style="color:#687394">'+m.lessons.join(' · ')+'</span>').join('<br><br>');
+          modal.classList.add('open');
+        }));
+      }
+
       function showToast(message){
         toast.textContent = message; toast.classList.add('show');
         clearTimeout(showToast.timer); showToast.timer = setTimeout(()=>toast.classList.remove('show'),2400);
@@ -290,6 +305,7 @@
       }
       const search=document.getElementById('globalSearch');
       search.addEventListener('keydown',e=>{if(e.key==='Enter' && search.value.trim()){showToast('Searching the learning graph for “'+search.value.trim()+'”');}});
+      renderCurriculum();
       window.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();} if(e.key==='Escape')modal.classList.remove('open')});
     })();
   </script>
