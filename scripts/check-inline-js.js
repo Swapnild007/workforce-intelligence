@@ -130,7 +130,7 @@ for (const domain of domains) {
       throw new Error(`Lesson mismatch: ${domain.id} ${module.id}`);
     }
     for (const lesson of contentModule.lessons) {
-      if (!lesson.understanding || !lesson.notes?.length || !lesson.highlights?.length || !lesson.qa?.length || !lesson.practice || !lesson.workedExample || !lesson.assessment || !lesson.sources?.length) {
+      if (!lesson.understanding || !lesson.notes?.length || !lesson.highlights?.length || !lesson.qa?.length || !lesson.practice || !lesson.workedExample || !lesson.assessment || !lesson.sources?.length || !lesson.depth?.zero || !lesson.depth?.mentalModel || lesson.depth?.buildSteps?.length < 5 || lesson.depth?.levelPlan?.length !== 6 || !lesson.depth?.mastery) {
         throw new Error(`Incomplete learning content: ${lesson.id}`);
       }
     }
