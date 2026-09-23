@@ -160,77 +160,118 @@
     .landing-learning{padding:0 0 18px;display:block}.learning-window{padding:8px;border-radius:20px;box-shadow:0 20px 45px rgba(38,64,132,.12)}.learning-top{height:22px;padding-bottom:6px}.learning-title{font-size:6px}.learning-profile{font-size:5.5px}.learning-body{grid-template-columns:88px 1fr;gap:0;min-height:285px;border-radius:15px}.course-index{padding:11px 7px}.course-label{font-size:5.5px}.course-name{font-size:10px;margin:6px 0 9px}.course-progress{height:5px}.course-progress-text{font-size:5.5px}.course-modules{gap:4px;margin-top:10px}.course-module{padding:7px;border-radius:8px}.course-module b{font-size:6.5px}.course-module span{font-size:5.5px}.learning-main{padding:11px}.learning-crumb{font-size:5.5px}.learning-main h3{font-size:15px}.learning-main>p{font-size:6px}.lesson-card{margin-top:8px;padding:9px;border-radius:10px}.lesson-card-head b{font-size:6.5px}.lesson-time{font-size:5.5px;padding:4px 5px}.lesson-card h4{font-size:10px;margin:6px 0 3px}.lesson-card p{font-size:5.8px}.lesson-button{margin-top:7px;padding:6px 8px;font-size:5.8px}.learning-sections{gap:5px;margin-top:5px}.learning-section{padding:7px;border-radius:8px}.learning-section span{font-size:5px}.learning-section b{font-size:7px}.learning-section em{font-size:5px}.learning-next{margin-top:5px;padding:7px;border-radius:8px}.learning-next span{font-size:5px}.learning-next b{font-size:6.5px}.learning-next small{font-size:5px}.landing-float{padding:6px 8px;border-radius:9px;font-size:5px}.landing-float b{font-size:7px}.landing-float.f1{top:4%;right:0}.landing-float.f2{bottom:1%;left:0}
     .landing-path{margin:0;padding:15px 16px 24px}.landing-path-head b{font-size:9px}.landing-path-head span{font-size:6px}.landing-path-items{grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}.landing-path-item{padding:9px 10px;border-radius:11px}.landing-path-item strong{font-size:7.5px}.landing-path-item span{font-size:6px}
     }
+    /* Landing v5 — cinematic streaming-style academy */
+    .landing-netflix{min-height:100svh;background:#070707;color:#fff;padding:0;display:block;overflow:hidden}
+    .landing-netflix *{box-sizing:border-box}
+    .landing-netflix .nf-backdrop{position:absolute;inset:0;height:720px;background:
+      radial-gradient(circle at 72% 25%,rgba(35,94,255,.28),transparent 27%),
+      radial-gradient(circle at 88% 20%,rgba(126,45,255,.22),transparent 22%),
+      linear-gradient(180deg,rgba(0,0,0,.12),#070707 72%),linear-gradient(115deg,#10151f,#06101b 48%,#120c1d);z-index:0}
+    .landing-netflix .nf-backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#070707 0%,rgba(7,7,7,.78) 28%,rgba(7,7,7,.18) 68%,rgba(7,7,7,.45) 100%)}
+    .nf-nav{height:72px;position:relative;z-index:5;display:flex;align-items:center;gap:34px;padding:0 4vw;background:linear-gradient(180deg,rgba(0,0,0,.9),transparent)}
+    .nf-brand{display:flex;align-items:center;gap:10px;min-width:235px}.nf-mark{font-weight:950;font-size:28px;letter-spacing:-4px;color:#fff}.nf-brand b{display:block;font-size:15px;letter-spacing:-.3px}.nf-brand small{display:block;font-size:8px;letter-spacing:2px;color:#8f8f8f;margin-top:2px}
+    .nf-links{display:flex;align-items:center;gap:23px}.nf-links button{background:transparent;color:#cfcfcf;font-size:11px;padding:7px 0}.nf-links button:first-child{color:#fff;font-weight:800}
+    .nf-actions{margin-left:auto;display:flex;align-items:center;gap:17px}.nf-search{background:transparent;color:#fff;font-size:27px}.nf-profile{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2467ff,#704cff);color:#fff;font-size:10px;font-weight:850}
+    .nf-content{position:relative;z-index:2;padding-bottom:50px}
+    .nf-hero{min-height:570px;max-width:1500px;margin:auto;padding:95px 5vw 55px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px}
+    .nf-hero-copy{max-width:650px}.nf-eyebrow{font-size:10px;letter-spacing:3px;font-weight:850;color:#bdbdbd;margin-bottom:17px}.nf-hero h1{font-size:clamp(52px,6vw,88px);line-height:.9;letter-spacing:-5px;margin:0 0 22px;color:#fff}.nf-hero h1 strong{color:#fff}.nf-hero-copy>p{max-width:560px;color:#bcbcbc;font-size:15px;line-height:1.65;margin:0}.nf-buttons{display:flex;gap:9px;margin-top:25px}.nf-primary,.nf-secondary{height:45px;padding:0 19px;border-radius:5px;font-size:11px;font-weight:850}.nf-primary{background:#fff;color:#080808}.nf-secondary{background:rgba(70,70,70,.72);color:#fff}.nf-meta{display:flex;gap:11px;margin-top:22px;color:#9b9b9b;font-size:9px}.nf-meta i{font-style:normal;color:#666}
+    .nf-hero-art{height:390px;position:relative;display:grid;place-items:center}.nf-screen{width:min(520px,100%);height:310px;border-radius:9px;overflow:hidden;position:relative;background:linear-gradient(145deg,#07172a,#08111c 48%,#24133a);box-shadow:0 35px 90px rgba(0,0,0,.55),0 0 100px rgba(38,84,255,.14);border:1px solid rgba(255,255,255,.12);transform:perspective(1000px) rotateY(-8deg) rotateX(2deg)}.nf-screen:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 30%,rgba(39,121,255,.55),transparent 26%),linear-gradient(130deg,transparent 30%,rgba(255,255,255,.04) 50%,transparent 72%)}.nf-screen-top{position:relative;display:flex;justify-content:space-between;padding:17px 19px;color:#8ca4c9;font-size:7px;letter-spacing:1.5px}.nf-screen-main{position:absolute;left:40px;bottom:35px}.nf-screen-title{font-size:35px;line-height:.95;font-weight:850;letter-spacing:-2px}.nf-screen-title em{font-style:normal;color:#5c8dff}.nf-screen-line{width:110px;height:3px;background:#e50914;margin:17px 0}.nf-screen-stats{display:flex;gap:20px;color:#8893a4;font-size:8px}.nf-screen-stats b{color:#fff;font-size:15px;margin-right:3px}
+    .nf-row{max-width:1500px;margin:0 auto;padding:20px 4vw 7px}.nf-row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.nf-row-head h2{font-size:21px;letter-spacing:-.6px;margin:0}.nf-row-head button{background:transparent;color:#aaa;font-size:10px}.nf-cards{display:flex;gap:9px;overflow-x:auto;overflow-y:hidden;padding:3px 2px 17px;scrollbar-width:none}.nf-cards::-webkit-scrollbar{display:none}
+    .nf-card{flex:0 0 31%;min-height:185px;border-radius:7px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#151515;transition:transform .22s,box-shadow .22s}.nf-card:hover,.nf-tile:hover,.nf-lab:hover{transform:scale(1.025);z-index:3;box-shadow:0 18px 45px rgba(0,0,0,.45)}.nf-card:before,.nf-tile-art:before,.nf-lab:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.88) 100%)}.nf-card-blue{background:radial-gradient(circle at 72% 28%,#2678c7,#0b243a 45%,#101217)}.nf-card-blue2{background:radial-gradient(circle at 65% 30%,#0d91db,#081b2d 45%,#101010)}.nf-card-purple{background:radial-gradient(circle at 70% 25%,#754cff,#182048 45%,#101010)}
+    .nf-card-copy{position:absolute;left:18px;right:18px;bottom:15px;z-index:2}.nf-card-copy small{font-size:7px;color:#aaa;letter-spacing:1.5px;font-weight:850}.nf-card-copy h3{font-size:17px;margin:7px 0 5px;letter-spacing:-.4px}.nf-card-copy p{font-size:9px;color:#bbb;margin:0 0 9px}.nf-progress{height:3px;border-radius:99px;background:#454545;overflow:hidden}.nf-progress i{display:block;height:100%;background:#e50914}.nf-card-button{margin-top:11px;border:0;border-radius:4px;background:#fff;color:#000;padding:8px 12px;font-size:9px;font-weight:850}
+    .nf-tile{flex:0 0 16.1%;min-width:150px;background:#121212;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.09);transition:transform .22s}.nf-tile-art{height:145px;position:relative;display:flex;align-items:flex-start;justify-content:flex-start;padding:12px;background:#18253b;overflow:hidden}.nf-tile-art b{position:relative;z-index:2;font-size:8px;background:#e50914;padding:4px 6px;border-radius:3px}.nf-tile h3{font-size:12px;margin:11px 11px 5px}.nf-tile p{font-size:8px;color:#999;margin:0 11px 12px}.nf-tile-progress{height:2px;background:#333;margin:0 11px 11px}.art-wfm{background:radial-gradient(circle at 55% 30%,#2d75bb,#071a2b 52%,#151515)}.art-data{background:radial-gradient(circle at 60% 25%,#2383ff,#08162c 55%,#111)}.art-sql{background:radial-gradient(circle at 50% 35%,#1c6ba8,#07111f 55%,#111)}.art-python{background:radial-gradient(circle at 50% 30%,#ffc52d,#1262a3 25%,#07151f 60%)}.art-forecast{background:radial-gradient(circle at 60% 25%,#426eff,#161c54 50%,#111)}.art-report{background:radial-gradient(circle at 65% 25%,#18aee9,#082138 50%,#111)}.art-genai{background:radial-gradient(circle at 55% 25%,#865cff,#251347 50%,#111)}.art-planning{background:radial-gradient(circle at 55% 30%,#5b9bff,#10284a 55%,#111)}.art-projects{background:radial-gradient(circle at 50% 25%,#ff704d,#3d1c16 48%,#111)}.art-business{background:radial-gradient(circle at 50% 25%,#a8c8ff,#2b3547 50%,#111)}.art-leadership{background:radial-gradient(circle at 55% 20%,#ffb15c,#3d2510 50%,#111)}
+    .nf-lab{flex:0 0 32.5%;height:220px;border-radius:7px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);transition:transform .22s}.nf-lab:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),transparent 75%)}.nf-lab-one{background:radial-gradient(circle at 70% 25%,#0876c9,#071a2c 50%,#111)}.nf-lab-two{background:radial-gradient(circle at 68% 30%,#2f68a8,#161c27 50%,#111)}.nf-lab-three{background:radial-gradient(circle at 65% 20%,#7b4fff,#20173d 50%,#111)}.nf-lab-copy{position:absolute;left:18px;bottom:18px;max-width:280px;z-index:2}.nf-lab-copy span{font-size:7px;background:#7c3cff;padding:4px 6px;border-radius:3px;font-weight:850}.nf-lab-copy h3{font-size:18px;margin:8px 0 5px}.nf-lab-copy p{font-size:9px;color:#ccc;line-height:1.5;margin:0 0 11px}.nf-lab-copy button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:8px 11px;border-radius:4px;font-size:8px;font-weight:800}
+    .nf-tools-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.nf-tools-grid article{min-height:78px;background:#121212;border:1px solid #252525;border-radius:6px;padding:13px;display:grid;grid-template-columns:30px 1fr;column-gap:8px;align-items:center}.nf-tools-grid b{grid-row:1/3;width:30px;height:30px;border-radius:50%;background:#242424;display:grid;place-items:center;color:#ddd}.nf-tools-grid strong{font-size:10px}.nf-tools-grid span{font-size:8px;color:#858585}.nf-footer{max-width:1500px;margin:35px auto 0;padding:30px 4vw;color:#666;font-size:9px;display:flex;justify-content:space-between;border-top:1px solid #1d1d1d}
+    @media(max-width:900px){.nf-links{display:none}.nf-hero{grid-template-columns:1fr;padding-top:60px}.nf-hero-art{height:280px;margin-top:-25px}.nf-screen{height:235px}.nf-card{flex-basis:45%}.nf-tile{flex-basis:24%}.nf-lab{flex-basis:46%}.nf-tools-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:600px){.landing-netflix{min-height:100svh}.nf-nav{height:60px;padding:0 16px}.nf-brand{min-width:0}.nf-brand b{font-size:11px}.nf-brand small{font-size:6px}.nf-mark{font-size:24px}.nf-actions{gap:9px}.nf-search{font-size:23px}.nf-profile{width:30px;height:30px}.nf-hero{min-height:auto;padding:60px 16px 28px;display:block}.nf-hero-copy{max-width:none}.nf-eyebrow{font-size:7px;letter-spacing:2px}.nf-hero h1{font-size:51px;letter-spacing:-3.5px;margin-bottom:17px}.nf-hero-copy>p{font-size:12px;line-height:1.6}.nf-buttons{margin-top:20px}.nf-primary,.nf-secondary{height:42px;padding:0 13px;font-size:9px}.nf-meta{font-size:7px;margin-top:16px}.nf-hero-art{height:210px;margin-top:10px}.nf-screen{height:190px;transform:none}.nf-screen-main{left:22px;bottom:22px}.nf-screen-title{font-size:27px}.nf-screen-stats{gap:11px}.nf-row{padding:15px 14px 4px}.nf-row-head{margin-bottom:8px}.nf-row-head h2{font-size:17px}.nf-row-head button{font-size:8px}.nf-card{flex-basis:78%;min-height:175px}.nf-tile{flex-basis:43%;min-width:145px}.nf-tile-art{height:130px}.nf-lab{flex-basis:86%;height:195px}.nf-tools-grid{grid-template-columns:1fr 1fr}.nf-tools-grid article{min-height:70px}.nf-footer{padding:25px 16px;font-size:8px}.nf-backdrop{height:620px}}
 </style>
 </head>
 <body>
   <div class="orb a"></div><div class="orb b"></div>
 
-  <section id="landing" class="landing">
-    <div class="landing-shell">
-      <header class="landing-nav">
-        <div class="landing-brand"><div class="logo">WI</div><div><b>Workforce Intelligence</b><small>ACADEMY · LEARN · PRACTICE · BUILD</small></div></div>
-        <div class="landing-nav-right"><button class="landing-nav-link" data-demo>Explore the academy</button><span class="landing-status">Learn by doing</span></div>
-      </header>
+  <section id="landing" class="landing landing-netflix">
+    <div class="nf-backdrop"></div>
+    <header class="nf-nav">
+      <div class="nf-brand"><div class="nf-mark">WI</div><div><b>Workforce Intelligence</b><small>ACADEMY</small></div></div>
+      <nav class="nf-links"><button data-demo>Home</button><button data-demo>Learn</button><button data-demo>Labs</button><button data-demo>Projects</button><button data-demo>Resources</button></nav>
+      <div class="nf-actions"><button class="nf-search">⌕</button><button class="nf-profile">SD</button></div>
+    </header>
 
-      <main class="landing-hero">
-        <section class="landing-copy">
-          <div class="landing-kicker"><i></i> A learning platform built around practice</div>
-          <h1>Learn the work.<span>Master the skill.</span></h1>
-          <p>Start from the basics, follow a clear path, practice what you learn, and build projects as you progress. One place for lessons, notes, questions, labs and real work.</p>
-          <div class="landing-actions"><button class="primary" data-enter>Enter Academy →</button><button class="secondary" data-demo>Explore the path</button></div>
-          <div class="landing-proof"><span><b>13</b> learning areas</span><span>·</span><span><b>79</b> modules</span><span>·</span><span><b>632</b> lessons</span></div>
-        </section>
-
-        <section class="landing-learning" aria-label="Learning platform preview">
-          <div class="learning-window">
-            <div class="learning-top"><span class="learning-dot"></span><span class="learning-dot"></span><span class="learning-dot"></span><span class="learning-title">Workforce Intelligence / Learn</span><span class="learning-profile">Swapnil · Learner</span></div>
-            <div class="learning-body">
-              <aside class="course-index">
-                <div class="course-label">Current path</div>
-                <div class="course-name">Workforce Management</div>
-                <div class="course-progress"><i></i></div>
-                <div class="course-progress-text"><span>68% complete</span><span>12 / 18</span></div>
-                <div class="course-modules">
-                  <div class="course-module done"><b>Foundations</b><span>8 lessons · Complete</span></div>
-                  <div class="course-module active"><b>Forecasting</b><span>12 lessons · In progress</span></div>
-                  <div class="course-module"><b>Staffing</b><span>10 lessons · Next</span></div>
-                  <div class="course-module"><b>Scheduling</b><span>14 lessons</span></div>
-                  <div class="course-module"><b>Intraday</b><span>11 lessons</span></div>
-                </div>
-              </aside>
-              <div class="learning-main">
-                <div class="learning-crumb">Module 04 · Forecasting Fundamentals</div>
-                <h3>Continue where you left off.</h3>
-                <p>Learn one concept, test it, then use it in a practical exercise.</p>
-                <div class="lesson-card">
-                  <div class="lesson-card-head"><b>Lesson 07 · Forecast error</b><span class="lesson-time">32 min</span></div>
-                  <h4>How do we know if a forecast is useful?</h4>
-                  <p>Understand error, bias and why a forecast can look accurate while still causing an operational problem.</p>
-                  <span class="lesson-button">Continue lesson →</span>
-                </div>
-                <div class="learning-sections">
-                  <div class="learning-section"><span>YOUR NOTES</span><b>6 saved notes</b><em>Review before practice</em></div>
-                  <div class="learning-section"><span>QUESTIONS</span><b>4 to revisit</b><em>Test your understanding</em></div>
-                </div>
-                <div class="learning-next"><span>UP NEXT</span><b>Practice · Compare forecast vs actual</b><small>15 min · Interactive exercise</small></div>
-              </div>
+    <main class="nf-content">
+      <section class="nf-hero">
+        <div class="nf-hero-copy">
+          <div class="nf-eyebrow">WORKFORCE INTELLIGENCE ACADEMY</div>
+          <h1>Learn. Practice.<br><strong>Build.</strong></h1>
+          <p>Build real workforce, analytics and data skills through a guided learning experience — from your first concept to complete projects.</p>
+          <div class="nf-buttons"><button class="nf-primary" data-enter>▶&nbsp; Start Learning</button><button class="nf-secondary" data-demo>ⓘ&nbsp; Explore Academy</button></div>
+          <div class="nf-meta"><span>13 learning areas</span><i>•</i><span>79 modules</span><i>•</i><span>632 lessons</span></div>
+        </div>
+        <div class="nf-hero-art">
+          <div class="nf-screen">
+            <div class="nf-screen-top"><span>WORKFORCE INTELLIGENCE</span><span>LEARNING PATH</span></div>
+            <div class="nf-screen-main">
+              <div class="nf-screen-title">Forecasting<br><em>Fundamentals</em></div>
+              <div class="nf-screen-line"></div>
+              <div class="nf-screen-stats"><span><b>12</b> modules</span><span><b>96</b> lessons</span><span><b>8</b> labs</span></div>
             </div>
           </div>
-          <div class="landing-float f1">YOUR PROGRESS<b>68%</b></div>
-          <div class="landing-float f2">NEXT STEP <b>Practice the concept →</b></div>
-        </section>
-      </main>
-
-      <section class="landing-path">
-        <div class="landing-path-head"><b>How learning works here</b><span>Simple path. Practical work. Visible progress.</span></div>
-        <div class="landing-path-items">
-          <div class="landing-path-item"><strong>Learn</strong><span>Understand the concept in simple language.</span></div>
-          <div class="landing-path-item"><strong>Practice</strong><span>Change the inputs and see what happens.</span></div>
-          <div class="landing-path-item"><strong>Build</strong><span>Use the skill inside a working project.</span></div>
-          <div class="landing-path-item"><strong>Prove</strong><span>Explain your answer and test your understanding.</span></div>
         </div>
       </section>
-    </div>
+
+      <section class="nf-row">
+        <div class="nf-row-head"><h2>Continue Learning</h2><button data-demo>View all ›</button></div>
+        <div class="nf-cards nf-continue">
+          <article class="nf-card nf-card-wide nf-card-blue"><div class="nf-card-glow"></div><div class="nf-card-copy"><small>WFM FOUNDATIONS</small><h3>Forecasting Fundamentals</h3><p>Lesson 7 of 12 · 32 min</p><div class="nf-progress"><i style="width:58%"></i></div><button class="nf-card-button" data-enter>▶ Continue</button></div></article>
+          <article class="nf-card nf-card-blue2"><div class="nf-card-copy"><small>DATA FOR WFM</small><h3>Working with workforce data</h3><p>Lesson 3 of 10 · 28 min</p><div class="nf-progress"><i style="width:26%"></i></div></div></article>
+          <article class="nf-card nf-card-purple"><div class="nf-card-copy"><small>PYTHON</small><h3>Python for Workforce Analytics</h3><p>Lesson 1 of 8 · 25 min</p><div class="nf-progress"><i style="width:0%"></i></div></div></article>
+        </div>
+      </section>
+
+      <section class="nf-row">
+        <div class="nf-row-head"><h2>Learning Paths</h2><button data-demo>View all ›</button></div>
+        <div class="nf-cards nf-paths">
+          <article class="nf-tile"><div class="nf-tile-art art-wfm"><b>01</b></div><h3>WFM Foundations</h3><p>12 modules · Beginner</p><div class="nf-tile-progress"></div></article>
+          <article class="nf-tile"><div class="nf-tile-art art-data"><b>02</b></div><h3>Data Science for WFM</h3><p>14 modules · Beginner</p><div class="nf-tile-progress"></div></article>
+          <article class="nf-tile"><div class="nf-tile-art art-sql"><b>03</b></div><h3>SQL & Data Analysis</h3><p>12 modules · Beginner</p><div class="nf-tile-progress"></div></article>
+          <article class="nf-tile"><div class="nf-tile-art art-python"><b>04</b></div><h3>Python for Analytics</h3><p>16 modules · Intermediate</p><div class="nf-tile-progress"></div></article>
+          <article class="nf-tile"><div class="nf-tile-art art-forecast"><b>05</b></div><h3>Forecasting & Staffing</h3><p>14 modules · Intermediate</p><div class="nf-tile-progress"></div></article>
+          <article class="nf-tile"><div class="nf-tile-art art-report"><b>06</b></div><h3>WFM Analytics & Reporting</h3><p>12 modules · Advanced</p><div class="nf-tile-progress"></div></article>
+        </div>
+      </section>
+
+      <section class="nf-row">
+        <div class="nf-row-head"><h2>Popular Labs</h2><button data-demo>View all ›</button></div>
+        <div class="nf-cards nf-labs">
+          <article class="nf-lab nf-lab-one"><div class="nf-lab-copy"><span>LAB</span><h3>WFM Command Center</h3><p>Build a complete workforce operations simulation.</p><button data-enter>Open Lab →</button></div></article>
+          <article class="nf-lab nf-lab-two"><div class="nf-lab-copy"><span>LAB</span><h3>Scheduling Lab</h3><p>Create schedules from demand, skills and coverage.</p><button data-enter>Open Lab →</button></div></article>
+          <article class="nf-lab nf-lab-three"><div class="nf-lab-copy"><span>LAB</span><h3>Intraday Management</h3><p>Work through real-time changes and decisions.</p><button data-enter>Open Lab →</button></div></article>
+        </div>
+      </section>
+
+      <section class="nf-row">
+        <div class="nf-row-head"><h2>New & Recommended</h2><button data-demo>View all ›</button></div>
+        <div class="nf-cards nf-recommended">
+          <article class="nf-tile"><div class="nf-tile-art art-genai"><b>NEW</b></div><h3>Generative AI for WFM</h3><p>8 modules · Intermediate</p></article>
+          <article class="nf-tile"><div class="nf-tile-art art-planning"><b>NEW</b></div><h3>Workforce Planning</h3><p>10 modules · Intermediate</p></article>
+          <article class="nf-tile"><div class="nf-tile-art art-projects"><b>BUILD</b></div><h3>Real Projects</h3><p>6 projects · All levels</p></article>
+          <article class="nf-tile"><div class="nf-tile-art art-business"><b>SKILL</b></div><h3>Business Communication</h3><p>8 modules · Beginner</p></article>
+          <article class="nf-tile"><div class="nf-tile-art art-leadership"><b>ADVANCED</b></div><h3>Leadership in Operations</h3><p>10 modules · Advanced</p></article>
+        </div>
+      </section>
+
+      <section class="nf-row nf-tools">
+        <div class="nf-row-head"><h2>Tools & Resources</h2><button data-demo>View all ›</button></div>
+        <div class="nf-tools-grid">
+          <article><b>▣</b><strong>Templates</strong><span>Download & use</span></article>
+          <article><b>⌁</b><strong>Datasets</strong><span>Practice with data</span></article>
+          <article><b>▤</b><strong>Cheat Sheets</strong><span>Quick reference</span></article>
+          <article><b>◇</b><strong>Case Studies</strong><span>Learn from scenarios</span></article>
+          <article><b>✦</b><strong>Certifications</strong><span>Prove your skills</span></article>
+        </div>
+      </section>
+
+      <footer class="nf-footer"><span>Workforce Intelligence Academy</span><span>Learn by doing.</span></footer>
+    </main>
   </section>
 
   <section id="app" class="app">
