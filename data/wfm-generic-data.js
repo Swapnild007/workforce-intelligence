@@ -2,7 +2,7 @@
  * No client/company/PII data. Designed as a reusable reference dataset.
  */
 window.WFM_GENERIC_DATA = {
-  organization:{name:"Acme Customer Operations",timezone:"Asia/Kolkata",intervalMinutes:30},
+  organization:{name:"Generic Customer Operations",timezone:"Asia/Kolkata",intervalMinutes:30},
   lobs:[
     {id:"retail",name:"Retail Support",channel:"Voice",targetSL:0.80,aht:300,shrinkage:0.28},
     {id:"billing",name:"Billing & Payments",channel:"Voice",targetSL:0.85,aht:360,shrinkage:0.30},
