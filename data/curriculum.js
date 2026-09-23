@@ -1,9 +1,9 @@
-/* Workforce Intelligence curriculum data. UI presentation remains frozen. */
+/* Workforce Intelligence Academy curriculum — focused four-track architecture. */
 window.WI_CURRICULUM = {
   "version": "1.0.0",
-  "title": "Workforce Intelligence Curriculum",
-  "status": "blueprint",
-  "principle": "The visible six-domain UI is a frozen presentation layer. This catalog is the deeper academic hierarchy behind it.",
+  "title": "Workforce Intelligence Academy Curriculum",
+  "status": "active",
+  "principle": "Four focused professional tracks: WFM, Excel, Power BI and Python. Every lesson connects learning to practical workforce-intelligence work.",
   "hierarchy": [
     "Domain",
     "Module",
@@ -16,110 +16,6 @@ window.WI_CURRICULUM = {
     "Project"
   ],
   "domains": [
-    {
-      "id": "01",
-      "name": "Mathematics & Computational Foundations",
-      "modules": [
-        {
-          "id": "01.1",
-          "name": "Numeracy, Ratios & Algebra",
-          "lessons": [
-            "Arithmetic and order of operations",
-            "Fractions, decimals and percentages",
-            "Ratios, proportions and rates",
-            "Linear equations and inequalities",
-            "Systems of equations",
-            "Exponents, roots and logarithms",
-            "Sequences and series",
-            "Units, dimensions and conversions"
-          ]
-        },
-        {
-          "id": "01.2",
-          "name": "Functions & Mathematical Modeling",
-          "lessons": [
-            "Variables and functions",
-            "Linear and nonlinear functions",
-            "Piecewise functions",
-            "Growth and decay models",
-            "Optimization intuition",
-            "Model assumptions and constraints",
-            "Reading mathematical notation",
-            "Translating business problems into equations"
-          ]
-        },
-        {
-          "id": "01.3",
-          "name": "Probability Foundations",
-          "lessons": [
-            "Sample spaces and events",
-            "Counting principles",
-            "Conditional probability",
-            "Independence",
-            "Bayes theorem",
-            "Random variables",
-            "Expectation and variance",
-            "Law of total probability"
-          ]
-        },
-        {
-          "id": "01.4",
-          "name": "Statistics Foundations",
-          "lessons": [
-            "Population and sample",
-            "Descriptive statistics",
-            "Quantiles and dispersion",
-            "Covariance and correlation",
-            "Sampling distributions",
-            "Central limit theorem",
-            "Standardization and z-scores",
-            "Statistical interpretation"
-          ]
-        },
-        {
-          "id": "01.5",
-          "name": "Calculus & Change",
-          "lessons": [
-            "Limits and continuity",
-            "Derivatives",
-            "Rates of change",
-            "Optimization with derivatives",
-            "Integrals",
-            "Accumulation and area",
-            "Partial derivatives",
-            "Gradient intuition"
-          ]
-        },
-        {
-          "id": "01.6",
-          "name": "Linear Algebra",
-          "lessons": [
-            "Vectors",
-            "Matrices",
-            "Matrix operations",
-            "Linear systems",
-            "Linear transformations",
-            "Eigenvalues and eigenvectors",
-            "Dot products and projections",
-            "Least-squares intuition"
-          ]
-        },
-        {
-          "id": "01.7",
-          "name": "Discrete Math & Computational Thinking",
-          "lessons": [
-            "Logic and propositions",
-            "Sets and relations",
-            "Graphs and networks",
-            "Combinatorics",
-            "Recursion",
-            "Algorithms and complexity",
-            "Decomposition and abstraction",
-            "Problem-solving patterns"
-          ]
-        }
-      ]
-    },
     {
       "id": "02",
       "name": "WFM & Contact-Center Systems",
@@ -379,963 +275,859 @@ window.WI_CURRICULUM = {
       ]
     },
     {
-      "id": "03",
-      "name": "Forecasting & Capacity Planning",
-      "modules": [
-        {
-          "id": "03.1",
-          "name": "Forecasting Principles",
-          "lessons": [
-            "Forecasting objectives",
-            "Forecast horizons",
-            "Granularity",
-            "Aggregation and disaggregation",
-            "Baseline models",
-            "Forecast workflow",
-            "Forecast ownership",
-            "Forecast risk"
-          ]
-        },
-        {
-          "id": "03.2",
-          "name": "Time-Series Foundations",
-          "lessons": [
-            "Time-series components",
-            "Trend",
-            "Seasonality",
-            "Autocorrelation",
-            "Stationarity",
-            "Lag features",
-            "Differencing",
-            "Decomposition"
-          ]
-        },
-        {
-          "id": "03.3",
-          "name": "Statistical Forecasting",
-          "lessons": [
-            "Naive forecasts",
-            "Moving averages",
-            "Weighted moving averages",
-            "Exponential smoothing",
-            "Holt method",
-            "Holt-Winters",
-            "Prediction intervals",
-            "Forecast selection"
-          ]
-        },
-        {
-          "id": "03.4",
-          "name": "Forecast Evaluation",
-          "lessons": [
-            "MAE",
-            "MSE and RMSE",
-            "MAPE and sMAPE",
-            "WAPE",
-            "Bias",
-            "Tracking signal",
-            "Backtesting",
-            "Error decomposition"
-          ]
-        },
-        {
-          "id": "03.5",
-          "name": "Capacity & Scenario Modeling",
-          "lessons": [
-            "Workload scenarios",
-            "Volume sensitivity",
-            "AHT sensitivity",
-            "Service-level sensitivity",
-            "Shrinkage scenarios",
-            "Hiring scenarios",
-            "Attrition scenarios",
-            "What-if analysis"
-          ]
-        },
-        {
-          "id": "03.6",
-          "name": "Forecast Governance",
-          "lessons": [
-            "Forecast versioning",
-            "Override policy",
-            "Judgmental adjustments",
-            "Assumption tracking",
-            "Forecast reconciliation",
-            "Accuracy reporting",
-            "Model monitoring",
-            "Forecast review cadence"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "04",
-      "name": "Statistics & Statistical Inference",
-      "modules": [
-        {
-          "id": "04.1",
-          "name": "Descriptive Statistics",
-          "lessons": [
-            "Central tendency",
-            "Dispersion",
-            "Distribution shape",
-            "Outliers",
-            "Robust statistics",
-            "Grouped summaries",
-            "Weighted statistics",
-            "Business interpretation"
-          ]
-        },
-        {
-          "id": "04.2",
-          "name": "Probability Distributions",
-          "lessons": [
-            "Bernoulli and binomial",
-            "Poisson",
-            "Geometric",
-            "Normal",
-            "Exponential",
-            "Gamma",
-            "Lognormal",
-            "Distribution selection"
-          ]
-        },
-        {
-          "id": "04.3",
-          "name": "Sampling & Estimation",
-          "lessons": [
-            "Sampling methods",
-            "Bias and variance",
-            "Point estimates",
-            "Standard errors",
-            "Confidence intervals",
-            "Bootstrap intuition",
-            "Sample-size planning",
-            "Margin of error"
-          ]
-        },
-        {
-          "id": "04.4",
-          "name": "Hypothesis Testing",
-          "lessons": [
-            "Null and alternative hypotheses",
-            "p-values",
-            "Type I and II errors",
-            "Power",
-            "t-tests",
-            "Chi-square tests",
-            "Nonparametric tests",
-            "Multiple testing"
-          ]
-        },
-        {
-          "id": "04.5",
-          "name": "Regression & Experimental Analysis",
-          "lessons": [
-            "Simple regression",
-            "Multiple regression",
-            "Residuals",
-            "Model assumptions",
-            "Interactions",
-            "ANOVA",
-            "A/B testing",
-            "Causal interpretation"
-          ]
-        },
-        {
-          "id": "04.6",
-          "name": "Statistical Communication",
-          "lessons": [
-            "Effect size",
-            "Uncertainty communication",
-            "Statistical versus practical significance",
-            "Confidence language",
-            "Chart selection",
-            "Misleading statistics",
-            "Executive summaries",
-            "Reproducible analysis"
-          ]
-        }
-      ]
-    },
-    {
       "id": "05",
-      "name": "Excel, Power Query, Power Pivot & DAX",
+      "name": "Excel for Workforce Intelligence",
       "modules": [
         {
           "id": "05.1",
           "name": "Excel Foundations",
           "lessons": [
             "Workbook architecture",
-            "Tables and structured references",
-            "Core formulas",
-            "Logical functions",
-            "Lookup functions",
-            "Date and time functions",
-            "Dynamic arrays",
-            "Error handling"
+            "Worksheets, ranges and tables",
+            "Cell references",
+            "Number formats",
+            "Formula evaluation",
+            "Relative and absolute references",
+            "Named ranges",
+            "Workbook design standards"
           ]
         },
         {
           "id": "05.2",
-          "name": "Advanced Excel Analytics",
+          "name": "Core Formulas",
           "lessons": [
-            "PivotTables",
-            "PivotCharts",
-            "Conditional formatting",
-            "Data validation",
-            "What-if analysis",
-            "Scenario Manager",
-            "Goal Seek",
-            "Model auditing"
+            "SUM, AVERAGE and aggregation",
+            "COUNT and conditional counting",
+            "IF and nested logic",
+            "AND, OR and NOT",
+            "ROUND and precision",
+            "MIN, MAX and MEDIAN",
+            "Text functions",
+            "Error handling functions"
           ]
         },
         {
           "id": "05.3",
-          "name": "Power Query",
+          "name": "Lookup & Reference",
           "lessons": [
-            "Query architecture",
-            "Connectors",
-            "Data types",
-            "Transformations",
-            "Joins and appends",
-            "Grouping and aggregation",
-            "Parameters",
-            "Refresh design"
+            "XLOOKUP",
+            "VLOOKUP and HLOOKUP",
+            "INDEX and MATCH",
+            "XMATCH",
+            "Two-way lookups",
+            "Approximate matching",
+            "Multiple-criteria lookup",
+            "Lookup error strategy"
           ]
         },
         {
           "id": "05.4",
-          "name": "Power Pivot & Data Modeling",
+          "name": "Dates & Time",
           "lessons": [
-            "Star schemas",
-            "Fact and dimension tables",
-            "Relationships",
-            "Keys",
-            "Date tables",
-            "Model granularity",
-            "Calculated columns",
-            "Model performance"
+            "Excel date serials",
+            "TODAY and NOW",
+            "DATE construction",
+            "YEAR, MONTH and DAY",
+            "WORKDAY and NETWORKDAYS",
+            "EOMONTH and calendar logic",
+            "Time intervals",
+            "WFM date-time calculations"
           ]
         },
         {
           "id": "05.5",
-          "name": "DAX",
+          "name": "Text & Data Cleaning",
           "lessons": [
-            "Measures versus columns",
-            "Filter context",
-            "Row context",
-            "CALCULATE",
-            "Time intelligence",
-            "Iterators",
-            "Variables",
-            "Advanced evaluation context"
+            "Text extraction",
+            "TRIM and CLEAN",
+            "SUBSTITUTE and REPLACE",
+            "Case conversion",
+            "Text-to-columns",
+            "Pattern detection",
+            "Duplicate handling",
+            "Cleaning operational exports"
           ]
         },
         {
           "id": "05.6",
-          "name": "Workforce BI Delivery",
+          "name": "Conditional Logic",
           "lessons": [
-            "WFM dashboard design",
-            "KPI definitions",
-            "Drill-through",
-            "Tooltips",
-            "RLS concepts",
-            "Refresh pipelines",
-            "Performance optimization",
-            "Executive storytelling"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "06",
-      "name": "SQL & Databases",
-      "modules": [
-        {
-          "id": "06.1",
-          "name": "SQL Foundations",
-          "lessons": [
-            "SELECT and FROM",
-            "Filtering",
-            "Sorting",
-            "CASE",
-            "NULL handling",
-            "Aggregations",
-            "GROUP BY",
-            "HAVING"
+            "Nested IF design",
+            "IFS",
+            "SWITCH",
+            "Conditional aggregation",
+            "SUMIFS",
+            "COUNTIFS",
+            "AVERAGEIFS",
+            "Decision-rule modelling"
           ]
         },
         {
-          "id": "06.2",
-          "name": "Relational Data",
+          "id": "05.7",
+          "name": "Dynamic Arrays",
           "lessons": [
-            "Tables and keys",
-            "Primary and foreign keys",
-            "Normalization",
-            "Constraints",
-            "Relationships",
-            "Transactions",
-            "Indexes",
-            "Data integrity"
+            "Spill behavior",
+            "FILTER",
+            "SORT and SORTBY",
+            "UNIQUE",
+            "SEQUENCE",
+            "Dynamic ranges",
+            "Combining array functions",
+            "Dynamic WFM reporting"
           ]
         },
         {
-          "id": "06.3",
-          "name": "Joins & Analytical SQL",
+          "id": "05.8",
+          "name": "Excel Tables",
           "lessons": [
-            "INNER JOIN",
-            "LEFT JOIN",
-            "Anti-joins",
-            "Self-joins",
-            "Subqueries",
-            "CTEs",
-            "Window functions",
-            "Conditional aggregation"
+            "Structured references",
+            "Calculated columns",
+            "Table expansion",
+            "Table totals",
+            "Table-based formulas",
+            "Data validation with tables",
+            "Table design for refresh",
+            "Operational data models"
           ]
         },
         {
-          "id": "06.4",
-          "name": "Advanced SQL",
+          "id": "05.9",
+          "name": "PivotTables",
           "lessons": [
-            "Date-time analytics",
-            "Rolling metrics",
-            "Ranking",
-            "Sessionization concepts",
-            "Recursive CTEs",
-            "Query plans",
-            "Performance tuning",
-            "Reusable views"
+            "PivotTable architecture",
+            "Rows, columns and values",
+            "Grouping dates",
+            "Calculated fields",
+            "Show values as",
+            "Slicers",
+            "PivotCharts",
+            "WFM KPI Pivot models"
           ]
         },
         {
-          "id": "06.5",
-          "name": "Data Engineering with SQL",
+          "id": "05.10",
+          "name": "Advanced Excel Analytics",
           "lessons": [
-            "ETL versus ELT",
-            "Staging layers",
-            "Dimensional modeling",
-            "Incremental loads",
-            "Data quality checks",
-            "Slowly changing dimensions",
-            "Lineage",
-            "Warehouse design"
+            "Variance analysis",
+            "Contribution analysis",
+            "Pareto analysis",
+            "Cohort-style summaries",
+            "Weighted averages",
+            "Rolling calculations",
+            "Sensitivity tables",
+            "Analytical model review"
           ]
         },
         {
-          "id": "06.6",
-          "name": "Workforce Analytics SQL",
+          "id": "05.11",
+          "name": "What-If Analysis",
           "lessons": [
-            "Interval workload analysis",
-            "Agent performance datasets",
-            "Schedule adherence queries",
-            "Forecast accuracy queries",
-            "Staffing analysis",
-            "Attrition analysis",
-            "Quality datasets",
-            "Portfolio SQL projects"
+            "Goal Seek",
+            "Scenario Manager",
+            "Data Tables",
+            "Solver introduction",
+            "Parameter cells",
+            "Sensitivity analysis",
+            "Capacity scenarios",
+            "WFM decision modelling"
           ]
-        }
-      ]
-    },
-    {
-      "id": "07",
-      "name": "Python & Data Engineering",
-      "modules": [
+        },
         {
-          "id": "07.1",
-          "name": "Python Foundations",
+          "id": "05.12",
+          "name": "Power Query Basics",
           "lessons": [
-            "Variables and types",
-            "Control flow",
+            "Power Query architecture",
+            "Connecting to CSV",
+            "Connecting to Excel",
+            "Data types",
+            "Column transformations",
+            "Filtering and sorting",
+            "Replacing values",
+            "Query naming standards"
+          ]
+        },
+        {
+          "id": "05.13",
+          "name": "Power Query Transformation",
+          "lessons": [
+            "Merge queries",
+            "Append queries",
+            "Group By",
+            "Pivot and unpivot",
+            "Fill and split",
+            "Conditional columns",
+            "Custom columns",
+            "Transformation sequencing"
+          ]
+        },
+        {
+          "id": "05.14",
+          "name": "Power Query Advanced",
+          "lessons": [
+            "Parameters",
             "Functions",
-            "Collections",
-            "Comprehensions",
-            "Modules and packages",
-            "Exceptions",
-            "File handling"
+            "Reusable transformations",
+            "M language basics",
+            "Query dependencies",
+            "Error handling",
+            "Performance considerations",
+            "Refresh troubleshooting"
           ]
         },
         {
-          "id": "07.2",
-          "name": "Python Software Engineering",
+          "id": "05.15",
+          "name": "Power Pivot & Data Models",
           "lessons": [
-            "Virtual environments",
-            "Project structure",
-            "Type hints",
-            "Logging",
-            "Configuration",
-            "Testing",
-            "Packaging",
-            "Dependency management"
+            "Data model concepts",
+            "Fact tables",
+            "Dimension tables",
+            "Relationships",
+            "Keys",
+            "Granularity",
+            "Date dimensions",
+            "Model validation"
           ]
         },
         {
-          "id": "07.3",
-          "name": "NumPy & pandas",
+          "id": "05.16",
+          "name": "DAX Foundations",
           "lessons": [
-            "Arrays",
-            "Vectorization",
-            "Series and DataFrames",
-            "Filtering",
-            "Groupby",
-            "Merge and join",
-            "Reshaping",
-            "Time-series indexing"
+            "Measures versus columns",
+            "CALCULATE",
+            "Filter context",
+            "Row context",
+            "Basic aggregations",
+            "DIVIDE",
+            "Variables",
+            "Measure naming standards"
           ]
         },
         {
-          "id": "07.4",
-          "name": "Data Engineering",
+          "id": "05.17",
+          "name": "DAX Analytics",
           "lessons": [
-            "CSV and JSON",
-            "Parquet",
-            "Schema validation",
-            "ETL pipelines",
-            "Data profiling",
-            "Data quality rules",
-            "Partitioning",
-            "Pipeline orchestration concepts"
+            "CALCULATE patterns",
+            "FILTER",
+            "Iterators",
+            "Time intelligence",
+            "Rolling metrics",
+            "Year-to-date analysis",
+            "Period comparisons",
+            "Context transition"
           ]
         },
         {
-          "id": "07.5",
-          "name": "Visualization & Analysis",
+          "id": "05.18",
+          "name": "WFM Excel Solutions",
           "lessons": [
-            "Matplotlib",
-            "Statistical plots",
-            "Time-series plots",
-            "Distribution plots",
-            "Dashboard-ready datasets",
-            "Annotation",
-            "Reproducibility",
-            "Analytical narratives"
+            "Forecast workbook",
+            "Staffing calculator",
+            "Shrinkage model",
+            "Schedule coverage model",
+            "Adherence tracker",
+            "Intraday tracker",
+            "SLA analysis",
+            "Executive WFM workbook"
           ]
         },
         {
-          "id": "07.6",
-          "name": "APIs & Automation",
+          "id": "05.19",
+          "name": "Excel Automation & Quality",
           "lessons": [
-            "HTTP fundamentals",
-            "REST APIs",
-            "Authentication concepts",
-            "Pagination",
-            "Retries",
-            "Rate limits",
-            "Automation scripts",
-            "Safe credential handling"
+            "Reusable templates",
+            "Formula auditing",
+            "Data validation controls",
+            "Protection strategy",
+            "Refresh controls",
+            "Error checks",
+            "Documentation",
+            "Version management"
+          ]
+        },
+        {
+          "id": "05.20",
+          "name": "Excel Capstone",
+          "lessons": [
+            "Design an operational dataset",
+            "Build the calculation layer",
+            "Build the analytical layer",
+            "Build a WFM model",
+            "Validate outputs",
+            "Create management views",
+            "Document assumptions",
+            "Present the final solution"
           ]
         }
       ]
     },
     {
       "id": "08",
-      "name": "Data Science & Analytical Modeling",
+      "name": "Power BI for Workforce Intelligence",
       "modules": [
         {
           "id": "08.1",
-          "name": "Data Science Workflow",
+          "name": "Power BI Foundations",
           "lessons": [
-            "Problem framing",
-            "Data requirements",
-            "EDA",
-            "Feature definitions",
-            "Baseline analysis",
-            "Validation design",
-            "Experiment tracking",
-            "Reproducibility"
+            "What Power BI does",
+            "Desktop, Service and Mobile",
+            "Report versus dashboard",
+            "Workspace concepts",
+            "PBIX architecture",
+            "Import versus DirectQuery",
+            "Semantic model basics",
+            "End-to-end workflow"
           ]
         },
         {
           "id": "08.2",
-          "name": "Feature Engineering",
+          "name": "Data Connection",
           "lessons": [
-            "Categorical encoding",
-            "Scaling",
-            "Aggregations",
-            "Lag features",
-            "Rolling features",
-            "Calendar features",
-            "Leakage prevention",
-            "Feature selection"
+            "Connect to Excel",
+            "Connect to CSV",
+            "Connect to databases",
+            "Connect to web sources",
+            "Data source credentials",
+            "Import settings",
+            "Refresh implications",
+            "Source governance"
           ]
         },
         {
           "id": "08.3",
-          "name": "Business & Workforce Analytics",
+          "name": "Power Query in Power BI",
           "lessons": [
-            "Driver analysis",
-            "Segmentation",
-            "Cohort analysis",
-            "Productivity analysis",
-            "Attrition analytics",
-            "Demand drivers",
-            "Scenario analytics",
-            "Decision support"
+            "Power Query interface",
+            "Data types",
+            "Column transformations",
+            "Filtering",
+            "Merging",
+            "Appending",
+            "Pivot and unpivot",
+            "Query dependencies"
           ]
         },
         {
           "id": "08.4",
-          "name": "Visualization & Storytelling",
+          "name": "Power Query Advanced",
           "lessons": [
-            "Analytical questions",
-            "Chart grammar",
-            "Small multiples",
-            "Distribution visualization",
-            "Uncertainty visualization",
-            "Dashboard hierarchy",
-            "Executive communication",
-            "Narrative integrity"
+            "Parameters",
+            "Custom functions",
+            "M language fundamentals",
+            "Conditional logic",
+            "Error handling",
+            "Query folding",
+            "Performance tuning",
+            "Reusable ingestion patterns"
           ]
         },
         {
           "id": "08.5",
-          "name": "R for Statistics & Research",
+          "name": "Data Modeling",
           "lessons": [
-            "R fundamentals",
-            "Vectors and data frames",
-            "Tidy data",
-            "Statistical modeling",
-            "Visualization",
-            "Reproducible notebooks",
-            "Package ecosystem",
-            "Python/R interoperability"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "09",
-      "name": "Machine Learning & Time Series",
-      "modules": [
-        {
-          "id": "09.1",
-          "name": "ML Foundations",
-          "lessons": [
-            "Problem types",
-            "Train validation test",
-            "Bias and variance",
-            "Overfitting",
-            "Underfitting",
-            "Baseline models",
-            "Cross-validation",
-            "Reproducibility"
+            "Star schema",
+            "Fact and dimension tables",
+            "Relationships",
+            "Cardinality",
+            "Filter direction",
+            "Keys",
+            "Granularity",
+            "Model validation"
           ]
         },
         {
-          "id": "09.2",
-          "name": "Supervised Learning",
+          "id": "08.6",
+          "name": "Date & Calendar Modeling",
           "lessons": [
-            "Linear regression",
-            "Logistic regression",
-            "Decision trees",
-            "Random forests",
-            "Gradient boosting",
-            "Nearest neighbors",
-            "Support vector machines",
-            "Model comparison"
+            "Date table principles",
+            "Calendar attributes",
+            "Fiscal calendars",
+            "Week logic",
+            "Working days",
+            "Holiday tables",
+            "Relative periods",
+            "Date model validation"
           ]
         },
         {
-          "id": "09.3",
-          "name": "Unsupervised Learning",
+          "id": "08.7",
+          "name": "DAX Foundations",
           "lessons": [
-            "Clustering",
-            "k-means",
-            "Hierarchical clustering",
-            "Dimensionality reduction",
-            "PCA",
-            "Anomaly detection",
-            "Cluster validation",
-            "Workforce applications"
+            "Measures and calculated columns",
+            "Basic aggregations",
+            "CALCULATE",
+            "Filter context",
+            "Row context",
+            "DIVIDE",
+            "Variables",
+            "Measure organization"
           ]
         },
         {
-          "id": "09.4",
-          "name": "Time-Series ML",
+          "id": "08.8",
+          "name": "DAX Context",
           "lessons": [
-            "Lag features",
-            "Rolling windows",
-            "Direct forecasting",
-            "Recursive forecasting",
-            "Backtesting",
-            "Temporal validation",
-            "Feature leakage",
-            "Model monitoring"
+            "Context transition",
+            "FILTER",
+            "ALL",
+            "REMOVEFILTERS",
+            "KEEPFILTERS",
+            "VALUES",
+            "SELECTEDVALUE",
+            "Context debugging"
           ]
         },
         {
-          "id": "09.5",
-          "name": "Model Evaluation & Explainability",
+          "id": "08.9",
+          "name": "Time Intelligence",
           "lessons": [
-            "Regression metrics",
-            "Classification metrics",
-            "Calibration",
-            "Thresholds",
-            "Confusion matrices",
-            "Feature importance",
-            "SHAP concepts",
-            "Error analysis"
+            "YTD",
+            "MTD",
+            "QTD",
+            "Previous period",
+            "Same period last year",
+            "Rolling periods",
+            "Period-over-period change",
+            "Custom fiscal periods"
           ]
         },
         {
-          "id": "09.6",
-          "name": "Applied Workforce ML",
+          "id": "08.10",
+          "name": "Advanced DAX",
           "lessons": [
-            "Volume prediction",
-            "AHT prediction",
-            "Absence prediction",
-            "Attrition-risk modeling concepts",
-            "Schedule-risk prediction",
-            "Intraday anomaly detection",
-            "Forecast ensembles",
-            "Responsible model use"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "10",
-      "name": "Optimization & Operations Research",
-      "modules": [
-        {
-          "id": "10.1",
-          "name": "OR Foundations",
-          "lessons": [
-            "Decision variables",
-            "Objectives",
-            "Constraints",
-            "Feasible regions",
-            "Linear programming",
-            "Integer programming",
-            "Sensitivity analysis",
-            "Optimization modeling"
+            "Iterators",
+            "SUMX",
+            "AVERAGEX",
+            "RANKX",
+            "TOPN",
+            "Virtual tables",
+            "Calculation patterns",
+            "Performance-aware DAX"
           ]
         },
         {
-          "id": "10.2",
-          "name": "Scheduling Optimization",
+          "id": "08.11",
+          "name": "KPI Architecture",
           "lessons": [
-            "Shift assignment",
-            "Coverage constraints",
-            "Break constraints",
-            "Skill constraints",
-            "Availability",
-            "Preferences",
-            "Fairness constraints",
-            "Objective design"
+            "KPI definitions",
+            "Targets and thresholds",
+            "Variance measures",
+            "SLA measures",
+            "AHT measures",
+            "Forecast accuracy measures",
+            "Adherence measures",
+            "Metric governance"
           ]
         },
         {
-          "id": "10.3",
-          "name": "Advanced Optimization",
+          "id": "08.12",
+          "name": "Report Design",
           "lessons": [
-            "Mixed-integer programming",
-            "Constraint programming",
-            "Network flows",
-            "Assignment problems",
-            "Set covering",
-            "Multi-objective optimization",
-            "Decomposition concepts",
-            "Solver behavior"
+            "Visual hierarchy",
+            "Page composition",
+            "Chart selection",
+            "Tables and matrices",
+            "Cards and KPI visuals",
+            "Conditional formatting",
+            "Tooltips",
+            "Interaction design"
           ]
         },
         {
-          "id": "10.4",
-          "name": "Simulation",
+          "id": "08.13",
+          "name": "Drill & Exploration",
           "lessons": [
-            "Discrete-event simulation",
-            "Monte Carlo",
-            "Queue simulation",
-            "Scenario generation",
-            "Random seeds",
-            "Confidence intervals",
-            "Sensitivity analysis",
-            "Simulation validation"
+            "Drill-through",
+            "Bookmarks",
+            "Buttons",
+            "Page navigation",
+            "Report tooltips",
+            "Cross-filtering",
+            "Sync slicers",
+            "Exploration workflows"
           ]
         },
         {
-          "id": "10.5",
-          "name": "Optimization Engineering",
+          "id": "08.14",
+          "name": "WFM Dashboards",
           "lessons": [
-            "OR-Tools",
-            "SciPy optimization",
-            "Pyomo concepts",
-            "Model validation",
-            "Infeasibility diagnosis",
-            "Solver tuning",
-            "Benchmarking",
-            "Production optimization"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "11",
-      "name": "Generative AI, Agents & Automation",
-      "modules": [
-        {
-          "id": "11.1",
-          "name": "GenAI Foundations",
-          "lessons": [
-            "LLM fundamentals",
-            "Tokens and context",
-            "Embeddings",
-            "Inference concepts",
-            "Prompt structure",
-            "Structured outputs",
-            "Hallucination modes",
-            "Model limitations"
+            "Forecast dashboard",
+            "Staffing dashboard",
+            "Schedule dashboard",
+            "Adherence dashboard",
+            "Intraday dashboard",
+            "SLA dashboard",
+            "Executive dashboard",
+            "WFM command-center layout"
           ]
         },
         {
-          "id": "11.2",
-          "name": "Prompt Engineering & Evaluation",
+          "id": "08.15",
+          "name": "Advanced Analytics",
           "lessons": [
-            "Instruction design",
-            "Few-shot examples",
-            "Reasoning task design",
-            "Output schemas",
-            "Prompt versioning",
-            "Evaluation datasets",
-            "Quality rubrics",
-            "Regression testing"
+            "Variance decomposition",
+            "Trend analysis",
+            "Distribution views",
+            "Pareto analysis",
+            "Segmentation",
+            "What-if parameters",
+            "Scenario analysis",
+            "Analytical storytelling"
           ]
         },
         {
-          "id": "11.3",
-          "name": "RAG",
+          "id": "08.16",
+          "name": "Security & Governance",
           "lessons": [
-            "Document ingestion",
-            "Chunking",
-            "Embeddings",
-            "Vector search",
-            "Metadata filtering",
-            "Retrieval evaluation",
-            "Grounding",
-            "Citation strategies"
+            "Row-level security",
+            "Roles",
+            "Workspace permissions",
+            "Sensitivity labels",
+            "Data ownership",
+            "Certified semantic models",
+            "Deployment governance",
+            "Audit considerations"
           ]
         },
         {
-          "id": "11.4",
-          "name": "Tool Calling & Agents",
+          "id": "08.17",
+          "name": "Publishing & Refresh",
           "lessons": [
-            "Tool schemas",
-            "Function calling",
-            "Planning loops",
-            "State",
-            "Memory concepts",
-            "Human approval",
-            "Failure recovery",
-            "Agent evaluation"
-          ]
-        },
-        {
-          "id": "11.5",
-          "name": "Workforce AI Applications",
-          "lessons": [
-            "WFM copilot",
-            "Forecast explanation",
-            "Schedule assistant",
-            "Analyst assistant",
-            "SQL assistant",
-            "Incident triage",
-            "Automated reporting",
-            "Knowledge assistant"
-          ]
-        },
-        {
-          "id": "11.6",
-          "name": "AI Safety & Governance",
-          "lessons": [
-            "Prompt injection",
-            "Data leakage",
-            "Access control",
-            "PII handling",
-            "Audit trails",
-            "Model risk",
-            "Human-in-the-loop",
-            "AI governance"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "12",
-      "name": "MLOps, Production, Governance & Engineering",
-      "modules": [
-        {
-          "id": "12.1",
-          "name": "Production Software",
-          "lessons": [
-            "Git workflows",
-            "Code review",
-            "CI/CD",
-            "Testing strategy",
-            "Linting and formatting",
-            "Configuration management",
-            "Observability",
+            "Publishing reports",
+            "Workspaces",
+            "Semantic model refresh",
+            "Gateway concepts",
+            "Refresh failures",
+            "Incremental refresh",
+            "Deployment pipelines",
             "Release management"
           ]
         },
         {
-          "id": "12.2",
-          "name": "MLOps",
+          "id": "08.18",
+          "name": "Performance Optimization",
           "lessons": [
-            "Experiment tracking",
-            "Model registry",
-            "Data versioning",
-            "Feature pipelines",
-            "Deployment patterns",
-            "Model monitoring",
-            "Drift",
-            "Rollback"
+            "Model size",
+            "Cardinality",
+            "Relationship performance",
+            "DAX performance",
+            "Visual query load",
+            "Performance Analyzer",
+            "Aggregation concepts",
+            "Optimization workflow"
           ]
         },
         {
-          "id": "12.3",
-          "name": "Data & System Security",
+          "id": "08.19",
+          "name": "Power BI Automation",
           "lessons": [
-            "Secrets management",
-            "Least privilege",
-            "Input validation",
-            "Dependency security",
-            "Threat modeling",
-            "Secure APIs",
-            "Audit logging",
-            "Incident response"
+            "Power BI REST concepts",
+            "Dataset refresh automation",
+            "Deployment automation",
+            "Metadata concepts",
+            "Monitoring refreshes",
+            "Operational alerts",
+            "Export workflows",
+            "Automation controls"
           ]
         },
         {
-          "id": "12.4",
-          "name": "Reliability & Performance",
+          "id": "08.20",
+          "name": "Power BI Capstone",
           "lessons": [
-            "SLIs and SLOs",
-            "Latency",
-            "Throughput",
-            "Caching",
-            "Resource limits",
-            "Fault tolerance",
-            "Backpressure",
-            "Capacity testing"
-          ]
-        },
-        {
-          "id": "12.5",
-          "name": "Governance & Responsible Analytics",
-          "lessons": [
-            "Data governance",
-            "Lineage",
-            "Retention",
-            "Access controls",
-            "Model documentation",
-            "Bias assessment",
-            "Decision accountability",
-            "Audit readiness"
-          ]
-        },
-        {
-          "id": "12.6",
-          "name": "Portable Local-First Architecture",
-          "lessons": [
-            "Offline-first design",
-            "Synthetic datasets",
-            "Local execution",
-            "Optional external connectors",
-            "Environment portability",
-            "Dependency minimization",
-            "Reproducible builds",
-            "Corporate-safe deployment"
+            "Design the source model",
+            "Build Power Query layer",
+            "Build semantic model",
+            "Create DAX measures",
+            "Build WFM report",
+            "Validate KPIs",
+            "Publish and govern",
+            "Present executive insight"
           ]
         }
       ]
     },
     {
-      "id": "13",
-      "name": "Enterprise Workforce Intelligence Capstone",
+      "id": "07",
+      "name": "Python for Workforce Intelligence",
       "modules": [
         {
-          "id": "13.1",
-          "name": "Discovery & Architecture",
+          "id": "07.1",
+          "name": "Python Foundations",
           "lessons": [
-            "Business problem definition",
-            "Stakeholder mapping",
-            "Requirements",
-            "Architecture",
-            "Data contracts",
-            "Success metrics",
-            "Risk register",
-            "Delivery plan"
+            "Python runtime and scripts",
+            "Variables and types",
+            "Operators",
+            "Input and output",
+            "Control flow",
+            "Functions",
+            "Scope",
+            "Writing readable Python"
           ]
         },
         {
-          "id": "13.2",
-          "name": "Data Platform",
+          "id": "07.2",
+          "name": "Collections",
           "lessons": [
-            "Synthetic workforce dataset",
-            "Ingestion",
-            "Validation",
-            "Warehouse model",
-            "Data quality",
-            "Metric layer",
-            "Data lineage",
-            "Refresh orchestration"
+            "Lists",
+            "Tuples",
+            "Dictionaries",
+            "Sets",
+            "Nested structures",
+            "Comprehensions",
+            "Sorting and custom keys",
+            "Collection patterns for WFM"
           ]
         },
         {
-          "id": "13.3",
-          "name": "WFM Intelligence Engine",
+          "id": "07.3",
+          "name": "Functions & Modules",
           "lessons": [
-            "Workload calculations",
-            "Erlang staffing",
-            "Forecasting",
-            "Capacity planning",
-            "Scheduling",
-            "Intraday analytics",
-            "Scenario engine",
-            "Decision rules"
+            "Function design",
+            "Arguments and defaults",
+            "Return values",
+            "Lambda functions",
+            "Modules",
+            "Imports",
+            "Reusable utilities",
+            "Package organization"
           ]
         },
         {
-          "id": "13.4",
-          "name": "Analytics & ML",
+          "id": "07.4",
+          "name": "Exceptions & Files",
           "lessons": [
-            "Executive dashboard",
-            "Diagnostic analytics",
-            "Forecast models",
-            "Prediction models",
-            "Model evaluation",
-            "Explainability",
+            "Exceptions",
+            "Try/except design",
+            "Custom exceptions",
+            "Text files",
+            "CSV files",
+            "JSON files",
+            "Path handling",
+            "Safe file workflows"
+          ]
+        },
+        {
+          "id": "07.5",
+          "name": "Python Software Engineering",
+          "lessons": [
+            "Virtual environments",
+            "Project structure",
+            "Configuration",
+            "Environment variables",
+            "Type hints",
+            "Docstrings",
+            "Logging",
+            "Code quality"
+          ]
+        },
+        {
+          "id": "07.6",
+          "name": "Testing",
+          "lessons": [
+            "Why test analytics code",
+            "Assertions",
+            "Unit tests",
+            "Fixtures",
+            "Test data",
+            "Edge cases",
+            "Regression testing",
+            "Testing data pipelines"
+          ]
+        },
+        {
+          "id": "07.7",
+          "name": "NumPy",
+          "lessons": [
+            "Arrays",
+            "Shapes and dimensions",
+            "Indexing",
+            "Vectorization",
+            "Broadcasting",
+            "Aggregation",
+            "Numerical operations",
+            "Performance basics"
+          ]
+        },
+        {
+          "id": "07.8",
+          "name": "pandas Foundations",
+          "lessons": [
+            "Series",
+            "DataFrames",
+            "Reading data",
+            "Selecting data",
+            "Filtering",
+            "Sorting",
+            "Missing values",
+            "Data types"
+          ]
+        },
+        {
+          "id": "07.9",
+          "name": "pandas Transformation",
+          "lessons": [
+            "Assigning columns",
+            "String operations",
+            "Datetime operations",
+            "Groupby",
+            "Aggregation",
+            "Merge",
+            "Join",
+            "Concatenation"
+          ]
+        },
+        {
+          "id": "07.10",
+          "name": "pandas Advanced",
+          "lessons": [
+            "Pivot tables",
+            "Melt",
+            "Reshape",
+            "Window calculations",
+            "Rolling metrics",
+            "MultiIndex",
+            "Categorical data",
+            "Efficient transformations"
+          ]
+        },
+        {
+          "id": "07.11",
+          "name": "Time-Series Analytics",
+          "lessons": [
+            "Datetime indexing",
+            "Resampling",
+            "Frequency conversion",
+            "Lag features",
+            "Rolling windows",
+            "Intraday profiles",
+            "Time-zone handling",
+            "WFM time-series datasets"
+          ]
+        },
+        {
+          "id": "07.12",
+          "name": "Data Quality",
+          "lessons": [
+            "Profiling",
+            "Completeness",
+            "Uniqueness",
+            "Validity",
+            "Consistency",
+            "Outlier checks",
+            "Reconciliation",
+            "Quality reports"
+          ]
+        },
+        {
+          "id": "07.13",
+          "name": "Visualization",
+          "lessons": [
+            "Matplotlib foundations",
+            "Line charts",
+            "Bar charts",
+            "Histograms",
+            "Scatter plots",
+            "Distribution analysis",
+            "Time-series visualization",
+            "Executive analytical charts"
+          ]
+        },
+        {
+          "id": "07.14",
+          "name": "Statistics with Python",
+          "lessons": [
+            "Descriptive statistics",
+            "Probability concepts",
+            "Sampling",
+            "Confidence intervals",
+            "Correlation",
+            "Regression",
+            "Hypothesis testing",
+            "Statistical interpretation"
+          ]
+        },
+        {
+          "id": "07.15",
+          "name": "Forecasting with Python",
+          "lessons": [
+            "Baseline forecasts",
+            "Moving averages",
+            "Exponential smoothing",
+            "Forecast features",
+            "Backtesting",
+            "Forecast metrics",
+            "Forecast bias",
+            "Forecast comparison"
+          ]
+        },
+        {
+          "id": "07.16",
+          "name": "Data Engineering",
+          "lessons": [
+            "ETL concepts",
+            "Pipeline stages",
+            "Schema management",
+            "Parquet",
+            "Partitioning",
+            "Incremental processing",
+            "Data validation",
+            "Pipeline monitoring"
+          ]
+        },
+        {
+          "id": "07.17",
+          "name": "APIs & Automation",
+          "lessons": [
+            "HTTP fundamentals",
+            "REST APIs",
+            "Requests",
+            "Authentication concepts",
+            "Pagination",
+            "Retries",
+            "Rate limits",
+            "API data ingestion"
+          ]
+        },
+        {
+          "id": "07.18",
+          "name": "WFM Automation",
+          "lessons": [
+            "Automated WFM data preparation",
+            "Daily KPI pipeline",
+            "Forecast pipeline",
+            "Staffing calculation automation",
+            "Adherence automation",
+            "Intraday alert logic",
+            "Report generation",
+            "Operational scheduling"
+          ]
+        },
+        {
+          "id": "07.19",
+          "name": "Production Python",
+          "lessons": [
+            "Configuration management",
+            "Structured logging",
+            "Secrets handling",
+            "CLI applications",
+            "Packaging",
+            "Dependency pinning",
             "Monitoring",
-            "Experimentation"
+            "Deployment patterns"
           ]
         },
         {
-          "id": "13.5",
-          "name": "Optimization & AI",
+          "id": "07.20",
+          "name": "Python Capstone",
           "lessons": [
-            "Schedule optimizer",
-            "Scenario optimization",
-            "AI mentor",
-            "RAG knowledge base",
-            "Tool calling",
-            "Agent workflows",
-            "Evaluation",
-            "Human approval"
-          ]
-        },
-        {
-          "id": "13.6",
-          "name": "Production Delivery",
-          "lessons": [
-            "Testing",
-            "CI/CD",
-            "Security review",
-            "Performance testing",
-            "Documentation",
-            "User acceptance",
-            "Release candidate",
-            "Portfolio presentation"
+            "Build the data pipeline",
+            "Validate source data",
+            "Create WFM analytics",
+            "Build forecast workflow",
+            "Automate calculations",
+            "Generate outputs",
+            "Test the solution",
+            "Present the final system"
           ]
         }
       ]
