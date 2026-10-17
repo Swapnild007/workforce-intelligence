@@ -75,5 +75,10 @@ The navigation intentionally separates functions that are easy to confuse:
 This avoids maintaining separate pages for the same learning state or calculator functionality.
 
 
+
+## Schedule Intelligence
+
+Open `schedule-optimizer.html` from the WFM Lab to analyze an operational workbook locally in the browser. The tool expects four worksheets: `Agent schedule`, `Agent schedule Data`, `Intraday Dump`, and `HC`. It provides interval coverage comparisons, roster exploration, activity and break/lunch diagnostics, people/team reconciliation, data-quality checks, prioritized actions, and CSV exports. It does not upload the workbook or automatically modify/publish schedules. The Excel reader is loaded from the SheetJS CDN, so an internet connection is needed to initialize workbook parsing.
+
 ## WFM Lab
 The WFM Lab is the single practical WFM workspace. It intentionally combines Call Centre Helper-style workflows—staffing/day planning, forecasting, capacity, schedule adherence, dashboard control, intraday and multichannel scenarios—rather than exposing duplicate calculator pages. The implementations are original, browser-native, offline-first and use synthetic data.
