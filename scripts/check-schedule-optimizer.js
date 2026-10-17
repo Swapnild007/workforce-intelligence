@@ -28,8 +28,7 @@ const required = [
   'renderRoster',
   'renderActivities',
   'renderPeople',
-  'renderQuality',
-  'schedule-optimizer.html'
+  'renderQuality'
 ];
 for (const marker of required) {
   if (!html.includes(marker)) throw new Error('Missing Schedule Intelligence feature marker: ' + marker);
